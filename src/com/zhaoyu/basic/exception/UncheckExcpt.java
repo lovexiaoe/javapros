@@ -4,8 +4,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /*
- * InputMismatchExceptionÎªuncheckedException£¬ËùÓĞÒì³£¿ÉÒÔ½øĞĞ²¶»ñ´¦Àí¡£
- * RuntimeExceptionÀàµÄÖ±½Ó»òÕß¼ä½Ó×ÓÀà¶¼ÊÇ·Ç¼ìÑéÒì³£¡£ÕâĞ©Òì³£¶¼ÊÇÓÉ´úÂë¼ì²âµ½µÄ¡£
+ * InputMismatchExceptionä¸ºuncheckedExceptionï¼Œæ‰€æœ‰å¼‚å¸¸å¯ä»¥è¿›è¡Œæ•è·å¤„ç†ã€‚
+ * RuntimeExceptionç±»çš„ç›´æ¥æˆ–è€…é—´æ¥å­ç±»éƒ½æ˜¯éæ£€éªŒå¼‚å¸¸ã€‚è¿™äº›å¼‚å¸¸éƒ½æ˜¯ç”±ä»£ç æ£€æµ‹åˆ°çš„ã€‚
  */
 public class UncheckExcpt {
 	public static void main(String[] args) {
@@ -15,8 +15,8 @@ public class UncheckExcpt {
 		int number2;
 		int sum;
 
-		// ÕâÀïµÄÊäÈëÅĞ¶ÏºÜ´Ö²Ú£¬Èç¹û²»½øĞĞÅĞ¶ÏÊäÈëµÄÀàĞÍ£¬Ôò³ÌĞò»áÔËĞĞ±¨InputMismatchException´í¡£
-		// ²Î¿¼ScannerTest2.java
+		// è¿™é‡Œçš„è¾“å…¥åˆ¤æ–­å¾ˆç²—ç³™ï¼Œå¦‚æœä¸è¿›è¡Œåˆ¤æ–­è¾“å…¥çš„ç±»å‹ï¼Œåˆ™ç¨‹åºä¼šè¿è¡ŒæŠ¥InputMismatchExceptioné”™ã€‚
+		// å‚è€ƒScannerTest2.java
 		try {
 			System.out.print("Enter first integer: ");
 			number1 = input.nextInt();

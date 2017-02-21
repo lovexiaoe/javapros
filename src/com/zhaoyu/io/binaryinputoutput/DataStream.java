@@ -8,26 +8,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * ���ԶԹ̶����������ͽ���д��Ͷ�ȡ��
+ * 可以对固定的数据类型进行写入和读取。
  *
- * DataOutput�ӿڶ��������������Զ����Ƹ�ʽд���飬�ַ���boolean���ַ����ķ�����
+ * DataOutput接口定义了下面用于以二进制格式写数组，字符，boolean和字符串的方法：
  * writeChars
  * writeByte
  * writeInt
- * ����
+ * ……
  * writeChar
  * writeUTF
- * �磺writeInt���ǽ�һ������д��Ϊ4�ֽڵĶ���������ֵ�����������ж���λ��writeDouble���ǽ�һ��doubleֵд��Ϊ8�ֽڵĶ���������ֵ�������������ز���ʱ������Ҫ���н������ȱ���Ϊ�ַ�����Ч�ʸߡ�
- * writeUTF����ʹ���޶����8λUnicodeת����ʽд���ַ�����ֻ����д������java��������ַ���ʱ��ʹ���������������������Ӧ��ʹ��writechars������
+ * 如：writeInt总是将一个整数写出为4字节的二进制数量值。而不管它有多少位，writeDouble总是将一个double值写出为8字节的二进制数量值。这样在做读回操作时，不需要进行解析，比保存为字符串的效率高。
+ * writeUTF方法使用修订版的8位Unicode转换格式写出字符串。只有在写出用于java虚拟机的字符串时才使用它。对于其它情况，都应该使用writechars方法。
  * 
- * ��DataInput�ӿ��ж����˶������ݵķ�����
+ * 在DataInput接口中定义了读回数据的方法。
  * readInt
  * readDouble
- * ����
+ * ……
  * readChar
  * readUTF
  * 
- * DataInputStreamʵ����DataInput�ӿڣ�DataOutputStreamʵ����DataOutput�ӿڡ�
+ * DataInputStream实现了DataInput接口，DataOutputStream实现了DataOutput接口。
  * 
  *
  * @author xiaoE

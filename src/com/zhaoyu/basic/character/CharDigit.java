@@ -3,11 +3,11 @@ package com.zhaoyu.basic.character;
 public class CharDigit {
 	public static void main(String[] args) {
 		int a = 13;
-		// ½«Êı×Ö×ª»»³É16½øÖÆ£¬²¢´òÓ¡³É×Ö·û¡£
+		// å°†æ•°å­—è½¬æ¢æˆ16è¿›åˆ¶ï¼Œå¹¶æ‰“å°æˆå­—ç¬¦ã€‚
 		System.out.printf("%s\n", Character.forDigit(a, 16));
 
 		char c = 'B';
-		// ½«×Ö·û×ª»»³É16½øÖÆ²¢´òÓ¡³ÉÊı×Ö¡£
+		// å°†å­—ç¬¦è½¬æ¢æˆ16è¿›åˆ¶å¹¶æ‰“å°æˆæ•°å­—ã€‚
 		System.out.printf("%s\n", Character.digit(c, 16));
 	}
 }

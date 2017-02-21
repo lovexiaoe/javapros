@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class ArraysTest {
 	public static void main(String[] args) {
-		// ÅÅĞò
+		// æ’åº
 		double[] doubleArray = { 8.4, 9.3, 0.2, 7.9, 3.4 };
 		Arrays.sort(doubleArray);
 		System.out.printf("\ndoubleArray: ");
@@ -12,48 +12,48 @@ public class ArraysTest {
 		for (double value : doubleArray)
 			System.out.printf("%.1f ", value);
 
-		// ÓÃ7Ìî³äÊı×é
+		// ç”¨7å¡«å……æ•°ç»„
 		int[] filledIntArray = new int[10];
 		Arrays.fill(filledIntArray, 7);
 		displayArray(filledIntArray, "filledIntArray");
 
-		// Êı×écopy
+		// æ•°ç»„copy
 		int[] intArray = { 1, 2, 3, 4, 5, 6 };
 		int[] intArrayCopy = new int[intArray.length];
 		System.arraycopy(intArray, 0, intArrayCopy, 0, intArray.length);
 		displayArray(intArray, "intArray");
 		displayArray(intArrayCopy, "intArrayCopy");
 
-		// ±È½ÏÊı×éÏàµÈ
+		// æ¯”è¾ƒæ•°ç»„ç›¸ç­‰
 		boolean b = Arrays.equals(intArray, intArrayCopy);
 		System.out.printf("\n\nintArray %s intArrayCopy\n", (b ? "==" : "!="));
 
-		// ±È½Ï intArray ºÍ filledIntArray ÊÇ·ñÏàµÈ
+		// æ¯”è¾ƒ intArray å’Œ filledIntArray æ˜¯å¦ç›¸ç­‰
 		b = Arrays.equals(intArray, filledIntArray);
 		System.out.printf("intArray %s filledIntArray\n", (b ? "==" : "!="));
 
-		// ¶ş·Ö·¨²éÕÒ 5
+		// äºŒåˆ†æ³•æŸ¥æ‰¾ 5
 		int location = Arrays.binarySearch(intArray, 5);
 		if (location >= 0)
 			System.out.printf("Found 5 at element %d in intArray\n", location);
 		else
 			System.out.println("5 not found in intArray");
 
-		// ¶ş·Ö·¨²éÕÒ 8763
+		// äºŒåˆ†æ³•æŸ¥æ‰¾ 8763
 		location = Arrays.binarySearch(intArray, 8763);
 		if (location >= 0)
 			System.out.printf("Found 8763 at element %d in intArray\n", location);
 		else
 			System.out.println("8763 not found in intArray");
 
-		// ¶ş·Ö·¨²éÕÒ7.9£¬ÔÚdoubleArray1ÖĞ£¬²¢Ã»ÓĞÅÅĞò£¬ËùÒÔ¶ş·Ö²éÕÒ»áÏÈÅÅĞò£¬È»ºó·µ»ØÅÅĞòÇ°µÄÎ»ÖÃ£¬²»»á¸Ä±äÔ­Êı×é¡£
+		// äºŒåˆ†æ³•æŸ¥æ‰¾7.9ï¼Œåœ¨doubleArray1ä¸­ï¼Œå¹¶æ²¡æœ‰æ’åºï¼Œæ‰€ä»¥äºŒåˆ†æŸ¥æ‰¾ä¼šå…ˆæ’åºï¼Œç„¶åè¿”å›æ’åºå‰çš„ä½ç½®ï¼Œä¸ä¼šæ”¹å˜åŸæ•°ç»„ã€‚
 		double[] doubleArray1 = { 8.4, 9.3, 0.2, 7.9, 3.4 };
 		location = Arrays.binarySearch(doubleArray1, 7.9);
 		System.out.printf("Found 7.9 at element %d in intArray\n", location);
 		System.out.println("doubleArray1[2]:" + doubleArray1[2]);
 	}
 
-	// Êı×é´òÓ¡·½·¨
+	// æ•°ç»„æ‰“å°æ–¹æ³•
 	public static void displayArray(int[] array, String description) {
 		System.out.printf("\n%s: ", description);
 

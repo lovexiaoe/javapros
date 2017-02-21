@@ -4,28 +4,28 @@ public class StaticCharMethod {
 	public static void main(String[] args) {
 
 		// char c = 'A'; // get input character
-		char c = 'Îå';
+		char c = 'äº”';
 
 		// display character info
-		// ÅĞ¶ÏcÊÇ·ñÔÚUnicode×Ö·û¼¯ÖĞ¡£
+		// åˆ¤æ–­cæ˜¯å¦åœ¨Unicodeå­—ç¬¦é›†ä¸­ã€‚
 		System.out.printf("is defined: %b\n", Character.isDefined(c));
-		// ÊÇ·ñÊı×Ö
+		// æ˜¯å¦æ•°å­—
 		System.out.printf("is digit: %b\n", Character.isDigit(c));
-		// ÊÇ·ñÄÜ×÷Îªjava±êÊ¶·ûÖĞµÄµÚÒ»¸ö×ÖÄ¸¡£
+		// æ˜¯å¦èƒ½ä½œä¸ºjavaæ ‡è¯†ç¬¦ä¸­çš„ç¬¬ä¸€ä¸ªå­—æ¯ã€‚
 		System.out.printf("is first character in a Java identifier: %b\n", Character.isJavaIdentifierStart(c));
-		// ÊÇ·ñÊÇ±êÊ¶·ûµÄÒ»²¿·Ö¡£
+		// æ˜¯å¦æ˜¯æ ‡è¯†ç¬¦çš„ä¸€éƒ¨åˆ†ã€‚
 		System.out.printf("is part of a Java identifier: %b\n", Character.isJavaIdentifierPart(c));
-		// ÊÇ·ñÎª×ÖÄ¸
+		// æ˜¯å¦ä¸ºå­—æ¯
 		System.out.printf("is letter: %b\n", Character.isLetter(c));
-		// ÊÇ·ñ×ÖÄ¸»òÊı×Ö
+		// æ˜¯å¦å­—æ¯æˆ–æ•°å­—
 		System.out.printf("is letter or digit: %b\n", Character.isLetterOrDigit(c));
-		// ÊÇ·ñĞ¡Ğ´×ÖÄ¸
+		// æ˜¯å¦å°å†™å­—æ¯
 		System.out.printf("is lower case: %b\n", Character.isLowerCase(c));
-		// ÊÇ·ñ´óĞ´×ÖÄ¸
+		// æ˜¯å¦å¤§å†™å­—æ¯
 		System.out.printf("is upper case: %b\n", Character.isUpperCase(c));
-		// ×ª»»Îª´óĞ´
+		// è½¬æ¢ä¸ºå¤§å†™
 		System.out.printf("to upper case: %s\n", Character.toUpperCase(c));
-		// ×ª»»ÎªĞ¡Ğ´
+		// è½¬æ¢ä¸ºå°å†™
 		System.out.printf("to lower case: %s\n", Character.toLowerCase(c));
 	}
 }

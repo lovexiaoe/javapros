@@ -1,7 +1,7 @@
-ArraysÀàÎª³£¼ûÊý×é²Ù×÷Ìá¹©Ò»×é¾²Ì¬·½·¨²Ù×÷ÁËÈçÏÂµÈ·½·¨¡£
- sort(ÉýÐòÅÅÁÐ)
- binarySearch(¶þ·Ö²éÕÒ)
- equals(±È½ÏÁ½¸öÊý×é)
- fill(Ìî³äÄ³Ð©ÔªËØ)
+Arraysç±»ä¸ºå¸¸è§æ•°ç»„æ“ä½œæä¾›ä¸€ç»„é™æ€æ–¹æ³•æ“ä½œäº†å¦‚ä¸‹ç­‰æ–¹æ³•ã€‚
+ sort(å‡åºæŽ’åˆ—)
+ binarySearch(äºŒåˆ†æŸ¥æ‰¾)
+ equals(æ¯”è¾ƒä¸¤ä¸ªæ•°ç»„)
+ fill(å¡«å……æŸäº›å…ƒç´ )
  
-SystemÀàÌá¹©ÁË·½·¨arraycopy£¬ÓÃÓÚ¸´ÖÆÊý×é¡£
+Systemç±»æä¾›äº†æ–¹æ³•arraycopyï¼Œç”¨äºŽå¤åˆ¶æ•°ç»„ã€‚

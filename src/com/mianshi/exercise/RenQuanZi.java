@@ -1,7 +1,7 @@
 package com.mianshi.exercise;
 
 /**
- * ÓÐn¸öÈËÎ§³ÉÒ»È¦£¬Ë³ÐòÅÅºÅ¡£´ÓµÚÒ»¸öÈË¿ªÊ¼±¨Êý£¨´Ó1µ½3±¨Êý£©£¬·²±¨µ½3µÄÈËÍË³öÈ¦×Ó£¬¼ÌÐø±¨Êý¡£ÎÊ×îºóÁôÏÂµÄÊÇÔ­À´µÚ¼¸ºÅµÄÄÇÎ»¡£
+ * æœ‰nä¸ªäººå›´æˆä¸€åœˆï¼Œé¡ºåºæŽ’å·ã€‚ä»Žç¬¬ä¸€ä¸ªäººå¼€å§‹æŠ¥æ•°ï¼ˆä»Ž1åˆ°3æŠ¥æ•°ï¼‰ï¼Œå‡¡æŠ¥åˆ°3çš„äººé€€å‡ºåœˆå­ï¼Œç»§ç»­æŠ¥æ•°ã€‚é—®æœ€åŽç•™ä¸‹çš„æ˜¯åŽŸæ¥ç¬¬å‡ å·çš„é‚£ä½ã€‚
  */
 public class RenQuanZi {
 	public static void main(String[] args) {
@@ -29,7 +29,7 @@ public class RenQuanZi {
 		}
 		for (int i = 0; i < n; i++) {
 			if (arr[i] == true) {
-				System.out.println("Ô­ÅÅÔÚµÚ" + (i + 1) + "Î»µÄÈËÁôÏÂÁË¡£");
+				System.out.println("åŽŸæŽ’åœ¨ç¬¬" + (i + 1) + "ä½çš„äººç•™ä¸‹äº†ã€‚");
 			}
 		}
 	}
