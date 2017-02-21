@@ -4,17 +4,17 @@ import java.util.Random;
 
 public class RandomIntegers {
 	public static void main(String[] args) {
-		// Ëæ»úÊıÉú³ÉÆ÷
+		// éšæœºæ•°ç”Ÿæˆå™¨
 		Random randomNumbers = new Random();
 		int face;
 
 		// loop 20 times
 		for (int counter = 1; counter <= 20; counter++) {
-			// Éú³É´Ó1µ½6µÄËæ»úÊı
+			// ç”Ÿæˆä»1åˆ°6çš„éšæœºæ•°
 			face = 1 + randomNumbers.nextInt(6);
 
 			System.out.printf("%d  ", face);
-			// ¶©ÊıÆ÷£¬5¸ö´òÓ¡Ò»ĞĞ¡£
+			// è®¢æ•°å™¨ï¼Œ5ä¸ªæ‰“å°ä¸€è¡Œã€‚
 			if (counter % 5 == 0)
 				System.out.println();
 		}

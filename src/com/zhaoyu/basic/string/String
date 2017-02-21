@@ -1,8 +1,8 @@
-StringµÄÆäËü·½·¨»¹ÓÐ
+Stringçš„å…¶å®ƒæ–¹æ³•è¿˜æœ‰
 	replace,
 	toUpperCase,
 	toLowerCase,
-	concat(Æ´½Ó×Ö·û´®¡£),
+	concat(æ‹¼æŽ¥å­—ç¬¦ä¸²ã€‚),
 	trim,toCharArray,
 	split
-µÈ¡£
+ç­‰ã€‚

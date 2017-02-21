@@ -4,14 +4,14 @@ import java.util.Arrays;
 
 public class StringSplit {
 	public static void main(String[] args) {
-		// ÊúÏß·Ö¸ô·ûĞèÒª×ªÒå
+		// ç«–çº¿åˆ†éš”ç¬¦éœ€è¦è½¬ä¹‰
 		String[] skuIds1 = "100229005|100229006|100229007|100229010".split("\\|");
 
-		// Ê¹ÓÃÕıÔò·Ö¸ô×Ö·û´®
+		// ä½¿ç”¨æ­£åˆ™åˆ†éš”å­—ç¬¦ä¸²
 		String[] results = "1, 2, 3, 4, 5, 6, 7, 8".split(",\\s*");
 		System.out.println(Arrays.toString(results));
 
-		// ¿Õ×Ö·û´®Ê¹ÓÃ¿Õ¸ñ·Ö¸îºó£¬»áÓĞÒ»¸öÔªËØ¡£
+		// ç©ºå­—ç¬¦ä¸²ä½¿ç”¨ç©ºæ ¼åˆ†å‰²åï¼Œä¼šæœ‰ä¸€ä¸ªå…ƒç´ ã€‚
 		String s = "";
 		String[] specParamsStr = s.split("[\\t \\n]+");
 		for (String string : specParamsStr) {

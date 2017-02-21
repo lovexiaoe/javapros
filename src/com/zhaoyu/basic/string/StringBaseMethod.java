@@ -1,19 +1,19 @@
 package com.zhaoyu.basic.string;
 
-//stringµÄ»ù±¾·½·¨£¬length(),charAt(),getChars()
+//stringçš„åŸºæœ¬æ–¹æ³•ï¼Œlength(),charAt(),getChars()
 public class StringBaseMethod {
 	public static void main(String[] args) {
 		String s1 = "hello there";
 		char[] charArray = new char[5];
-		// length()·½·¨
+		// length()æ–¹æ³•
 		System.out.printf("\nLength of s1: %d", s1.length());
 
-		// Ê¹ÓÃcharAt·´Ïò´òÓ¡
+		// ä½¿ç”¨charAtåå‘æ‰“å°
 		System.out.print("\nThe string reversed is: ");
 		for (int count = s1.length() - 1; count >= 0; count--)
 			System.out.printf("%c ", s1.charAt(count));
 
-		// getChars copy×Ö·û´®¡£
+		// getChars copyå­—ç¬¦ä¸²ã€‚
 		s1.getChars(0, 5, charArray, 0);
 
 		System.out.print("\nThe character array is: ");

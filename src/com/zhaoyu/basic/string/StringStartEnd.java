@@ -1,6 +1,6 @@
 package com.zhaoyu.basic.string;
 
-//startWithºÍendWithµÄÊ¹ÓÃ¡£
+//startWithå’ŒendWithçš„ä½¿ç”¨ã€‚
 public class StringStartEnd {
 	public static void main(String[] args) {
 		String[] strings = { "started", "starting", "ended", "ending" };

@@ -1,39 +1,39 @@
 package com.zhaoyu.basic.primitivetype.bitoperate;
 
 /**
- * ×óÒÆÊ±£¬·ûºÅÎ»²»±ä£¬µÍÎ»²¹0
- * ÓÒÒÆÊ±£¬ÕýÊý¸ßÎ»²¹0£¬¸ºÊýÔÚÓÒÒÆÊ±£¬ÊÇÒÔ²¹ÂëµÄÐÎÊ½²Ù×÷µÄ£¬ÒÆ¶¯Ê±¸ßÎ»²¹·ûºÅÎ»¡£ÒÆ¶¯Íêºó-1È¡·´¡£
- * ÎÞ·ûºÅÎ»ÓÒÒÆÊ±£¬¸ßÎ»¶¼²¹0£¬¸ºÊýÔÚÎÞ·ûºÅÓÒÒÆÖÐ»á±ä³ÉÕýÊý£¬½á¹û²»ºÃÔ¤ÆÚ£¬ÎÒ»¹Î´ÑÐ¾¿³öÊÇÔõÃ´Ö´ÐÐµÄ£¬
- * ½á¹û»á±äµÃÎÞÒâÒå¡£
+ * å·¦ç§»æ—¶ï¼Œç¬¦å·ä½ä¸å˜ï¼Œä½Žä½è¡¥0
+ * å³ç§»æ—¶ï¼Œæ­£æ•°é«˜ä½è¡¥0ï¼Œè´Ÿæ•°åœ¨å³ç§»æ—¶ï¼Œæ˜¯ä»¥è¡¥ç çš„å½¢å¼æ“ä½œçš„ï¼Œç§»åŠ¨æ—¶é«˜ä½è¡¥ç¬¦å·ä½ã€‚ç§»åŠ¨å®ŒåŽ-1å–åã€‚
+ * æ— ç¬¦å·ä½å³ç§»æ—¶ï¼Œé«˜ä½éƒ½è¡¥0ï¼Œè´Ÿæ•°åœ¨æ— ç¬¦å·å³ç§»ä¸­ä¼šå˜æˆæ­£æ•°ï¼Œç»“æžœä¸å¥½é¢„æœŸï¼Œæˆ‘è¿˜æœªç ”ç©¶å‡ºæ˜¯æ€Žä¹ˆæ‰§è¡Œçš„ï¼Œ
+ * ç»“æžœä¼šå˜å¾—æ— æ„ä¹‰ã€‚
  *
- * µ±²Ù×÷ÊýÊÇintÊ±£¬Î»ÒÆÔËËã·ûÓÒ²àµÄ²ÎÊýÒª½øÐÐÄ£32µÄÔËËã¡£Èç1<<35»ò1<<3»ò8ÊÇÏàÍ¬µÄ¡£
- * µ±²Ù×÷ÊýÊÇlongÊ±£¬Òª½øÐÐÄ£64²Ù×÷¡£
+ * å½“æ“ä½œæ•°æ˜¯intæ—¶ï¼Œä½ç§»è¿ç®—ç¬¦å³ä¾§çš„å‚æ•°è¦è¿›è¡Œæ¨¡32çš„è¿ç®—ã€‚å¦‚1<<35æˆ–1<<3æˆ–8æ˜¯ç›¸åŒçš„ã€‚
+ * å½“æ“ä½œæ•°æ˜¯longæ—¶ï¼Œè¦è¿›è¡Œæ¨¡64æ“ä½œã€‚
  *
  * @author xiaoe
  */
 public class BitOperate {
 	public static void main(String[] args) {
-		System.out.println("½«2×óÒÆ3Î»µÃ£º" + (2 << 3));
-		System.out.println("½«-2×óÒÆ3Î»µÃ£º" + (-2 << 3));
-		System.out.println("½«3ÓÒÒÆ1Î»µÃ£º" + (3 >> 1));
-		// ¸ºÊýµÄÓÒÒÆÊÇÒÔ²¹ÂëÀ´ÒÆ¶¯µÄ£¬²¹ÂëÒÆ¶¯ºóÔÙ-1È¡·´£¬µÃµ½ÊýÖµ¡£
-		System.out.println("½«-6ÓÒÒÆ1Î»µÃ£º" + (-6 >> 1));
-		System.out.println("½«-5ÓÒÒÆ2Î»µÃ£º" + (-5 >> 2));
-		System.out.println("½«-7ÓÒÒÆ3Î»µÃ£º" + (-7 >> 3));
-		System.out.println("½«-2ÓÒÒÆ3Î»µÃ£º" + (-2 >> 3));
-		System.out.println("½«4ÎÞ·ûºÅÓÒÒÆ3Î»µÃ£º" + (4 >>> 3));
-		System.out.println("½«-4ÎÞ·ûºÅÓÒÒÆ1Î»µÃ£º" + (-4 >>> 1));
-		System.out.println("È¡13µÄ¶þ½øÖÆÎ»µÄµ¹ÊýµÚÈýÎ»£º" + shadowBit8(13));
+		System.out.println("å°†2å·¦ç§»3ä½å¾—ï¼š" + (2 << 3));
+		System.out.println("å°†-2å·¦ç§»3ä½å¾—ï¼š" + (-2 << 3));
+		System.out.println("å°†3å³ç§»1ä½å¾—ï¼š" + (3 >> 1));
+		// è´Ÿæ•°çš„å³ç§»æ˜¯ä»¥è¡¥ç æ¥ç§»åŠ¨çš„ï¼Œè¡¥ç ç§»åŠ¨åŽå†-1å–åï¼Œå¾—åˆ°æ•°å€¼ã€‚
+		System.out.println("å°†-6å³ç§»1ä½å¾—ï¼š" + (-6 >> 1));
+		System.out.println("å°†-5å³ç§»2ä½å¾—ï¼š" + (-5 >> 2));
+		System.out.println("å°†-7å³ç§»3ä½å¾—ï¼š" + (-7 >> 3));
+		System.out.println("å°†-2å³ç§»3ä½å¾—ï¼š" + (-2 >> 3));
+		System.out.println("å°†4æ— ç¬¦å·å³ç§»3ä½å¾—ï¼š" + (4 >>> 3));
+		System.out.println("å°†-4æ— ç¬¦å·å³ç§»1ä½å¾—ï¼š" + (-4 >>> 1));
+		System.out.println("å–13çš„äºŒè¿›åˆ¶ä½çš„å€’æ•°ç¬¬ä¸‰ä½ï¼š" + shadowBit8(13));
 	}
 
 	/**
-	 * ¸ù¾ÝÎ»ÓëÔËËãÈ¡µÃ¶þ½øÖÆÎ»µÄµ¹ÊýµÚÈýÎ»¡£
+	 * æ ¹æ®ä½ä¸Žè¿ç®—å–å¾—äºŒè¿›åˆ¶ä½çš„å€’æ•°ç¬¬ä¸‰ä½ã€‚
 	 *
 	 * @param n
 	 * @return
 	 */
 	static int shadowBit8(int n) {
 		return (n & 8) / 8;
-		// Ò²¿ÉÒÔÐ´³ÉÕâÑù return (n&(1<<3))>>3;
+		// ä¹Ÿå¯ä»¥å†™æˆè¿™æ · return (n&(1<<3))>>3;
 	}
 }

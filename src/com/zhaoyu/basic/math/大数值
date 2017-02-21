@@ -1,12 +1,12 @@
-java.math°üÖĞµÄBigIntegerºÍBigDecimal¿ÉÒÔ´¦Àí°üº¬ÈÎÒâ³¤¶ÈÊı×ÖĞòÁĞµÄÊıÖµ¡£
-BigIntegerÀàÊµÏÖÁËÈÎÒâ¾«¶ÈµÄÕûÊıÔËËã£¬BigDecimalÊµÏÖÁËÈÎÒâÈÎÒâ¾«¶ÈµÄ¸¡µãÊıÔËËã¡£
+java.mathåŒ…ä¸­çš„BigIntegerå’ŒBigDecimalå¯ä»¥å¤„ç†åŒ…å«ä»»æ„é•¿åº¦æ•°å­—åºåˆ—çš„æ•°å€¼ã€‚
+BigIntegerç±»å®ç°äº†ä»»æ„ç²¾åº¦çš„æ•´æ•°è¿ç®—ï¼ŒBigDecimalå®ç°äº†ä»»æ„ä»»æ„ç²¾åº¦çš„æµ®ç‚¹æ•°è¿ç®—ã€‚
 
-×÷ÓÃValueOf¿ÉÒÔ½«ÆÕÍ¨µÄÊıÖµ×ª»»³É´óÊıÖµ¡£
+ä½œç”¨ValueOfå¯ä»¥å°†æ™®é€šçš„æ•°å€¼è½¬æ¢æˆå¤§æ•°å€¼ã€‚
 
 BigInteger bi=BigInteger.ValueOf(100);
-BigInteger²¢Ã»ÓĞÌá¹©ÎÒÃÇÊìÏ¤µÄ+-*/£¬¶øÊÇÌá¹©ÁËadd,multiply,subtract,ºÍdivide·½·¨¡£
+BigIntegerå¹¶æ²¡æœ‰æä¾›æˆ‘ä»¬ç†Ÿæ‚‰çš„+-*/ï¼Œè€Œæ˜¯æä¾›äº†add,multiply,subtract,å’Œdivideæ–¹æ³•ã€‚
 
-¼ÆËã¹«Ê½£¬
+è®¡ç®—å…¬å¼ï¼Œ
 num=num*(n-i+1)/i
-Èç¹ûÊ¹ÓÃ´óÊıÖµ£¬Ôò¶ÔÓ¦Óï¾äÎª
+å¦‚æœä½¿ç”¨å¤§æ•°å€¼ï¼Œåˆ™å¯¹åº”è¯­å¥ä¸º
 num=num.multiply(BigInteger.ValueOf(num-i+1)).divide(BigInteger.ValueOf(i);

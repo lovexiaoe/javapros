@@ -5,10 +5,10 @@ public class SubString {
 		String letters = "abcdefghijklmabcdefghijklm";
 
 		// test substring methods
-		System.out.printf("´Ó20½ØÈ¡ \"%s\"\n", letters.substring(20));
-		System.out.printf("%s \"%s\"\n", "´Ó3¿ªÊ¼½ØÈ¡£¬²»°üº¬6£º", letters.substring(3, 6));
+		System.out.printf("ä»20æˆªå– \"%s\"\n", letters.substring(20));
+		System.out.printf("%s \"%s\"\n", "ä»3å¼€å§‹æˆªå–ï¼Œä¸åŒ…å«6ï¼š", letters.substring(3, 6));
 
-		// index ½áºÏsubstring½ØÈ¡¡£
+		// index ç»“åˆsubstringæˆªå–ã€‚
 		String filenameStr = "A:1,B:2,C:3,BA:2";
 		System.out.println(filenameStr.substring(0, filenameStr.indexOf(":")));
 	}

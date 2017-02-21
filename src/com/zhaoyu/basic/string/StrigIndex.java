@@ -6,11 +6,11 @@ public class StrigIndex {
 
 		// test indexOf to locate a character in a string
 		System.out.printf("'c' is located at index %d\n", letters.indexOf('c'));
-		// indexOfµÄµÚ¶ş¸ö²ÎÊı±íÊ¾ËÑË÷¿ªÊ¼µÄÎ»ÖÃ¡£
+		// indexOfçš„ç¬¬äºŒä¸ªå‚æ•°è¡¨ç¤ºæœç´¢å¼€å§‹çš„ä½ç½®ã€‚
 		System.out.printf("'a' is located at index %d\n", letters.indexOf('a', 1));
 		System.out.printf("'$' is located at index %d\n\n", letters.indexOf('$'));
 
-		// test lastIndexOf£¬´ÓºóÏòÇ°¼ìË÷£¬·µ»Ø×Ö·û´®ÖĞµÄĞòÁĞ
+		// test lastIndexOfï¼Œä»åå‘å‰æ£€ç´¢ï¼Œè¿”å›å­—ç¬¦ä¸²ä¸­çš„åºåˆ—
 		System.out.printf("Last 'c' is located at index %d\n", letters.lastIndexOf('c'));
 		System.out.printf("Last 'a' is located at index %d\n", letters.lastIndexOf('a', 25));
 		System.out.printf("Last '$' is located at index %d\n\n", letters.lastIndexOf('$'));

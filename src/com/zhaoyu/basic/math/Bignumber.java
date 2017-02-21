@@ -4,12 +4,12 @@ import java.math.BigInteger;
 
 public class Bignumber {
 	public static void main(String[] args) {
-		System.out.println("´Ó2¸öÊı¾İÖĞ³éÈ¡1¸öµÄ¸ÅÂÊ" + draw(2, 1) + "·ÖÖ®1");
-		System.out.println("´Ó490¸öÊı¾İÖĞ³éÈ¡60¸öµÄ¸ÅÂÊ" + draw(490, 60) + "·ÖÖ®1");
+		System.out.println("ä»2ä¸ªæ•°æ®ä¸­æŠ½å–1ä¸ªçš„æ¦‚ç‡" + draw(2, 1) + "åˆ†ä¹‹1");
+		System.out.println("ä»490ä¸ªæ•°æ®ä¸­æŠ½å–60ä¸ªçš„æ¦‚ç‡" + draw(490, 60) + "åˆ†ä¹‹1");
 	}
 
 	/**
-	 * ¼ÆËã´Ók¸öÊı¾İÖĞ³éÈ¡j¸öµÄ¸ÅÂÊ£¬¼ÆËãn*(n-1)*(n-2)*...*(n-k+1)/(1*2*3*k)
+	 * è®¡ç®—ä»kä¸ªæ•°æ®ä¸­æŠ½å–jä¸ªçš„æ¦‚ç‡ï¼Œè®¡ç®—n*(n-1)*(n-2)*...*(n-k+1)/(1*2*3*k)
 	 *
 	 * @param k
 	 * @param j

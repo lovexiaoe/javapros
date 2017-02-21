@@ -1,19 +1,19 @@
 package com.zhaoyu.basic.primitivetype.floatdouble;
 
 /**
- * ´ËÀàÓÃÓÚËµÃ÷floatºÍdoubleÀàÐÍµÄÏà¹ØÖªÊ¶ºÍÊ¹ÓÃ¡£
- * flatÀàÐÍµÄÊýÖµºóÓÐÒ»¸öF(Èç£º3.402F),Ã»ÓÐºó×ºFµÄ¸¡µãÊýÖµÄ¬ÈÏÎªdoubleÀàÐÍ¡£doubleÀàÐÍÒ²¿ÉÒÔ ÔÚºóÃæÌí¼ÓD(Èç3.402D)¡£
+ * æ­¤ç±»ç”¨äºŽè¯´æ˜Žfloatå’Œdoubleç±»åž‹çš„ç›¸å…³çŸ¥è¯†å’Œä½¿ç”¨ã€‚
+ * flatç±»åž‹çš„æ•°å€¼åŽæœ‰ä¸€ä¸ªF(å¦‚ï¼š3.402F),æ²¡æœ‰åŽç¼€Fçš„æµ®ç‚¹æ•°å€¼é»˜è®¤ä¸ºdoubleç±»åž‹ã€‚doubleç±»åž‹ä¹Ÿå¯ä»¥ åœ¨åŽé¢æ·»åŠ D(å¦‚3.402D)ã€‚
  *
  * float
- * ÔÚjavaÖÐÊ¹ÓÃ4×Ö½Ú±íÊ¾£¬È¡Öµ·¶Î§£º+-3.40282347E+38F E+38±íÊ¾³ËÒÔ10µÄ38´Î·½¡£e-28±íÊ¾³ËÒÔ10µÄ-28´Î·½¡£
- * µ«ÊÇfloatÀàÐÍ±íÊ¾µÄ¾«¶ÈÓÐÏÞ£¬Ö»ÓÐ8-9Î»µÄ¾«¶È£¬ËùÒÔÒ»°ã¶¼²»ÓÃfloatÀàÐÍ£¬Ê¹ÓÃdouble¡£
+ * åœ¨javaä¸­ä½¿ç”¨4å­—èŠ‚è¡¨ç¤ºï¼Œå–å€¼èŒƒå›´ï¼š+-3.40282347E+38F E+38è¡¨ç¤ºä¹˜ä»¥10çš„38æ¬¡æ–¹ã€‚e-28è¡¨ç¤ºä¹˜ä»¥10çš„-28æ¬¡æ–¹ã€‚
+ * ä½†æ˜¯floatç±»åž‹è¡¨ç¤ºçš„ç²¾åº¦æœ‰é™ï¼Œåªæœ‰8-9ä½çš„ç²¾åº¦ï¼Œæ‰€ä»¥ä¸€èˆ¬éƒ½ä¸ç”¨floatç±»åž‹ï¼Œä½¿ç”¨doubleã€‚
  *
- * double ÔÚjavaÖÐÊ¹ÓÃ8×Ö½ÚÀ´±íÊ¾ £¬±íÊ¾¾«¶ÈÊÇfloat¾«¶ÈµÄÁ½±¶¡£
+ * double åœ¨javaä¸­ä½¿ç”¨8å­—èŠ‚æ¥è¡¨ç¤º ï¼Œè¡¨ç¤ºç²¾åº¦æ˜¯floatç²¾åº¦çš„ä¸¤å€ã€‚
  *
- * ÔÚjdk5ÖÐ£¬¿ÉÒÔ Ê¹ÓÃÊ®Áù½øÖÆÀ´±íÊ¾¸¡µãÊýÖµ¡£Èç0.125¿ÉÒÔ±íÊ¾³É0x1.0p-3¡£ÔÚÊ®Áù½øÖÆÖÐÓÃp±íÊ¾Ö¸Êý¡£¶ø²»ÊÇe
- * Î²Êý²ÉÓÃ16½øÖÆ£¬Ö¸Êý²ÉÓÃ10½øÖÆ£¬Ö¸ÊýµÄ»ùÊýÊÇ2£¬¶ø²»ÊÇ10¡£
+ * åœ¨jdk5ä¸­ï¼Œå¯ä»¥ ä½¿ç”¨åå…­è¿›åˆ¶æ¥è¡¨ç¤ºæµ®ç‚¹æ•°å€¼ã€‚å¦‚0.125å¯ä»¥è¡¨ç¤ºæˆ0x1.0p-3ã€‚åœ¨åå…­è¿›åˆ¶ä¸­ç”¨pè¡¨ç¤ºæŒ‡æ•°ã€‚è€Œä¸æ˜¯e
+ * å°¾æ•°é‡‡ç”¨16è¿›åˆ¶ï¼ŒæŒ‡æ•°é‡‡ç”¨10è¿›åˆ¶ï¼ŒæŒ‡æ•°çš„åŸºæ•°æ˜¯2ï¼Œè€Œä¸æ˜¯10ã€‚
  *
- * ¿ÉÓÃÊ¹ÓÃDouble.isNaN(x)£¬À´ÅÐ¶ÏxÊÇ·ñÊÇÒ»¸ö·ÇÊý¾ÝÐÍµÄÖµ ¡£
+ * å¯ç”¨ä½¿ç”¨Double.isNaN(x)ï¼Œæ¥åˆ¤æ–­xæ˜¯å¦æ˜¯ä¸€ä¸ªéžæ•°æ®åž‹çš„å€¼ ã€‚
  *
  * @author xiaoe
  *
@@ -30,7 +30,7 @@ public class FloatAndDouble {
 }
 
 /*
- * Êä³ö½á¹û¡£
+ * è¾“å‡ºç»“æžœã€‚
  * 1.2812313E20
  * 1.2812312323E38
  * max:3.4028235E38

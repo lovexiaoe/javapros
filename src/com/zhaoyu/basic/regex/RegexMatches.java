@@ -4,13 +4,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /*
- * patternÀà±íÊ¾Ò»¸öÕıÔò±í´ïÊ½¡£
- * MatcherÀàÍ¬Ê±°üº¬ÕıÔò±í´ïÊ½Ä£Ê½ºÍÒ»¸öÒªÔÚÆäÖĞËÑË÷Ä£Ê½µÄCharSequence,
- * CharSequenceÊÇÒ»¸ö½Ó¿Ú£¬StringÒ²ÊµÏÖÁËÕâ¸ö½Ó¿Ú¡£
+ * patternç±»è¡¨ç¤ºä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼ã€‚
+ * Matcherç±»åŒæ—¶åŒ…å«æ­£åˆ™è¡¨è¾¾å¼æ¨¡å¼å’Œä¸€ä¸ªè¦åœ¨å…¶ä¸­æœç´¢æ¨¡å¼çš„CharSequence,
+ * CharSequenceæ˜¯ä¸€ä¸ªæ¥å£ï¼ŒStringä¹Ÿå®ç°äº†è¿™ä¸ªæ¥å£ã€‚
  */
 
 /**
- * ÏÂÃæÕâ¸ö³ÌĞòÓÃÕıÔò±í´ïÊ½Æ¥ÅäÉúÈÕ£¬ÉúÈÕ²»ÒÔ4ÔÂ³öÉú£¬ÇÒĞÕÒÔJ¿ª¹Ø
+ * ä¸‹é¢è¿™ä¸ªç¨‹åºç”¨æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…ç”Ÿæ—¥ï¼Œç”Ÿæ—¥ä¸ä»¥4æœˆå‡ºç”Ÿï¼Œä¸”å§“ä»¥Jå¼€å…³
  *
  * @author xiaoE
  *
@@ -26,7 +26,7 @@ public class RegexMatches {
 		// match regular expression to string and print matches
 		Matcher matcher = expression.matcher(string1);
 
-		// find·½·¨£¬Æ¥Åäµ½ºó¼ÌĞø²éÕÒ£¬lookingAt·½·¨×ÜÊÇ´Ó¶ÔÏó¿ªÊ¼´¦½øĞĞËÑË÷¡£
+		// findæ–¹æ³•ï¼ŒåŒ¹é…åˆ°åç»§ç»­æŸ¥æ‰¾ï¼ŒlookingAtæ–¹æ³•æ€»æ˜¯ä»å¯¹è±¡å¼€å§‹å¤„è¿›è¡Œæœç´¢ã€‚
 		while (matcher.find())
 			System.out.println(matcher.group());
 	}

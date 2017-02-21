@@ -3,7 +3,7 @@ package com.zhaoyu.basic.string;
 public class StringCompare {
 	public static void main(String[] args) {
 		String s1 = new String("hello"); // s1 is a copy of "hello"
-		// String s1 = "hello"; //ÕâÖÖÇé¿öÏÂ s1=="hello"
+		// String s1 = "hello"; //è¿™ç§æƒ…å†µä¸‹ s1=="hello"
 		String s2 = "goodbye";
 		String s3 = "Happy Birthday";
 		String s4 = "happy birthday";
@@ -17,12 +17,12 @@ public class StringCompare {
 		// test for equality (ignore case)
 		System.out.printf("%s equals %s with case ignored= " + s3.equalsIgnoreCase(s4) + "\n", s3, s4);
 
-		// compareTo ¸ù¾İ×Ö·û´®µÄ×Ö·ûĞòÁĞ±È½Ï £¬ÏàµÈ·µ»Ø0£¬µ÷ÓÃ×Ö·û´®Ğ¡ÓÚ²ÎÊı×Ö·û´®£¬·µ»Ø¸ºÊı£¬Ïà·´£¬·µ»ØÕıÊı¡£
+		// compareTo æ ¹æ®å­—ç¬¦ä¸²çš„å­—ç¬¦åºåˆ—æ¯”è¾ƒ ï¼Œç›¸ç­‰è¿”å›0ï¼Œè°ƒç”¨å­—ç¬¦ä¸²å°äºå‚æ•°å­—ç¬¦ä¸²ï¼Œè¿”å›è´Ÿæ•°ï¼Œç›¸åï¼Œè¿”å›æ­£æ•°ã€‚
 		System.out.printf("\ns1.compareTo( s2 ) is %d", s1.compareTo(s2));
 		System.out.printf("\ns2.compareTo( s1 ) is %d", s2.compareTo(s1));
 		System.out.printf("\ns1.compareTo( s1 ) is %d", s1.compareTo(s1));
 
-		// regionMatches (case sensitive), s3´Ó0¿ªÊ¼£¬s4´Ó0¿ªÊ¼£¬±È½Ï5Î»¡£
+		// regionMatches (case sensitive), s3ä»0å¼€å§‹ï¼Œs4ä»0å¼€å§‹ï¼Œæ¯”è¾ƒ5ä½ã€‚
 		if (s3.regionMatches(0, s4, 0, 5))
 			System.out.println("First 5 characters of s3 and s4 match");
 		else

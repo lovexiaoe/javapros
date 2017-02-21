@@ -3,7 +3,7 @@ package com.zhaoyu.basic.loops;
 public class Whileloop {
 	public static void main(String[] args) {
 		int i = 0;
-		// while Ê¹ÓÃbreakÍË³ö
+		// while ä½¿ç”¨breaké€€å‡º
 		while (true) {
 			i++;
 			if (i > 3) {
@@ -12,9 +12,9 @@ public class Whileloop {
 			System.out.println(i);
 		}
 
-		// Ê¹ÓÃbreak±êÇ©¡£
-		// javaÒ²¶¨ÒåÁËÒ»ÖÖÀàËÆgotoµÄ·½·¨À´Ìø³öÑ­»·£¬±êÇ©±ØÐë·ÅÔÚÏ£ÍûÌø³öµÄÍâ²ãÑ­»·Ö®Ç°£¬¸úÒ»¸öÃ°ºÅ¡£
-		// ÕâÖÖ·½·¨ÀàËÆgoto£¬ËùÒÔ²¢²»Ìá³«Ê¹ÓÃ¡£
+		// ä½¿ç”¨breakæ ‡ç­¾ã€‚
+		// javaä¹Ÿå®šä¹‰äº†ä¸€ç§ç±»ä¼¼gotoçš„æ–¹æ³•æ¥è·³å‡ºå¾ªçŽ¯ï¼Œæ ‡ç­¾å¿…é¡»æ”¾åœ¨å¸Œæœ›è·³å‡ºçš„å¤–å±‚å¾ªçŽ¯ä¹‹å‰ï¼Œè·Ÿä¸€ä¸ªå†’å·ã€‚
+		// è¿™ç§æ–¹æ³•ç±»ä¼¼gotoï¼Œæ‰€ä»¥å¹¶ä¸æå€¡ä½¿ç”¨ã€‚
 		read_data: while (true) {
 			i++;
 			if (i > 6) {
@@ -23,7 +23,7 @@ public class Whileloop {
 			int j = 0;
 			stop_lebel: while (true) {
 				j++;
-				System.out.println("--ÄÚ²ãÑ­»·");
+				System.out.println("--å†…å±‚å¾ªçŽ¯");
 				if (j < 2) {
 					break stop_lebel;
 				}
@@ -31,12 +31,12 @@ public class Whileloop {
 			System.out.println(i);
 		}
 
-		// break±êÇ©Ò²¿ÉÒÔÊ¹ÓÃÔÚifÓï¾äÖÐ
+		// breakæ ‡ç­¾ä¹Ÿå¯ä»¥ä½¿ç”¨åœ¨ifè¯­å¥ä¸­
 		int k = 0;
 		if_tab: if (k == 1) {
 			System.out.println("k==0");
 		} else {
-			System.out.println("ifÖÐÊ¹ÓÃÁËbreak±êÇ©¡£");
+			System.out.println("ifä¸­ä½¿ç”¨äº†breakæ ‡ç­¾ã€‚");
 			break if_tab;
 		}
 	}

@@ -4,29 +4,29 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 /*
- * ¸Ã³ÌĞòËµÃ÷getBytesµÄÊ¹ÓÃ¡£
+ * è¯¥ç¨‹åºè¯´æ˜getBytesçš„ä½¿ç”¨ã€‚
  */
 public class GetBytes {
 	public static void main(String[] args) {
-		// ¸÷ÖÖ±àÂëÇé¿öÏÂ£¬getBytesµÄ³¤¶ÈÓĞËù²»Í¬¡£
+		// å„ç§ç¼–ç æƒ…å†µä¸‹ï¼ŒgetBytesçš„é•¿åº¦æœ‰æ‰€ä¸åŒã€‚
 		System.out.println("============================");
-		String str = "ÖĞ";
+		String str = "ä¸­";
 		byte[] a = str.getBytes();
 		try {
 			a = str.getBytes("GBK");
-			System.out.println("getBytesGBK£º " + a.length);
+			System.out.println("getBytesGBKï¼š " + a.length);
 			byte[] b = str.getBytes("UTF-8");
 			System.out.println("getBytesUTF8: " + b.length);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		// »ñÈ¡Ä¬ÈÏ±àÂë¡£
+		// è·å–é»˜è®¤ç¼–ç ã€‚
 		System.out.println("DefaultEncode: " + Charset.defaultCharset());
 		System.out.println("getBytesDefault: " + a.length);
 
 		System.out.println("============================");
-		// °´ÕÕbyte¿í¶È½ØÈ¡×Ö·û´®
-		String s1 = "q1Òªf2ÖĞ£¬dÔÚ23ÖĞ¹úÈË";
+		// æŒ‰ç…§byteå®½åº¦æˆªå–å­—ç¬¦ä¸²
+		String s1 = "q1è¦f2ä¸­ï¼Œdåœ¨23ä¸­å›½äºº";
 		System.out.println(subStr(s1, 7));
 		System.out.println(subStr(s1, 8));
 		System.out.println(subStr(s1, -2));
@@ -34,8 +34,8 @@ public class GetBytes {
 	}
 
 	/*
-	 * ¸ù¾İ×Ö½Ú³¤¶È½øĞĞ½ØÈ¡¡£²»ÄÜ³öÏÖ½ØÈ¡°ë¸ö×Ö·ûµÄÇé¿ö¡£
-	 *  "s".getBytesÕ¼Ò»¸ö×Ö½Ú£¬"ÁÖ".getBytesÔÚÄ¬ÈÏ±àÂëÇé¿öÏÂÕ¼Á½¸ö×Ö½Ú¡£
+	 * æ ¹æ®å­—èŠ‚é•¿åº¦è¿›è¡Œæˆªå–ã€‚ä¸èƒ½å‡ºç°æˆªå–åŠä¸ªå­—ç¬¦çš„æƒ…å†µã€‚
+	 *  "s".getByteså ä¸€ä¸ªå­—èŠ‚ï¼Œ"æ—".getBytesåœ¨é»˜è®¤ç¼–ç æƒ…å†µä¸‹å ä¸¤ä¸ªå­—èŠ‚ã€‚
 	 */
 	public static String subStr(String str, int i) {
 		if (i < 1) {

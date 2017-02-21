@@ -1,6 +1,6 @@
 package com.zhaoyu.basic.primitivetype.cast;
 
-//ÕûÊı×ª»»ÎªÆäËü½øÖÆµÄÊı¾İ¡£
+//æ•´æ•°è½¬æ¢ä¸ºå…¶å®ƒè¿›åˆ¶çš„æ•°æ®ã€‚
 public class IntegerConvert {
 	public static void main(String[] args) {
 		System.out.printf("%d\n", 26);

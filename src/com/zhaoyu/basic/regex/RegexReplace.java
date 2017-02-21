@@ -2,20 +2,20 @@ package com.zhaoyu.basic.regex;
 
 public class RegexReplace {
 	public static void main(String[] args) {
-		// ½Ç±êÏµÍ³ÖĞµÄÆ¥Åä°¸Àı¡£
+		// è§’æ ‡ç³»ç»Ÿä¸­çš„åŒ¹é…æ¡ˆä¾‹ã€‚
 		String filenameStr = "A:1,B:2,C:3,BA:2";
-		// Ìæ»»ËùÓĞµÄ"A£ºÊı×Ö"Îª"a:3"
+		// æ›¿æ¢æ‰€æœ‰çš„"Aï¼šæ•°å­—"ä¸º"a:3"
 		System.out.println(filenameStr.replaceAll("A" + ":\\d", "a:3"));
-		// Æ¥Åä"Áõ:223" »òÕß"asdf:-2"
-		System.out.println("2Áõ:123".matches("[^:\\s]+:-?\\d+"));
-		// ÓÃ£û£ıÏŞ¶¨³¤¶È¡£
+		// åŒ¹é…"åˆ˜:223" æˆ–è€…"asdf:-2"
+		System.out.println("2åˆ˜:123".matches("[^:\\s]+:-?\\d+"));
+		// ç”¨ï½›ï½é™å®šé•¿åº¦ã€‚
 		System.out.println("20170105,20170106".matches("^\\d{8},\\d{8}$"));
 		System.out.println("asB".matches("-?[[a-zA-Z]\\d]{0,9}"));
 
-		// ÕıÔòÈ¥¿Õ¸ñ
+		// æ­£åˆ™å»ç©ºæ ¼
 		System.out.println(" 29103	 ".replaceAll("(\\s)|([\r\n])", ""));
 
-		// jsonÆ¥ÅäÌØ¶¨Ñ¡Ïî¡£
+		// jsonåŒ¹é…ç‰¹å®šé€‰é¡¹ã€‚
 		String msg = "{'data':{'creator':null,'modified':'2016-08-19 15:35:37','orderFieldNextType':'ASC','pageSize':null,'status':1}}";
 		System.out.println(msg.replaceFirst(",'orderFieldNextType':[^,]*,", ","));
 		System.out.println(msg.replaceFirst(",'pageSize':[^,]*,", ","));

@@ -1,8 +1,8 @@
 package com.zhaoyu.basic.string;
 
 /*
- * javaÖĞµÄÃ¿¸öObject·½·¨¶¼ÓĞÒ»¸ötoString·½·¨£¬µ«ÊÇÕâÖÖ·½·¨²»ÄÜÓÃÓÚ»ù±¾ÀàĞÍ¡£
- * StringÌá¹©ÁËvalueOf·½·¨£¬½«ÈÎºÎÀàĞÍµÄ²ÎÊı×ª»»ÎªÒ»¸öString¶ÔÏó¡£
+ * javaä¸­çš„æ¯ä¸ªObjectæ–¹æ³•éƒ½æœ‰ä¸€ä¸ªtoStringæ–¹æ³•ï¼Œä½†æ˜¯è¿™ç§æ–¹æ³•ä¸èƒ½ç”¨äºåŸºæœ¬ç±»å‹ã€‚
+ * Stringæä¾›äº†valueOfæ–¹æ³•ï¼Œå°†ä»»ä½•ç±»å‹çš„å‚æ•°è½¬æ¢ä¸ºä¸€ä¸ªStringå¯¹è±¡ã€‚
  */
 public class StringValueOf {
 	public static void main(String[] args) {
@@ -15,18 +15,18 @@ public class StringValueOf {
 		double doubleValue = 33.333; // no suffix, double is default
 		Object objectRef = "hello"; // assign string to an Object reference
 
-		// ½«Ò»¸öÊı×é×ª»»³É×Ö·û´®¡£
+		// å°†ä¸€ä¸ªæ•°ç»„è½¬æ¢æˆå­—ç¬¦ä¸²ã€‚
 		System.out.printf("char array = %s\n", String.valueOf(charArray));
-		// ½«Êı×éµÄÒ»²¿·Ö×ª»»Îª×Ö·û´®¡£
+		// å°†æ•°ç»„çš„ä¸€éƒ¨åˆ†è½¬æ¢ä¸ºå­—ç¬¦ä¸²ã€‚
 		System.out.printf("part of char array = %s\n", String.valueOf(charArray, 3, 3));
-		// boolean£¬char,...×ª»»Îª×Ö·û´®¡£
+		// booleanï¼Œchar,...è½¬æ¢ä¸ºå­—ç¬¦ä¸²ã€‚
 		System.out.printf("boolean = %s\n", String.valueOf(booleanValue));
 		System.out.printf("char = %s\n", String.valueOf(characterValue));
 		System.out.printf("int = %s\n", String.valueOf(integerValue));
 		System.out.printf("long = %s\n", String.valueOf(longValue));
 		System.out.printf("float = %s\n", String.valueOf(floatValue));
 		System.out.printf("double = %s\n", String.valueOf(doubleValue));
-		// Object±¾ÉíÓĞtoString·½·¨£¬¿ÉÒÔ×ªÎª×ÖÌå´®¡£
+		// Objectæœ¬èº«æœ‰toStringæ–¹æ³•ï¼Œå¯ä»¥è½¬ä¸ºå­—ä½“ä¸²ã€‚
 		System.out.printf("Object = %s\n", String.valueOf(objectRef));
 	}
 }

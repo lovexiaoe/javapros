@@ -1,7 +1,7 @@
 package com.zhaoyu.basic.primitivetype.cast;
 
 /**
- * ÊıÖµÔÚÇ¿ÖÆ×ª»»³ÉintÊ±£¬»á½Ø¶ÏĞ¡ÊıºóÃæµÄ²¿·Ö£¬ĞèÒªµÃµ½ÉáÈëÖµ £¬ĞèÒªÊ¹ÓÃMath.round¡£
+ * æ•°å€¼åœ¨å¼ºåˆ¶è½¬æ¢æˆintæ—¶ï¼Œä¼šæˆªæ–­å°æ•°åé¢çš„éƒ¨åˆ†ï¼Œéœ€è¦å¾—åˆ°èˆå…¥å€¼ ï¼Œéœ€è¦ä½¿ç”¨Math.roundã€‚
  *
  * @author xiaoe
  *
@@ -10,8 +10,8 @@ public class NumCast {
 	public static void main(String[] args) {
 		double x = 9.8993;
 		int nx = (int) x;
-		System.out.println("9.8993×ª»»³Éint:" + nx);
+		System.out.println("9.8993è½¬æ¢æˆint:" + nx);
 		nx = (int) Math.round(x);
-		System.out.println("9.8993ËÄÉáÎåÈëºó:" + nx);
+		System.out.println("9.8993å››èˆäº”å…¥å:" + nx);
 	}
 }
