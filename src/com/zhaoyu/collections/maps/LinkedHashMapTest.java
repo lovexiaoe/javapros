@@ -5,12 +5,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * LinkedHashMapºÍLinkedHashSetÓÃÀ´¼ÇÂ¼²åÈëÔªËØÏîµÄË³Ğò¡£
- * Á´±íÉ¢ÁĞ±í½«ÓÃ·ÃÎÊË³Ğò£¬¶ø²»ÊÇ²åÈëË³Ğò£¬¶ÔÓ³Éä±íÌõÄ¿½øĞĞ µü´ú¡£ Ã¿´Îµ÷ÓÃget»òÕßput£¬
- * ÊÜµ½Ó°ÏìµÄÌõÄ¿½«´Óµ±Ç°µÄÎ»ÖÃÉ¾³ı£¬²¢·Åµ½Á´±íµÄÎ²²¿£¨¶ÔÓ¦µÄÍ°²»»á±ä»¯£¬Ö»ÊÇµÚ¸öÔªËØÔÚÍ°ÖĞµÄÎ»ÖÃ·¢Éú±ä»¯¡££©
- * ÊµÏÖÁË"×î½ü×îÉÙÊ¹ÓÃ"Ô­Ôò¡£
+ * LinkedHashMapå’ŒLinkedHashSetç”¨æ¥è®°å½•æ’å…¥å…ƒç´ é¡¹çš„é¡ºåºã€‚
+ * é“¾è¡¨æ•£åˆ—è¡¨å°†ç”¨è®¿é—®é¡ºåºï¼Œè€Œä¸æ˜¯æ’å…¥é¡ºåºï¼Œå¯¹æ˜ å°„è¡¨æ¡ç›®è¿›è¡Œ è¿­ä»£ã€‚ æ¯æ¬¡è°ƒç”¨getæˆ–è€…putï¼Œ
+ * å—åˆ°å½±å“çš„æ¡ç›®å°†ä»å½“å‰çš„ä½ç½®åˆ é™¤ï¼Œå¹¶æ”¾åˆ°é“¾è¡¨çš„å°¾éƒ¨ï¼ˆå¯¹åº”çš„æ¡¶ä¸ä¼šå˜åŒ–ï¼Œåªæ˜¯ç¬¬ä¸ªå…ƒç´ åœ¨æ¡¶ä¸­çš„ä½ç½®å‘ç”Ÿå˜åŒ–ã€‚ï¼‰
+ * å®ç°äº†"æœ€è¿‘æœ€å°‘ä½¿ç”¨"åŸåˆ™ã€‚
  *
- * ÉõÖÁ¿ÉÒÔ¹¹ÔìÒ»¸ö¸ßËÙ»º´æLinkedHashMap¡£
+ * ç”šè‡³å¯ä»¥æ„é€ ä¸€ä¸ªé«˜é€Ÿç¼“å­˜LinkedHashMapã€‚
  *
  * @author xiaoE
  *
@@ -18,16 +18,16 @@ import java.util.Map;
 public class LinkedHashMapTest {
 	public static void main(String[] args) {
 		Map staff = new LinkedHashMap();
-		staff.put("001", "´åÒ»");
-		staff.put("002", "´å¶ş");
-		staff.put("003", "´åÈı");
-		staff.put("004", "´åËÄ");
+		staff.put("001", "æ‘ä¸€");
+		staff.put("002", "æ‘äºŒ");
+		staff.put("003", "æ‘ä¸‰");
+		staff.put("004", "æ‘å››");
 		Iterator<String> it = staff.keySet().iterator();
 		while (it.hasNext()) {
 			System.out.println(it.next());
 		}
 
-		// ÏÂÃæ¹¹½¨Ò»¸ö¿ÉÒÔ´æÈë100¸öÔªËØµÄ¸ßËÙ»º´æ¡£
+		// ä¸‹é¢æ„å»ºä¸€ä¸ªå¯ä»¥å­˜å…¥100ä¸ªå…ƒç´ çš„é«˜é€Ÿç¼“å­˜ã€‚
 		Map cache = new LinkedHashMap(128, 0.75F, true) {
 			@Override
 			protected boolean removeEldestEntry(Map.Entry eldest) {

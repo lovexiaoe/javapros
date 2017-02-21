@@ -13,7 +13,7 @@ public class ListRemoveTest {
 
 		System.out.println(warePriceChanges.size());
 
-		// ListÔÚÉ¾³ıÒ»¸öÔªËØºó£¬size»á±ä»¯£¬iteratorÒ²»áÖØĞÂ±ä»¯£¬ËùÒÔ²»ÄÜ´ÓÍ·µ½Î²µÄ½øĞĞÉ¾³ı¡£
+		// Liståœ¨åˆ é™¤ä¸€ä¸ªå…ƒç´ åï¼Œsizeä¼šå˜åŒ–ï¼Œiteratorä¹Ÿä¼šé‡æ–°å˜åŒ–ï¼Œæ‰€ä»¥ä¸èƒ½ä»å¤´åˆ°å°¾çš„è¿›è¡Œåˆ é™¤ã€‚
 		/*
 		 * for (int j = 0; j < warePriceChanges.size(); j++) {
 		 * System.out.println(j + "=" + warePriceChanges.get(j));
@@ -23,7 +23,7 @@ public class ListRemoveTest {
 		 */
 
 		/*
-		 * ÏÂÃæÊÇÒ»ÖÖÉ¾³ı·½·¨£¬Ò»Ö±É¾³ıindexÎª0µÄÔªËØ¡£
+		 * ä¸‹é¢æ˜¯ä¸€ç§åˆ é™¤æ–¹æ³•ï¼Œä¸€ç›´åˆ é™¤indexä¸º0çš„å…ƒç´ ã€‚
 		 */
 
 		while (warePriceChanges.size() > 0) {

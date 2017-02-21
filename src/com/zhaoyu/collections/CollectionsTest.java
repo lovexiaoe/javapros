@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * CollectionsÀàÖĞÌá¹©ÁË´óÁ¿µÄÊÓÍ¼²Ù×÷£¬Èç£¬asList,nCopies£¬subList£¬subSetµÈ¡£
- * Í¨³££¬ÊÓÍ¼ÓĞÒ»¶¨µÄ¾ÖÏŞĞÔ£¬¼´¿ÉÄÜÖ»¿ÉÒÔ¶Á£¬ÎŞ·¨¸Ä±ä´óĞ¡ £¬Ö»Ö§³ÖÉ¾³ı¶ø²»Ö§³Ö²åÈë£¬
- * Èç¹û²Ù×÷²»µ±£¬ÊÜÏŞÖÆµÄÊÓÍ¼¾Í»áÅ×³öÒ»¸öUnsupportedOperationExceptionÒì³£¡£
+ * Collectionsç±»ä¸­æä¾›äº†å¤§é‡çš„è§†å›¾æ“ä½œï¼Œå¦‚ï¼ŒasList,nCopiesï¼ŒsubListï¼ŒsubSetç­‰ã€‚
+ * é€šå¸¸ï¼Œè§†å›¾æœ‰ä¸€å®šçš„å±€é™æ€§ï¼Œå³å¯èƒ½åªå¯ä»¥è¯»ï¼Œæ— æ³•æ”¹å˜å¤§å° ï¼Œåªæ”¯æŒåˆ é™¤è€Œä¸æ”¯æŒæ’å…¥ï¼Œ
+ * å¦‚æœæ“ä½œä¸å½“ï¼Œå—é™åˆ¶çš„è§†å›¾å°±ä¼šæŠ›å‡ºä¸€ä¸ªUnsupportedOperationExceptionå¼‚å¸¸ã€‚
  *
  * @author xiaoE
  *
@@ -20,22 +20,22 @@ public class CollectionsTest {
 	public static void main(String[] args) {
 
 		String[] str2 = new String[12];
-		// Arrays.asList²¢Ã»ÓĞ¸´ÖÆÒ»¸öÊı×é£¬¶øÊÇ·µ»ØÁËstr2µÄÒ»¸öÊÓÍ¼£¬ÈçÏÂ¶Ôli2µÄ¸Ä±ä»áÍ¬²½µ½str2¡£
+		// Arrays.asListå¹¶æ²¡æœ‰å¤åˆ¶ä¸€ä¸ªæ•°ç»„ï¼Œè€Œæ˜¯è¿”å›äº†str2çš„ä¸€ä¸ªè§†å›¾ï¼Œå¦‚ä¸‹å¯¹li2çš„æ”¹å˜ä¼šåŒæ­¥åˆ°str2ã€‚
 		List<String> li2 = Arrays.asList(str2);
 		li2.set(0, "element 0");
 		System.out.println(str2[0]);
 
-		// Ö±½ÓÊ¹ÓÃasList
+		// ç›´æ¥ä½¿ç”¨asList
 		List<String> li3 = Arrays.asList("obj1", "obj2", "obj3");
 
-		// Ê¹ÓÃCollections.nCopies,·µ»ØÒ»¸ö100¸ö×Ö·û´®¡°Default¡±µÄÁĞ±í¡£
+		// ä½¿ç”¨Collections.nCopies,è¿”å›ä¸€ä¸ª100ä¸ªå­—ç¬¦ä¸²â€œDefaultâ€çš„åˆ—è¡¨ã€‚
 		List<String> settings = Collections.nCopies(100, "Default");
 		System.out.println(settings.size());
 
 		/**
-		 * ×Ó·¶Î§ÊÓÍ¼
+		 * å­èŒƒå›´è§†å›¾
 		 */
-		// ·µ»ØÒ»¸ösettingsµÄ×ÓÊÓÍ¼£¬µÚÒ»¸öË÷Òı°üº¬ÔÚÄÚ£¬µÚ¶ş¸öË÷Òı²»°üº¬ÔÚÄÚ
+		// è¿”å›ä¸€ä¸ªsettingsçš„å­è§†å›¾ï¼Œç¬¬ä¸€ä¸ªç´¢å¼•åŒ…å«åœ¨å†…ï¼Œç¬¬äºŒä¸ªç´¢å¼•ä¸åŒ…å«åœ¨å†…
 		List<String> staff = new ArrayList<String>();
 		staff.add("staff1");
 		staff.add("staff2");
@@ -43,58 +43,58 @@ public class CollectionsTest {
 		staff.add("staff4");
 		staff.add("staff5");
 		List group2 = staff.subList(1, 3);
-		// clear»áÉ¾³ıgroup2ÔªËØ£¬²¢É¾³ıstaffÖĞ¶ÔÓ¦µÄÔªËØ¡£staffµÄÔªËØ»á±äÉÙ¡£
-		// ²»ÄÜ»áÊÓÍ¼ËùµÃµÄÁĞ±í½øĞĞ×Ó·¶Î§²Ù×÷£¬Èçsettings£¬li3µÄ×ÓÁĞ±í¾Í²»ÄÜÇå¿Õ¡£
+		// clearä¼šåˆ é™¤group2å…ƒç´ ï¼Œå¹¶åˆ é™¤staffä¸­å¯¹åº”çš„å…ƒç´ ã€‚staffçš„å…ƒç´ ä¼šå˜å°‘ã€‚
+		// ä¸èƒ½ä¼šè§†å›¾æ‰€å¾—çš„åˆ—è¡¨è¿›è¡Œå­èŒƒå›´æ“ä½œï¼Œå¦‚settingsï¼Œli3çš„å­åˆ—è¡¨å°±ä¸èƒ½æ¸…ç©ºã€‚
 		group2.clear();
-		System.out.println("Êı×é³¤¶È" + staff.size() + " || µÚÈı¸öÔªËØ" + staff.get(2));
+		System.out.println("æ•°ç»„é•¿åº¦" + staff.size() + " || ç¬¬ä¸‰ä¸ªå…ƒç´ " + staff.get(2));
 
 		/**
-		 * ¼¯ºÏºÍÊı×éµÄ×ª»»
+		 * é›†åˆå’Œæ•°ç»„çš„è½¬æ¢
 		 */
-		// ½«Ò»¸öÊı×é×ª»»Îª¼¯ºÏ
+		// å°†ä¸€ä¸ªæ•°ç»„è½¬æ¢ä¸ºé›†åˆ
 		String[] values = new String[4];
 		values[3] = "4444";
 		HashSet<String> set1 = new HashSet<String>(Arrays.asList(values));
 
-		// ½«¼¯ºÏ×ª»»ÎªÊı×é
+		// å°†é›†åˆè½¬æ¢ä¸ºæ•°ç»„
 		Object[] values1 = set1.toArray();
-		// ÓÉÓÚ´Ó¼¯ºÏ×ª»»µÄ¶ÔÏó¶¼ÊÇObject£¬ÎŞ·¨¸Ä±äÆäÀàĞÍ£¬ËùÒÔ²»ÄÜ½øĞĞÇ¿ÖÆ×ª»»£¬ÔÚÔËĞĞÊ±»á±¨´í¡£
-		// String[] values2 = (String[]) set1.toArray(); // run error¡£
+		// ç”±äºä»é›†åˆè½¬æ¢çš„å¯¹è±¡éƒ½æ˜¯Objectï¼Œæ— æ³•æ”¹å˜å…¶ç±»å‹ï¼Œæ‰€ä»¥ä¸èƒ½è¿›è¡Œå¼ºåˆ¶è½¬æ¢ï¼Œåœ¨è¿è¡Œæ—¶ä¼šæŠ¥é”™ã€‚
+		// String[] values2 = (String[]) set1.toArray(); // run errorã€‚
 
-		// ĞèÒªÊ¹ÓÃÁíÒ»ÖÖtoArray·½·¨£¬²¢½«ÆäÉè¼ÆÎªËùÏ£ÍûµÄÔªËØÀàĞÍÇÒ³¤¶ÈÎª0µÄÊı×é¡£
-		// ²»¹Ü½«³¤¶ÈÖ¸¶¨Îª¶àÉÙ£¬ÔÚÕâÖÖÇé¿öÏÂ£¬²¢Ã»ÓĞ´´½¨Ò»¸öĞÂµÄÊı×é ¡£
+		// éœ€è¦ä½¿ç”¨å¦ä¸€ç§toArrayæ–¹æ³•ï¼Œå¹¶å°†å…¶è®¾è®¡ä¸ºæ‰€å¸Œæœ›çš„å…ƒç´ ç±»å‹ä¸”é•¿åº¦ä¸º0çš„æ•°ç»„ã€‚
+		// ä¸ç®¡å°†é•¿åº¦æŒ‡å®šä¸ºå¤šå°‘ï¼Œåœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œå¹¶æ²¡æœ‰åˆ›å»ºä¸€ä¸ªæ–°çš„æ•°ç»„ ã€‚
 		String[] values3 = set1.toArray(new String[0]);
-		System.out.println("×ª»»ºóµÄ³¤¶È" + values3.length + ", µÚ¶ş¸öÔªËØÎª£º" + values3[1]);
+		System.out.println("è½¬æ¢åçš„é•¿åº¦" + values3.length + ", ç¬¬äºŒä¸ªå…ƒç´ ä¸ºï¼š" + values3[1]);
 
-		// Ò²¿ÉÒÔ¹¹ÔìÒ»¸öÖ¸¶¨´óĞ¡µÄÊı×é¡£
+		// ä¹Ÿå¯ä»¥æ„é€ ä¸€ä¸ªæŒ‡å®šå¤§å°çš„æ•°ç»„ã€‚
 		String[] values4 = set1.toArray(new String[set1.size()]);
-		System.out.println("×ª»»ºóµÄ³¤¶È" + values4.length + ", µÚ¶ş¸öÔªËØÎª£º" + values4[1]);
+		System.out.println("è½¬æ¢åçš„é•¿åº¦" + values4.length + ", ç¬¬äºŒä¸ªå…ƒç´ ä¸ºï¼š" + values4[1]);
 
 		/**
-		 * ÅÅĞò,¿ÉÒÔÊ¹ÓÃ×Ô¶¨ÒåµÄComparator×÷Îª²ÎÊı¡£
+		 * æ’åº,å¯ä»¥ä½¿ç”¨è‡ªå®šä¹‰çš„Comparatorä½œä¸ºå‚æ•°ã€‚
 		 */
 		Collections.sort(staff);
-		// ·´ÏòÅÅĞò
+		// åå‘æ’åº
 		Collections.sort(staff, Collections.reverseOrder());
 
 		/**
-		 * ºÍÅÅĞòµÄ¹¦ÄÜÏà·´µÄ»ìÅÅÂÒĞòº¯Êıshuffle
+		 * å’Œæ’åºçš„åŠŸèƒ½ç›¸åçš„æ··æ’ä¹±åºå‡½æ•°shuffle
 		 */
 		Collections.shuffle(staff);
 
 		/**
-		 * ´´½¨Í¬²½ÊÓÍ¼
+		 * åˆ›å»ºåŒæ­¥è§†å›¾
 		 */
 		Map<String, Object> map = Collections.synchronizedMap(new HashMap<String, Object>());
 
 		/**
-		 * ¼¯ºÏµÄ¶ş·Ö·¨²éÕÒ£¬¶ÔÓÚÊµÏÖComparator½Ó¿ÚµÄ¶ÔÏó£¬¿ÉÒÔÊ¹ÓÃ¶ş·Ö·¨²éÕÒ¶ÔÏó¡£Èç¹ûÃ»ÓĞÊµÏÖComparator¶ÔÏó£¬¿ÉÒÔ×Ô¶¨Òå
-		 * Ò»¸öComparator¶ÔÏó ¡£
+		 * é›†åˆçš„äºŒåˆ†æ³•æŸ¥æ‰¾ï¼Œå¯¹äºå®ç°Comparatoræ¥å£çš„å¯¹è±¡ï¼Œå¯ä»¥ä½¿ç”¨äºŒåˆ†æ³•æŸ¥æ‰¾å¯¹è±¡ã€‚å¦‚æœæ²¡æœ‰å®ç°Comparatorå¯¹è±¡ï¼Œå¯ä»¥è‡ªå®šä¹‰
+		 * ä¸€ä¸ªComparatorå¯¹è±¡ ã€‚
 		 *
-		 * ¶ş·Ö·¨²éÕÒ¶ÔÁĞ±í½øĞĞÅÅĞòºó²éÕÒ¡£Ê±¼ä¸´ÔÓ¶ÈÎªO(log2 n)¡£
+		 * äºŒåˆ†æ³•æŸ¥æ‰¾å¯¹åˆ—è¡¨è¿›è¡Œæ’åºåæŸ¥æ‰¾ã€‚æ—¶é—´å¤æ‚åº¦ä¸ºO(log2 n)ã€‚
 		 *
-		 * ¶ş·Ö²éÕÒÖ»ÓĞ¶ÔËæ»ú·ÃÎÊµÄÊı¾İ½á¹¹ÓĞÒâË¼£¬Èç¹ûÊÇÁ´±í½á¹¹µÄ£¬Òª±éÀú±íµÄÒ»°ë²éÕÒÖĞ¼äÎ»ÖÃ¡£ÄÇÃ´¶ş·Ö·¨»áÊ§È¥ÓÅÊÆ¡£
-		 * ¶ÔÓÚÒ»¸öÅÅĞòºÃµÄÁĞ±í£¬Èç¹ûÃ»ÓĞ²éÕÒµ½Ä³¸öÔªËØ¡£·µ»Øi,ÄÇÃ´¿ÉÒÔ½«Õâ¸öÔªËØ²åÈëµ½-i-1µÄÎ»ÖÃ£¬±£³ÖÁĞ±íµÄÅÅĞòÕıÈ·¡£
+		 * äºŒåˆ†æŸ¥æ‰¾åªæœ‰å¯¹éšæœºè®¿é—®çš„æ•°æ®ç»“æ„æœ‰æ„æ€ï¼Œå¦‚æœæ˜¯é“¾è¡¨ç»“æ„çš„ï¼Œè¦éå†è¡¨çš„ä¸€åŠæŸ¥æ‰¾ä¸­é—´ä½ç½®ã€‚é‚£ä¹ˆäºŒåˆ†æ³•ä¼šå¤±å»ä¼˜åŠ¿ã€‚
+		 * å¯¹äºä¸€ä¸ªæ’åºå¥½çš„åˆ—è¡¨ï¼Œå¦‚æœæ²¡æœ‰æŸ¥æ‰¾åˆ°æŸä¸ªå…ƒç´ ã€‚è¿”å›i,é‚£ä¹ˆå¯ä»¥å°†è¿™ä¸ªå…ƒç´ æ’å…¥åˆ°-i-1çš„ä½ç½®ï¼Œä¿æŒåˆ—è¡¨çš„æ’åºæ­£ç¡®ã€‚
 		 */
 		int i = Collections.binarySearch(staff, "staff4");
 		int i1 = Collections.binarySearch(staff, "staff4", Collections.reverseOrder());

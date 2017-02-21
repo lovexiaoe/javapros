@@ -1,34 +1,34 @@
 package com.zhaoyu.collections;
 
 /**
- * ÔÚjavaÀà¿âÖĞ£¬¼¯ºÏÀàµÄ»ù±¾½Ó¿Ú¶¼ÊÇCollection¡£
- * CollectionÓĞÁ½¸ö»ù±¾·½·¨
+ * åœ¨javaç±»åº“ä¸­ï¼Œé›†åˆç±»çš„åŸºæœ¬æ¥å£éƒ½æ˜¯Collectionã€‚
+ * Collectionæœ‰ä¸¤ä¸ªåŸºæœ¬æ–¹æ³•
  * public interface Collection<E>
  * {
  * boolean add(E element)
  * Iterator<E> iterator();
  * }
  *
- * iterator·½·¨·µ»ØÒ»¸öÊµÏÖÁËIterator½Ó¿ÚµÄ¶ÔÏó£¬IteratorÓĞÒÔÏÂÈı¸ö·½·¨£º
+ * iteratoræ–¹æ³•è¿”å›ä¸€ä¸ªå®ç°äº†Iteratoræ¥å£çš„å¯¹è±¡ï¼ŒIteratoræœ‰ä»¥ä¸‹ä¸‰ä¸ªæ–¹æ³•ï¼š
  * public interface Iterator{
  * E next();
  * boolean hasNext();
  * void remove();
  * }
  *
- * Iterable½Ó¿Ú·µ»ØÒ»¸öIterator¶ÔÏó£¬ËüÖ»ÓĞÒ»¸ö·½·¨¡£
+ * Iterableæ¥å£è¿”å›ä¸€ä¸ªIteratorå¯¹è±¡ï¼Œå®ƒåªæœ‰ä¸€ä¸ªæ–¹æ³•ã€‚
  * public interface Iterable<E>{
  * Iterator<E> iterator();
  * }
- * foreachÑ­»·¿ÉÒÔ²Ù×÷ÈÎºÎÊµÏÖIterable½Ó¿ÚµÄ¶ÔÏó¡£
+ * foreachå¾ªç¯å¯ä»¥æ“ä½œä»»ä½•å®ç°Iterableæ¥å£çš„å¯¹è±¡ã€‚
  *
  * @author xiaoE
  *
  */
 
 /**
- * Collection½Ó¿ÚµÄ·½·¨ÖÚ¶à£¬Èç¹ûÏë¹¹ÔìÒ»¸öÊµÏÖÕâ¸ö½Ó¿ÚµÄ¹¤¾ßÀà£¬ÄÇÃ´½«ÊÇÒ»¼ş·³ÈËµÄÊÂÇé £¬
- * javaÀà¿âÌá¹©ÁËÒ»¸öÀàAbstractCollection,Ëü½«»ù±¾µÄsizeºÍiterator·½·¨³éÏó»¯ÁË£¬µ«ÊÇÌá¹©ÁËÆäËüÀıĞĞ·½·¨¡£
+ * Collectionæ¥å£çš„æ–¹æ³•ä¼—å¤šï¼Œå¦‚æœæƒ³æ„é€ ä¸€ä¸ªå®ç°è¿™ä¸ªæ¥å£çš„å·¥å…·ç±»ï¼Œé‚£ä¹ˆå°†æ˜¯ä¸€ä»¶çƒ¦äººçš„äº‹æƒ… ï¼Œ
+ * javaç±»åº“æä¾›äº†ä¸€ä¸ªç±»AbstractCollection,å®ƒå°†åŸºæœ¬çš„sizeå’Œiteratoræ–¹æ³•æŠ½è±¡åŒ–äº†ï¼Œä½†æ˜¯æä¾›äº†å…¶å®ƒä¾‹è¡Œæ–¹æ³•ã€‚
  *
  */
 public class CollectionTest {

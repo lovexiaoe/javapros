@@ -1,6 +1,6 @@
 package com.zhaoyu.collections.lists;
 
-//¿É±ä³¤Êı×é²ÎÊı¡£
+//å¯å˜é•¿æ•°ç»„å‚æ•°ã€‚
 public class VariableLenArgsList {
 
 	public static void main(String[] args) {
@@ -13,11 +13,11 @@ public class VariableLenArgsList {
 
 	public static void muti2(double... numbers) {
 		System.out.println(numbers[1]);
-		// ÏÂÃæ³ÌĞò¸Ä±äÊı×éÄÚÈİ¡£
+		// ä¸‹é¢ç¨‹åºæ”¹å˜æ•°ç»„å†…å®¹ã€‚
 		for (int i = 0; i < numbers.length; i++) {
 			numbers[i] = numbers[i] * 2;
 		}
-		// foreach²¢²»»á¸Ä±äÊı×éÀïÃæµÄÔªËØ¡£ÏÂÃæÊÇ³ÌĞòÖ»ÊÇ¶Ôd½øĞĞ²Ù×÷£¬²¢²»»á¸Ä±änumbers±¾Éí¡£
+		// foreachå¹¶ä¸ä¼šæ”¹å˜æ•°ç»„é‡Œé¢çš„å…ƒç´ ã€‚ä¸‹é¢æ˜¯ç¨‹åºåªæ˜¯å¯¹dè¿›è¡Œæ“ä½œï¼Œå¹¶ä¸ä¼šæ”¹å˜numbersæœ¬èº«ã€‚
 		// for (double d : numbers) {
 		// d = d * 2;
 		// }

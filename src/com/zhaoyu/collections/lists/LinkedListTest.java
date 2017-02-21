@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * ÔÚjavaÖĞËùÓĞµÄÁ´±í¶¼ÊÇË«ÏòÁ´½ÓµÄ¡£
+ * åœ¨javaä¸­æ‰€æœ‰çš„é“¾è¡¨éƒ½æ˜¯åŒå‘é“¾æ¥çš„ã€‚
  *
- * ½Ó¿ÚIteratorÖĞÃ»ÓĞadd·½·¨¡£ËüµÄ×Ó½Ó¿ÚListIterator°üº¬ÁËadd·½·¨¡£
- * ÁíÍâListIterator»¹ÓĞÁ½¸ö·½·¨£¬¿ÉÒÔÓÃÀ´·´Ïò±éÀúÁ´±í¡£
+ * æ¥å£Iteratorä¸­æ²¡æœ‰addæ–¹æ³•ã€‚å®ƒçš„å­æ¥å£ListIteratoråŒ…å«äº†addæ–¹æ³•ã€‚
+ * å¦å¤–ListIteratorè¿˜æœ‰ä¸¤ä¸ªæ–¹æ³•ï¼Œå¯ä»¥ç”¨æ¥åå‘éå†é“¾è¡¨ã€‚
  *
  * interface ListIterator<E> extends Iterator<E>
  * {
- * void add(E element); //add·½·¨ÔÚµü´úÆ÷Î»ÖÃÖ®Ç°Ìí¼Ó Ò»¸öĞÂ¶ÔÏó ¡£
+ * void add(E element); //addæ–¹æ³•åœ¨è¿­ä»£å™¨ä½ç½®ä¹‹å‰æ·»åŠ  ä¸€ä¸ªæ–°å¯¹è±¡ ã€‚
  * ...
  * E previous()
  * boolean hasPrevious()
@@ -34,8 +34,8 @@ public class LinkedListTest {
 	}
 
 	/**
-	 * iteratorÄÜ¼ì²âµ½ÔªËØµÄĞŞ¸Ä£¬Èç¹ûiterator·¢ÏÖËüµÄ¼¯ºÏ±»ÁíÒ»¸öiterator»òÕß¼¯ºÏ×ÔÉíĞŞ¸Ä£¬¾Í»áÅ×³ö
-	 * ModificationExceptionÒì³£¡£
+	 * iteratorèƒ½æ£€æµ‹åˆ°å…ƒç´ çš„ä¿®æ”¹ï¼Œå¦‚æœiteratorå‘ç°å®ƒçš„é›†åˆè¢«å¦ä¸€ä¸ªiteratoræˆ–è€…é›†åˆè‡ªèº«ä¿®æ”¹ï¼Œå°±ä¼šæŠ›å‡º
+	 * ModificationExceptionå¼‚å¸¸ã€‚
 	 *
 	 */
 	public static void TestModificationException() {
@@ -44,7 +44,7 @@ public class LinkedListTest {
 		li.add("2222");
 		li.add("3333");
 		li.add("4444");
-		// contains·½·¨¿ÉÒÔ¼ì²âºÍÄ³¸öÖµÏàµÈ(equals)µÄ¶ÔÏóÊÇ·ñ³öÏÖÔÚÁĞ±íÖĞ¡£
+		// containsæ–¹æ³•å¯ä»¥æ£€æµ‹å’ŒæŸä¸ªå€¼ç›¸ç­‰(equals)çš„å¯¹è±¡æ˜¯å¦å‡ºç°åœ¨åˆ—è¡¨ä¸­ã€‚
 		System.out.println(li.contains("4444"));
 		li.add("4444");
 		System.out.println(li);

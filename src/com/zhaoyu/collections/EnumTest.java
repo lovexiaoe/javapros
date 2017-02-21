@@ -4,23 +4,23 @@ public class EnumTest {
 	public static void main(String[] args) {
 
 		String str1 = "LARGE";
-		// valueOfÊÇtoStringµÄÄæ·½·¨¡£
+		// valueOfæ˜¯toStringçš„é€†æ–¹æ³•ã€‚
 		Size size = Enum.valueOf(Size.class, str1);
 		System.out.println("size=" + size);
 		System.out.println("abbreviation=" + size.getAbbreviation());
 
-		// µÚ¸öÃ¶¾Ù¶¼ÓĞÒ»¸ö¾²Ì¬·½·¨values£¬·µ»ØÒ»¸ö°üº¬È«²¿Ã¶¾ÙµÄÊı×é¡£
+		// ç¬¬ä¸ªæšä¸¾éƒ½æœ‰ä¸€ä¸ªé™æ€æ–¹æ³•valuesï¼Œè¿”å›ä¸€ä¸ªåŒ…å«å…¨éƒ¨æšä¸¾çš„æ•°ç»„ã€‚
 		Size[] values = Size.values();
 		System.out.println(values[1]);
 
-		// ordinal·½·¨·µ»Ø³£Á¿ÔÚenumÉùÃ÷ÖĞµÄÎ»ÖÃ£¬´Ó0¿ªÊ¼¼ÆÊı¡£
+		// ordinalæ–¹æ³•è¿”å›å¸¸é‡åœ¨enumå£°æ˜ä¸­çš„ä½ç½®ï¼Œä»0å¼€å§‹è®¡æ•°ã€‚
 		System.out.println(Size.SMALL.ordinal());
 	}
 }
 
 enum Size {
 	SMALL("S"), MEDIUM("M"), LARGE("L");
-	// ¼Ó;ºó¿ÉÒÔ¶¨Òå×Ô¼ºµÄÃ¶¾Ù£¬¹¹Ôìº¯ÊıĞèÒªÉèÖÃÎªË½ÓĞ¡£ÕâÀïS,M,L¾ÍÊÇÎÒÃÇ×Ô¶¨ÒåµÄÊôĞÔabbreviation.
+	// åŠ ;åå¯ä»¥å®šä¹‰è‡ªå·±çš„æšä¸¾ï¼Œæ„é€ å‡½æ•°éœ€è¦è®¾ç½®ä¸ºç§æœ‰ã€‚è¿™é‡ŒS,M,Lå°±æ˜¯æˆ‘ä»¬è‡ªå®šä¹‰çš„å±æ€§abbreviation.
 	private Size(String abbreviation) {
 		this.abbreviation = abbreviation;
 	}
@@ -29,6 +29,6 @@ enum Size {
 		return abbreviation;
 	}
 
-	// abbreviationËõĞ´£¬¼òĞ´¡£
+	// abbreviationç¼©å†™ï¼Œç®€å†™ã€‚
 	private String abbreviation;
 }

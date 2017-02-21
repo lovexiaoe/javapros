@@ -5,11 +5,11 @@ import java.util.GregorianCalendar;
 import java.util.PriorityQueue;
 
 /**
- * priorityQueueÖĞµÄÔªËØ¿ÉÒÔ°´ÈÎÒâµÄË³Ğò²åÈë£¬È´×ÜÊÇ°´ÕÕÅÅĞòµÄË³Ğò½øĞĞ¼ìË÷¡£
- * ¾ÍÊÇËµ£¬ÎŞÂÛºÎÊ±µ÷ÓÃremove·½·¨£¬×Ü»á»ñµÃµ±Ç°¶ÓÁĞÖĞ×îĞ¡µÄÔªËØ¡£
- * priorityQueueÊ¹ÓÃµÄÊı¾İ½á¹¹Îª¶Ñ¡£ÊÇÒ»¸ö¿É×ÔÎÒµ÷ÕûµÄ¶ş²æÊ÷¡£
+ * priorityQueueä¸­çš„å…ƒç´ å¯ä»¥æŒ‰ä»»æ„çš„é¡ºåºæ’å…¥ï¼Œå´æ€»æ˜¯æŒ‰ç…§æ’åºçš„é¡ºåºè¿›è¡Œæ£€ç´¢ã€‚
+ * å°±æ˜¯è¯´ï¼Œæ— è®ºä½•æ—¶è°ƒç”¨removeæ–¹æ³•ï¼Œæ€»ä¼šè·å¾—å½“å‰é˜Ÿåˆ—ä¸­æœ€å°çš„å…ƒç´ ã€‚
+ * priorityQueueä½¿ç”¨çš„æ•°æ®ç»“æ„ä¸ºå †ã€‚æ˜¯ä¸€ä¸ªå¯è‡ªæˆ‘è°ƒæ•´çš„äºŒå‰æ ‘ã€‚
  *
- * ×÷ÓÃPriorityQueueµäĞÍµÄÀı×Ó¾ÍÊÇÈÎÎñµ÷¶È¡£Ã¿Ò»¸öÈÎÎñÓĞÒ»¸öÓÅÏÈ¼¶¡£½«ÓÅÏÈ¼¶×î¸ßµÄÈÎÎñ´Ó¶ÓÁĞÖĞÉ¾³ı¡£
+ * ä½œç”¨PriorityQueueå…¸å‹çš„ä¾‹å­å°±æ˜¯ä»»åŠ¡è°ƒåº¦ã€‚æ¯ä¸€ä¸ªä»»åŠ¡æœ‰ä¸€ä¸ªä¼˜å…ˆçº§ã€‚å°†ä¼˜å…ˆçº§æœ€é«˜çš„ä»»åŠ¡ä»é˜Ÿåˆ—ä¸­åˆ é™¤ã€‚
  *
  * @author xiaoE
  *
@@ -22,14 +22,14 @@ public class PriorityQueueTest {
 		queue.add(new GregorianCalendar(1903, Calendar.DECEMBER, 3));
 		queue.add(new GregorianCalendar(1910, Calendar.JUNE, 22));
 
-		// µü´ú²é¿´Ê±£¬²»Ò»¶¨»á°´ÕÕ×îĞ¡Ë³Ğò½øĞĞ¡£
-		System.out.println("µü´ú²é¿´ÔªËØ£¡");
+		// è¿­ä»£æŸ¥çœ‹æ—¶ï¼Œä¸ä¸€å®šä¼šæŒ‰ç…§æœ€å°é¡ºåºè¿›è¡Œã€‚
+		System.out.println("è¿­ä»£æŸ¥çœ‹å…ƒç´ ï¼");
 		for (GregorianCalendar gregorianCalendar : queue) {
 			System.out.println(gregorianCalendar.get(Calendar.YEAR));
 		}
 
-		// ÔÚÉ¾³ıÔªËØÊ±£¬×ÜÊÇÉ¾³ı×îĞ¡µÄÔªËØ¡£
-		System.out.println("ÒÆ³ıÔªËØ£¡");
+		// åœ¨åˆ é™¤å…ƒç´ æ—¶ï¼Œæ€»æ˜¯åˆ é™¤æœ€å°çš„å…ƒç´ ã€‚
+		System.out.println("ç§»é™¤å…ƒç´ ï¼");
 		while (!queue.isEmpty()) {
 			System.out.println(queue.remove().get(Calendar.YEAR));
 		}

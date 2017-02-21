@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ¿ÉÄÜ»ñµÃmapµÄÊÓÍ¼£¬Ò»¹²ÓĞ3¸öÊÓÍ¼
+ * å¯èƒ½è·å¾—mapçš„è§†å›¾ï¼Œä¸€å…±æœ‰3ä¸ªè§†å›¾
  * Set<K> keySet()
  * Collection<K> values()
  * Set<Map.Entry<K,V>> entrySet()
@@ -16,18 +16,18 @@ public class HashMapAndTreeMap {
 	public static void main(String[] args) {
 
 		Map<String, Employee> staff = new HashMap<String, Employee>();
-		staff.put("001", new Employee("ÕÅÈı"));
-		staff.put("002", new Employee("ÕÅËÄ"));
-		staff.put("003", new Employee("ÕÅÎå"));
-		staff.put("004", new Employee("ÕÅÁù"));
+		staff.put("001", new Employee("å¼ ä¸‰"));
+		staff.put("002", new Employee("å¼ å››"));
+		staff.put("003", new Employee("å¼ äº”"));
+		staff.put("004", new Employee("å¼ å…­"));
 
 		System.out.println(staff);
 
-		// É¾³ıÔªËØ
+		// åˆ é™¤å…ƒç´ 
 		staff.remove("002");
-		// Ìí¼ÓÒÑ´æÔÚµÄÔªËØ¡£
-		staff.put("004", new Employee("ÕÅÆß"));
-		// ±éÀúkey-value¡£
+		// æ·»åŠ å·²å­˜åœ¨çš„å…ƒç´ ã€‚
+		staff.put("004", new Employee("å¼ ä¸ƒ"));
+		// éå†key-valueã€‚
 		for (Map.Entry<String, Employee> entry : staff.entrySet()) {
 			String key = entry.getKey();
 			Employee value = entry.getValue();
