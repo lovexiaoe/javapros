@@ -1,0 +1,3 @@
+dtd文件中元素要么包含文本，要么包含其它元素，
+对于即包含元素，又包含文本的元素，如下面是非法的：
+<!ELEMENT captionedImage (image,#PCDATA)>

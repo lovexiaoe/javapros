@@ -1,0 +1,8 @@
+缓冲区Buffer是由相同类型的数据构成的数组，Buffer类是一个抽象类，它有众多的具体子类，包括ByteBuffer、CharBuffer、DoubleBuffer、IntBuffer、LongBuffer和ShortBuffer。
+	在实践中，最常用的是ByteBuffer和CharBuffer。每个缓冲区都具有下列特征：
+	一个容量，它永远不会改变
+	一个读写位置，下一个值将在此进行读写。
+	一个界限，超过它进行读写是没有意义的。
+	一个可选的标记，用于重复一个读入或写出操作。
+	上面的值满足下列条件：0<=标记<=位置<=界限<=容量。
+

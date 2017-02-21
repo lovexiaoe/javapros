@@ -1,0 +1,1 @@
+重写toString方法时，可以使用GetClass().getName()获得类名，这样子类就可以方便地使用super.toString方法了。

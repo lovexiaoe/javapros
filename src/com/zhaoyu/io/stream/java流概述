@@ -1,0 +1,17 @@
+	java是流家族包含60多个。按处理方法划分，分为处理字节的字节流和处理Unicode字符的字符流。
+	java5中添加了四个和流相关的接口：Closeable,Flushable,Readable和Appendable,前两个接口非常简单。它们分别
+拥有下列方法：
+		void close() throws IOException
+		void flush()
+		
+	InputStream,OutputStream,Reader和Writer都实现了Closeable接口，而OutputStream和Writer还实现了Flushable
+接口。
+	Readable接口只有一个方法：
+		int read(CharBuffer cb)
+	CharBuffer类拥有按顺序和随机读写访问的访求，它表示一个内存中的缓冲区或者一个内存映像的文件
+	Appendable接口有两个添加单个字符的和字体序列的方法：
+		Appendable append(char c)
+		Appendable append(CharSequence s)
+		
+	在流类中，只有Writer实现了Appendable。
+	

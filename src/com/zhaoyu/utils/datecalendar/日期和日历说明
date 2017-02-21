@@ -1,0 +1,6 @@
+Date类中的时间是距离UTC(Coordinated Universal Time)时间1970年1月1日 00：00：00的毫秒数。
+由于世界中拥有很多不同的日历，如中国的农历，希伯来的阴历，所以date提供的日期在表示这些日历时并没有太大用处。
+
+java库分别提供了两个类，一个是用于表示时间点的Date类，另一个是用于表示大家熟悉的日历表示法的
+GregorianCalendar类。GregorianCalendar扩展了一个更加通用的Calendar类，这个类描述日历的一般属性。
+理论上可以通过扩展Calendar类实现中国的阴历或者火星日历。不过java只提供了Gregorian日历。

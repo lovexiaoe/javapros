@@ -1,0 +1,37 @@
+java最初的版本提供了Vector,Stack,HashTable,BitSet四种类型的集合类和Enumeration接口：
+
+java通过接口的方式将功能和实现分开 。如Queue接口：
+	interface Queue<E>{
+		void add(E element);
+		E remove();
+		int size();
+	}
+ArrayDeQue和LinkedList都是其实现类。
+
+在java中除了以map结尾的类实现了Map接口外，其它的类都实现了Collection接口。
+具体的集合类如下：
+	ArrayList				一中可以动态增长和缩减的索引序列
+	LinkedList				一种可以在任何位置进行高效地插入和删除操作的有序序列。
+	ArrayDeque				一种用循环数组实现的双端队列。
+	HashSet					一种没有重复元素的元序集合
+	TreeSet					一种有序集
+	EnumSet					一种含枚举类型值 的集合。
+	LinkedHashSet           一种可以记住元素插入次序的集合
+	PriorityQueue			一种允许高效删除最小元素的集合
+	HashMap					一种存储key/value关系的映射表。
+	TreeMap					一种key值有序排列的映射表
+	EnumMap					一种key/value属于枚举类型的映射表。
+	LinkedHashMap			一种可以记住键/值项添加次序的映射表
+	WeakHashMap				一种其值无用后，可以被垃圾回收器回收的映射表。
+	IdentityHashMap			一种用==，而不是用equals比较键值的映射表。
+	
+	
+属性映射表（Property map）是一个非常特殊的映射表结构。它有下面3个特性。
+	1，键与值都是字符串
+	2，属性映射可以保存到一个文件中，也可以从文件中加载。
+	3，使用一个默认的辅助表。
+	
+栈 Stack类。提供push（压栈），pop(出栈)，peek（返回栈顶元素）等操作。
+
+位集（BitSet）提供一组有序位操作。如100110，可以对其中某一位进行开关等操作。
+还有位与（AND），位或（OR），位异或（XOR）等操作。

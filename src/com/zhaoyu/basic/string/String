@@ -1,0 +1,8 @@
+String的其它方法还有
+	replace,
+	toUpperCase,
+	toLowerCase,
+	concat(拼接字符串。),
+	trim,toCharArray,
+	split
+等。

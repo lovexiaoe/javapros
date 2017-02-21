@@ -1,0 +1,14 @@
+重入锁（ReentrantLock） lock结合condition为java提供了细粒度的锁操作。可以使用一个lock和多个condition实现根据不同条件锁定的同步
+操作。灵活控制阻塞。
+锁是可重入的，允许线程重复地获得已持有的锁。锁保持一个“持有计数”来跟踪对lock方法的嵌套调用。线程每一次调用lock都要调用unlock
+来释放锁。由于这一特性，被一个锁保护的代码可以调用另一个使用相同锁的方法，类似于synchorinized方法之间的嵌套。
+
+Synchorinized自动提供了一个锁和相关的一个条件，Synchorinized锁定一个对象或者方法的内部锁，而内部锁和方法存在一些局限：
+   1，不能中断一个正在试图获得锁的线程。
+   2，试图获得锁不能设置超时，tryLock中可以设定锁定的时间。
+   3，每个锁仅有一个条件。
+   
+重入锁和Synchorinized的选择：
+	1，能避免使用同步就不要使用同步，建议使用java.util.concurrent包中提供的机制。
+	2，尽量使用synchorinized,减少代码量，减少出错几率。
+	3，特别需要lock/condition时，才使用。

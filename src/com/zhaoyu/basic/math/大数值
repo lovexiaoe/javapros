@@ -1,0 +1,12 @@
+java.math包中的BigInteger和BigDecimal可以处理包含任意长度数字序列的数值。
+BigInteger类实现了任意精度的整数运算，BigDecimal实现了任意任意精度的浮点数运算。
+
+作用ValueOf可以将普通的数值转换成大数值。
+
+BigInteger bi=BigInteger.ValueOf(100);
+BigInteger并没有提供我们熟悉的+-*/，而是提供了add,multiply,subtract,和divide方法。
+
+计算公式，
+num=num*(n-i+1)/i
+如果使用大数值，则对应语句为
+num=num.multiply(BigInteger.ValueOf(num-i+1)).divide(BigInteger.ValueOf(i);
