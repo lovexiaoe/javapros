@@ -1,12 +1,12 @@
-Runnable¿ÉÒÔÏëÏñ³ÉÊÇÒ»¸öÃ»ÓÐ²ÎÊýºÍ·µ»ØÖµµÄÒì²½·½·¨¡£
-CallableºÍRunnableÀàËÆ¡£µ«ÊÇÓÐ·µ»ØÖµ¡£Callable½Ó¿ÚÊÇÒ»¸ö²ÎÊý»¯µÄÀàÐÍ¡£Ö»ÓÐÒ»¸ö·½·¨call¡£
+Runnableå¯ä»¥æƒ³åƒæˆæ˜¯ä¸€ä¸ªæ²¡æœ‰å‚æ•°å’Œè¿”å›žå€¼çš„å¼‚æ­¥æ–¹æ³•ã€‚
+Callableå’ŒRunnableç±»ä¼¼ã€‚ä½†æ˜¯æœ‰è¿”å›žå€¼ã€‚CallableæŽ¥å£æ˜¯ä¸€ä¸ªå‚æ•°åŒ–çš„ç±»åž‹ã€‚åªæœ‰ä¸€ä¸ªæ–¹æ³•callã€‚
 	public interface Callable<V>{
 		V call() throws Exception;
 	}
-Èç,Callable<Integer>±íÊ¾Ò»¸öÕûÐÍ¶ÔÏóµÄÒì²½µ÷ÓÃ¡£
+å¦‚,Callable<Integer>è¡¨ç¤ºä¸€ä¸ªæ•´åž‹å¯¹è±¡çš„å¼‚æ­¥è°ƒç”¨ã€‚
 
-Future±£´æÒì²½¼ÆËãµÄ½á¹û¡£¿ÉÒÔÆô¶¯Ò»¸ö¼ÆËã£¬½«Future¶ÔÏó½»¸øÄ³¸öÏß³Ì£¬È»ºóÍüµô Ëü£¬Future¶ÔÏóµÄËùÓÐÕßÔÚ½á¹û¼ÆËãºÃÖ®ºó¾Í¿ÉÒÔ»ñµÃËü¡£
-Future½Ó¿Ú¾ßÓÐÏÂÁÐ·½·¨£º
+Futureä¿å­˜å¼‚æ­¥è®¡ç®—çš„ç»“æžœã€‚å¯ä»¥å¯åŠ¨ä¸€ä¸ªè®¡ç®—ï¼Œå°†Futureå¯¹è±¡äº¤ç»™æŸä¸ªçº¿ç¨‹ï¼Œç„¶åŽå¿˜æŽ‰ å®ƒï¼ŒFutureå¯¹è±¡çš„æ‰€æœ‰è€…åœ¨ç»“æžœè®¡ç®—å¥½ä¹‹åŽå°±å¯ä»¥èŽ·å¾—å®ƒã€‚
+FutureæŽ¥å£å…·æœ‰ä¸‹åˆ—æ–¹æ³•ï¼š
 	public interface Future<V>{
 		V get() throws...;
 		V get(long timeout,TimeUnit unit)throws...;
@@ -15,8 +15,8 @@ Future½Ó¿Ú¾ßÓÐÏÂÁÐ·½·¨£º
 		boolean isDone();
 	}
 	
-get·½·¨×èÈûµ÷ÓÃ£¬Ö±µ½¼ÆËã½á¹ûÍê³É ¡£µÚ¶þ¸öget·½·¨µ÷ÓÃ³¬Ê±»áÅ×³öÒ»¸öTimeoutExceptionÒì³£¡£Èç¹ûÔËÐÐµÄ¼ÆËãµÄÏß³Ì±»ÖÐ¶Ï£¬Á½¸ö·½·¨¶¼½«
-Å×³öInterruptedException¡£
+getæ–¹æ³•é˜»å¡žè°ƒç”¨ï¼Œç›´åˆ°è®¡ç®—ç»“æžœå®Œæˆ ã€‚ç¬¬äºŒä¸ªgetæ–¹æ³•è°ƒç”¨è¶…æ—¶ä¼šæŠ›å‡ºä¸€ä¸ªTimeoutExceptionå¼‚å¸¸ã€‚å¦‚æžœè¿è¡Œçš„è®¡ç®—çš„çº¿ç¨‹è¢«ä¸­æ–­ï¼Œä¸¤ä¸ªæ–¹æ³•éƒ½å°†
+æŠ›å‡ºInterruptedExceptionã€‚
 
 	
 

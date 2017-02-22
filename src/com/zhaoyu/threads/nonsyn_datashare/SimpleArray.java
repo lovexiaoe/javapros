@@ -3,7 +3,7 @@ package com.zhaoyu.threads.nonsyn_datashare;
 import java.util.Arrays;
 import java.util.Random;
 
-//ÕâÀï¶¨ÒåÒ»¸ö¼òµ¥µÄÊı×éÀà£¬Ã»ÓĞÊµÏÖÍ¬²½¡£
+//è¿™é‡Œå®šä¹‰ä¸€ä¸ªç®€å•çš„æ•°ç»„ç±»ï¼Œæ²¡æœ‰å®ç°åŒæ­¥ã€‚
 public class SimpleArray {
 	private final int[] array;
 	private int writeIndex=0;
@@ -13,7 +13,7 @@ public class SimpleArray {
 		array=new int[size];
 	}
 	
-	//ÔÚwriteIndexÎ»ÖÃ²åÈëÖµ£¬²¢½«writeIndex+1.
+	//åœ¨writeIndexä½ç½®æ’å…¥å€¼ï¼Œå¹¶å°†writeIndex+1.
 	public void add(int value){
 		int position=writeIndex;
 		try {
@@ -22,13 +22,13 @@ public class SimpleArray {
 			e.printStackTrace();
 		}
 		array[position]=value;
-		System.out.printf("%s ÔÚ %d Ğ´Èë %2d\n",Thread.currentThread().getName(),position,value);
+		System.out.printf("%s åœ¨ %d å†™å…¥ %2d\n",Thread.currentThread().getName(),position,value);
 		++writeIndex;
-		System.out.printf("ÏÂ¸öĞ´ÈëÎ»ÖÃ£º%d\n",writeIndex);
+		System.out.printf("ä¸‹ä¸ªå†™å…¥ä½ç½®ï¼š%d\n",writeIndex);
 	}
 	
 	@Override
 	public String toString(){
-		return "\nSimpleArrayµÄÄÚÈİÎª:\n"+Arrays.toString(array);
+		return "\nSimpleArrayçš„å†…å®¹ä¸º:\n"+Arrays.toString(array);
 	}
 }

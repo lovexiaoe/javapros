@@ -4,40 +4,40 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * clone()·½·¨ÊÇObjectµÄprotected·½·¨¡£
- * µ±Ò»¸ö¶ÔÏó½øĞĞcloneÊ±£¬½øĞĞµÄÊÇÇ³¿½±´£¬ÒıÓÃ¶ÔÏóµÄ±äÁ¿¶¼ÊÇ¿½±´µÄÒıÓÃµØÖ·¡£
- * Òª¶¨Òå¸üÉî²ã´ÎµÄcopy£¬¾ÍĞèÒªÊµÏÖCloneable½Ó¿Ú£¬²¢ÖØĞ´ clone·½·¨£¬Ê¹ÓÃpublicĞŞÊÎ¡£
+ * clone()æ–¹æ³•æ˜¯Objectçš„protectedæ–¹æ³•ã€‚
+ * å½“ä¸€ä¸ªå¯¹è±¡è¿›è¡Œcloneæ—¶ï¼Œè¿›è¡Œçš„æ˜¯æµ…æ‹·è´ï¼Œå¼•ç”¨å¯¹è±¡çš„å˜é‡éƒ½æ˜¯æ‹·è´çš„å¼•ç”¨åœ°å€ã€‚
+ * è¦å®šä¹‰æ›´æ·±å±‚æ¬¡çš„copyï¼Œå°±éœ€è¦å®ç°Cloneableæ¥å£ï¼Œå¹¶é‡å†™ cloneæ–¹æ³•ï¼Œä½¿ç”¨publicä¿®é¥°ã€‚
  *
- * cloneºÍImmutable½Ó¿Ú¹ØÏµÃÜÇĞ£¬java·ÖÎª¿É±ä¶ÔÏó ºÍ²»¿É±ä¶ÔÏó¡£
- * ¿É±äÀàÓĞ£ºDate£¬StringBuffer£¬×Ô¶¨ÒåÀàµÈ¡£
- * ²»¿É±äÀà£ºString,Boolean,Byte,Integer,CharacterµÈ¡£
+ * cloneå’ŒImmutableæ¥å£å…³ç³»å¯†åˆ‡ï¼Œjavaåˆ†ä¸ºå¯å˜å¯¹è±¡ å’Œä¸å¯å˜å¯¹è±¡ã€‚
+ * å¯å˜ç±»æœ‰ï¼šDateï¼ŒStringBufferï¼Œè‡ªå®šä¹‰ç±»ç­‰ã€‚
+ * ä¸å¯å˜ç±»ï¼šString,Boolean,Byte,Integer,Characterç­‰ã€‚
  *
- * Õë¶Ô²»¿É±äÀà£¬cloneÊ±¾Í²»»á²úÉúÎÊÌâ¡£
- * Õë¶Ô¿É±äÀà£¬ĞèÒªÖØĞ´clone½øĞĞÉî²ã¿½±´ ¡£
+ * é’ˆå¯¹ä¸å¯å˜ç±»ï¼Œcloneæ—¶å°±ä¸ä¼šäº§ç”Ÿé—®é¢˜ã€‚
+ * é’ˆå¯¹å¯å˜ç±»ï¼Œéœ€è¦é‡å†™cloneè¿›è¡Œæ·±å±‚æ‹·è´ ã€‚
  *
- * CloneableÊÇÒ»¸ömarker½Ó¿Ú£¬²¢²»¾ßÓĞÈÎºÎ·½·¨¡£cloneÔÚjavaµÄÊ¹ÓÃÖĞ²¢²»³£ÓÃ¡£
- * ÏÂÃæÊÇÒ»¸ö½øĞĞÉî²ãcloneµÄÀı×Ó¡£
+ * Cloneableæ˜¯ä¸€ä¸ªmarkeræ¥å£ï¼Œå¹¶ä¸å…·æœ‰ä»»ä½•æ–¹æ³•ã€‚cloneåœ¨javaçš„ä½¿ç”¨ä¸­å¹¶ä¸å¸¸ç”¨ã€‚
+ * ä¸‹é¢æ˜¯ä¸€ä¸ªè¿›è¡Œæ·±å±‚cloneçš„ä¾‹å­ã€‚
  *
  * @author xiaoe
  *
  */
 public class CloneTest {
 	public static void main(String[] args) {
-		Employee2 original = new Employee2("ÑÇµ±", 6000.21, 56, new Date());
+		Employee2 original = new Employee2("äºšå½“", 6000.21, 56, new Date());
 		Employee2 copy = null;
 		try {
 			copy = original.clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
-		// stringÀàÊÇ²»¿É±äÀà£¬ËùÒÔ¶ÔstringµÄ¸Ä±ä¶¼»áÖØĞÂ½¨Á¢ ¡£
+		// stringç±»æ˜¯ä¸å¯å˜ç±»ï¼Œæ‰€ä»¥å¯¹stringçš„æ”¹å˜éƒ½ä¼šé‡æ–°å»ºç«‹ ã€‚
 		System.out.println(copy.getName() == original.getName());
-		copy.setName("ÏÄÍŞ");
+		copy.setName("å¤å¨ƒ");
 		copy.setSalary(2323.32);
-		// IntegerÀàÒ²ÊÇ²»¿É±äÀà¶ÔÏó £¬ËùÒÔ¶ÔAgeµÄ¸Ä±äºÍStringÒ»Ñù¡£
+		// Integerç±»ä¹Ÿæ˜¯ä¸å¯å˜ç±»å¯¹è±¡ ï¼Œæ‰€ä»¥å¯¹Ageçš„æ”¹å˜å’ŒStringä¸€æ ·ã€‚
 		copy.addAge(22);
-		// ¸Ä±äcopy.dateµÄÖµ Ò²»á¸Ä±äoriginalµÄÖµ ¡£ÕâÊÇÔÚ²»¸Ä±ä copy.dateµÄÒıÓÃ µÄÇé¿öÏÂ£¨ÈçÖØĞÂ¸³ÖµÒ»¸öDate£©£¬
-		// ÕâËµÃ÷ DateÀàĞÍÊÇÇ³¿½±´ ¡£
+		// æ”¹å˜copy.dateçš„å€¼ ä¹Ÿä¼šæ”¹å˜originalçš„å€¼ ã€‚è¿™æ˜¯åœ¨ä¸æ”¹å˜ copy.dateçš„å¼•ç”¨ çš„æƒ…å†µä¸‹ï¼ˆå¦‚é‡æ–°èµ‹å€¼ä¸€ä¸ªDateï¼‰ï¼Œ
+		// è¿™è¯´æ˜ Dateç±»å‹æ˜¯æµ…æ‹·è´ ã€‚
 		copy.setDate(2014, 3, 12);
 		System.out.println("original: " + original);
 		System.out.println("copy: " + copy);
@@ -92,8 +92,8 @@ class Employee2 implements Cloneable {
 	private Date date;
 
 	/*
-	 * ÔÚÕâ¸öÀı×ÓÖĞobject.clone»ácopy·ÇÒıÓÃµÄ±äÁ¿£¬nameºÍsalary£¬µ«ÊÇage±äÁ¿copyµÄÊÇÒıÓÃµØÖ·£¬
-	 * ËùÒÔÔÚcloneÖĞÉèÖÃÒ»¸öĞÂµÄage¡£
+	 * åœ¨è¿™ä¸ªä¾‹å­ä¸­object.cloneä¼šcopyéå¼•ç”¨çš„å˜é‡ï¼Œnameå’Œsalaryï¼Œä½†æ˜¯ageå˜é‡copyçš„æ˜¯å¼•ç”¨åœ°å€ï¼Œ
+	 * æ‰€ä»¥åœ¨cloneä¸­è®¾ç½®ä¸€ä¸ªæ–°çš„ageã€‚
 	 * (non-Javadoc)
 	 * 
 	 * @see java.lang.Object#clone()

@@ -23,37 +23,37 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
- * Ò»¸öÍ¼Æ¬Ô¤ÀÀĞŞ¸ÄµÄ³ÌĞò£¬²¢´òÓ¡¶ÔÓ¦ÊÂ¼şµÄÈÕÖ¾¡£
+ * ä¸€ä¸ªå›¾ç‰‡é¢„è§ˆä¿®æ”¹çš„ç¨‹åºï¼Œå¹¶æ‰“å°å¯¹åº”äº‹ä»¶çš„æ—¥å¿—ã€‚
  *
  * @author xiaoE
  *
  */
 public class LoggingImageViewer {
 	public static void main(String[] args) {
-		// System.getProperty»ñÈ¡ÏµÍ³µÄÊôĞÔÖµ¡£
-		// ifÅĞ¶ÏÈ·ÈÏĞéÄâ»úÃ»ÓĞÉèÖÃ×Ô¶¨ÒåµÄÈÕÖ¾ÅäÖÃ¡£
+		// System.getPropertyè·å–ç³»ç»Ÿçš„å±æ€§å€¼ã€‚
+		// ifåˆ¤æ–­ç¡®è®¤è™šæ‹Ÿæœºæ²¡æœ‰è®¾ç½®è‡ªå®šä¹‰çš„æ—¥å¿—é…ç½®ã€‚
 		if (System.getProperty("java.util.logging.config.class") == null
 				&& System.getProperty("java.util.logging.config.file") == null) {
 			try {
 				Logger.getLogger("com.zhaoyu.corejava").setLevel(Level.ALL);
 				final int LOG_ROTATION_COUNT = 10;
-				// ÉèÖÃÎÄ¼ş´¦ÀíÆ÷ÎªÑ­»·ÎÄ¼ş´¦ÀíÆ÷¡£%h/LoggingImageViewer.log£¬%hÎªÓÃ»§Ö÷Ä¿Â¼£¬
+				// è®¾ç½®æ–‡ä»¶å¤„ç†å™¨ä¸ºå¾ªç¯æ–‡ä»¶å¤„ç†å™¨ã€‚%h/LoggingImageViewer.logï¼Œ%hä¸ºç”¨æˆ·ä¸»ç›®å½•ï¼Œ
 				Handler handler = new FileHandler("%h/LoggingImageViewer.log", 0, LOG_ROTATION_COUNT);
-				// ÎªÈÕÖ¾Ìí¼ÓÎÄ¼ş´¦ÀíÆ÷¡£
+				// ä¸ºæ—¥å¿—æ·»åŠ æ–‡ä»¶å¤„ç†å™¨ã€‚
 				Logger.getLogger("com.zhaoyu.corejava").addHandler(handler);
 			} catch (Exception e) {
 				Logger.getLogger("com.zhaoyu.corejava").log(Level.SEVERE, "Can't create log file handler", e);
 			}
 		}
 
-		// awtÊÇµ¥Ïß³ÌÄ£Ê½µÄ,°ÑÕâ¸öÊÂ¼şÏß³ÌÌí¼Óµ½awtÊÂ¼ş´¦ÀíÏß³ÌÖĞÈ¥¡£
+		// awtæ˜¯å•çº¿ç¨‹æ¨¡å¼çš„,æŠŠè¿™ä¸ªäº‹ä»¶çº¿ç¨‹æ·»åŠ åˆ°awtäº‹ä»¶å¤„ç†çº¿ç¨‹ä¸­å»ã€‚
 		EventQueue.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
 				Handler windowHandler = new WindowHandler();
 				windowHandler.setLevel(Level.ALL);
-				// ÎªÈÕÖ¾Ìí¼Ó´°¿Ú´¦ÀíÆ÷¡£
+				// ä¸ºæ—¥å¿—æ·»åŠ çª—å£å¤„ç†å™¨ã€‚
 				Logger.getLogger("com.zhaoyu.corejava").addHandler(windowHandler);
 
 				JFrame frame = new ImageViewerFrame();
@@ -68,7 +68,7 @@ public class LoggingImageViewer {
 }
 
 /**
- * ÏÔÊ¾Í¼Æ¬µÄ¿ò¼Ü¡£
+ * æ˜¾ç¤ºå›¾ç‰‡çš„æ¡†æ¶ã€‚
  *
  * @author xiaoE
  *
@@ -84,14 +84,14 @@ class ImageViewerFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			// ¶Ô·½·¨½øĞĞ¸ú×Ù£¬½øÈë·½·¨Ê±ÏÔÊ¾ĞÅÏ¢£¬²¢ÏÔÊ¾×Ö·û´®¡°ENTRY¡±
+			// å¯¹æ–¹æ³•è¿›è¡Œè·Ÿè¸ªï¼Œè¿›å…¥æ–¹æ³•æ—¶æ˜¾ç¤ºä¿¡æ¯ï¼Œå¹¶æ˜¾ç¤ºå­—ç¬¦ä¸²â€œENTRYâ€
 			logger.entering("ImageViewerFrame.FileOpenListener", "actionPerformed", event);
 
-			// ÉèÖÃÎÄ¼şÑ¡ÔñÆ÷
+			// è®¾ç½®æ–‡ä»¶é€‰æ‹©å™¨
 			JFileChooser chooser = new JFileChooser();
 			chooser.setCurrentDirectory(new File("."));
 
-			// ½ÓÊÕËùÓĞÒÔ.gif½áÊøµÄÎÄ¼ş¡£
+			// æ¥æ”¶æ‰€æœ‰ä»¥.gifç»“æŸçš„æ–‡ä»¶ã€‚
 			chooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
 				@Override
 				public boolean accept(File f) {
@@ -105,20 +105,20 @@ class ImageViewerFrame extends JFrame {
 
 			});
 
-			// ÏÔÊ¾ÎÄ¼şÑ¡ÔñÆ÷Ñ¡¿ò¡£
+			// æ˜¾ç¤ºæ–‡ä»¶é€‰æ‹©å™¨é€‰æ¡†ã€‚
 			int r = chooser.showOpenDialog(ImageViewerFrame.this);
 
-			// Èç¹ûÍ¼Æ¬ÎÄ¼ş±»½ÓÊÕ£¬ÉèÖÃËüÎªlabelµÄÍ¼±ê¡£
+			// å¦‚æœå›¾ç‰‡æ–‡ä»¶è¢«æ¥æ”¶ï¼Œè®¾ç½®å®ƒä¸ºlabelçš„å›¾æ ‡ã€‚
 			if (r == JFileChooser.APPROVE_OPTION) {
 				String name = chooser.getSelectedFile().getPath();
 				logger.log(Level.FINE, "Reading file {0}", name);
-				// logpµ±ĞéÄâ»ú¶ÔÖ´ĞĞ¹ı³ÌÁËÓÅ»¯£¬¾Í²»ÄÜµÃ×¼È·µÄĞÅÏ¢ÁË£¬´ËÊ± £¬¿ÉÒÔµ÷ÓÃlogp·½·¨¡£
+				// logpå½“è™šæ‹Ÿæœºå¯¹æ‰§è¡Œè¿‡ç¨‹äº†ä¼˜åŒ–ï¼Œå°±ä¸èƒ½å¾—å‡†ç¡®çš„ä¿¡æ¯äº†ï¼Œæ­¤æ—¶ ï¼Œå¯ä»¥è°ƒç”¨logpæ–¹æ³•ã€‚
 				logger.logp(Level.FINE, "FileOpenListener", "actionPerformed", "Reading file {0}", name);
 				label.setIcon(new ImageIcon(name));
 			} else {
 				logger.fine("File open dialog canceled.");
 			}
-			// ¶Ô·½·¨½øĞĞ¸ú×Ù£¬ÍË³ö·½·¨Ê±ÏÔÊ¾ĞÅÏ¢£¬²¢ÏÔÊ¾×Ö·û´®¡°RETURN¡±
+			// å¯¹æ–¹æ³•è¿›è¡Œè·Ÿè¸ªï¼Œé€€å‡ºæ–¹æ³•æ—¶æ˜¾ç¤ºä¿¡æ¯ï¼Œå¹¶æ˜¾ç¤ºå­—ç¬¦ä¸²â€œRETURNâ€
 			logger.exiting("ImageViewerFrame.FileOpenListener", "actionPerformed");
 		}
 	}
@@ -150,7 +150,7 @@ class ImageViewerFrame extends JFrame {
 			}
 		});
 
-		// Ê¹ÓÃÒ»¸ölabelÈ¥ÏÔÊ¾Í¼Æ¬
+		// ä½¿ç”¨ä¸€ä¸ªlabelå»æ˜¾ç¤ºå›¾ç‰‡
 		label = new JLabel();
 		add(label);
 		logger.exiting("ImageViewerFrame", "<init>");
@@ -159,7 +159,7 @@ class ImageViewerFrame extends JFrame {
 }
 
 /**
- * ×Ô¶¨ÒåÎÄ±¾ÇøÁ÷´¦ÀíÆ÷¡£ÔÚÒ»¸öwindowÖĞÏÔÊ¾ÈÕÖ¾¼ÇÂ¼
+ * è‡ªå®šä¹‰æ–‡æœ¬åŒºæµå¤„ç†å™¨ã€‚åœ¨ä¸€ä¸ªwindowä¸­æ˜¾ç¤ºæ—¥å¿—è®°å½•
  *
  * @author xiaoE
  *

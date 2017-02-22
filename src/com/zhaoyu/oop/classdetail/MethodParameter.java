@@ -1,30 +1,30 @@
 package com.zhaoyu.oop.classdetail;
 
 /**
- * ÏÂÀıÀı×ÓÓÃÓÚËµÃ÷£¬java·½·¨µ÷ÓÃÖĞÊ¹ÓÃµÄ¶¼Öµµ÷ÓÃ £¬²»»á¸Ä±äÈÎºÎ²ÎÊı±äÁ¿µÄÄÚÈİ ¡£
+ * ä¸‹ä¾‹ä¾‹å­ç”¨äºè¯´æ˜ï¼Œjavaæ–¹æ³•è°ƒç”¨ä¸­ä½¿ç”¨çš„éƒ½å€¼è°ƒç”¨ ï¼Œä¸ä¼šæ”¹å˜ä»»ä½•å‚æ•°å˜é‡çš„å†…å®¹ ã€‚
  *
  * @author xiaoe
  *
  */
 public class MethodParameter {
 	public static void main(String[] args) {
-		// Öµµ÷ÓÃÊÇ´«µİµÄdouble1µÄ¿½±´¡£ËùÒÔÃ»ÓĞ¸Ä±ädouble1
+		// å€¼è°ƒç”¨æ˜¯ä¼ é€’çš„double1çš„æ‹·è´ã€‚æ‰€ä»¥æ²¡æœ‰æ”¹å˜double1
 		double double1 = 2.45;
 		tripleValue(double1);
-		System.out.println("double1 3±¶ºó£º" + double1);
+		System.out.println("double1 3å€åï¼š" + double1);
 
-		// ·½·¨¿ÉÒÔ¸Ä±ä¶ÔÏó²ÎÊıµÄ×´Ì¬ ¡£
+		// æ–¹æ³•å¯ä»¥æ”¹å˜å¯¹è±¡å‚æ•°çš„çŠ¶æ€ ã€‚
 		Employee xiaoming = new Employee("xiaoming", 100.2);
 		xiaoming.setSalary(200.4);
-		System.out.println("xiaomingµÄĞ½Ë®Ôö¼Óµ½" + xiaoming.getSalary());
+		System.out.println("xiaomingçš„è–ªæ°´å¢åŠ åˆ°" + xiaoming.getSalary());
 
-		// ·½·¨²»ÄÜ½«ĞÂµÄ¶ÔÏó¸³¸ø¶ÔÏó²ÎÊı£¬ÒıÓÃ¶ÔÏó´«µİµÄÒ²ÊÇÒıÓÃ¶ÔÏóµÄµØÖ·¿½±´¡£
+		// æ–¹æ³•ä¸èƒ½å°†æ–°çš„å¯¹è±¡èµ‹ç»™å¯¹è±¡å‚æ•°ï¼Œå¼•ç”¨å¯¹è±¡ä¼ é€’çš„ä¹Ÿæ˜¯å¼•ç”¨å¯¹è±¡çš„åœ°å€æ‹·è´ã€‚
 		Employee laowang = new Employee("laowang", 150.55);
-		System.out.println("»¥»»Ç°£¬laowangµÄname£º" + laowang.getName());
-		System.out.println("»¥»»Ç°£¬xiaomingµÄname" + xiaoming.getName());
+		System.out.println("äº’æ¢å‰ï¼Œlaowangçš„nameï¼š" + laowang.getName());
+		System.out.println("äº’æ¢å‰ï¼Œxiaomingçš„name" + xiaoming.getName());
 		swap(xiaoming, laowang);
-		System.out.println("»¥»»ºó£¬laowangµÄname£º" + laowang.getName());
-		System.out.println("»¥»»ºó£¬xiaomingµÄname" + xiaoming.getName());
+		System.out.println("äº’æ¢åï¼Œlaowangçš„nameï¼š" + laowang.getName());
+		System.out.println("äº’æ¢åï¼Œxiaomingçš„name" + xiaoming.getName());
 
 	}
 
@@ -36,8 +36,8 @@ public class MethodParameter {
 		Employee temp = x;
 		x = y;
 		y = temp;
-		System.out.println("·½·¨½áÊøºóx=" + x.getName());
-		System.out.println("·½·¨½áÊøºóy=" + y.getName());
+		System.out.println("æ–¹æ³•ç»“æŸåx=" + x.getName());
+		System.out.println("æ–¹æ³•ç»“æŸåy=" + y.getName());
 	}
 
 	static class Employee {

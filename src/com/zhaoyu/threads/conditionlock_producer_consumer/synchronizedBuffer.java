@@ -5,17 +5,17 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Ê¹ÓÃcondition+lockÍê³ÉÍ¬²½·ÃÎÊ¹²ÏíÊı¾İ¡£
+ * ä½¿ç”¨condition+lockå®ŒæˆåŒæ­¥è®¿é—®å…±äº«æ•°æ®ã€‚
  *
  * @author xiaoe
  *
  */
 public class synchronizedBuffer implements Buffer {
 
-	// ¶¨ÒåËø£¬
+	// å®šä¹‰é”ï¼Œ
 	private final Lock accessLock = new ReentrantLock();
 
-	// ¶¨Òå¿ØÖÆ¶ÁĞ´µÄconditions
+	// å®šä¹‰æ§åˆ¶è¯»å†™çš„conditions
 	private final Condition canWrite = accessLock.newCondition();
 	private final Condition canRead = accessLock.newCondition();
 
@@ -24,23 +24,23 @@ public class synchronizedBuffer implements Buffer {
 
 	@Override
 	public void set(int value) throws InterruptedException {
-		// lock this object £¬»ñµÃsynchronizedBuffer¶ÔÏóµÄËø
+		// lock this object ï¼Œè·å¾—synchronizedBufferå¯¹è±¡çš„é”
 		accessLock.lock();
 		try {
 			while (occupied) {
-				System.out.print("Éú²úÕß³¢ÊÔĞ´Èë");
-				displayState("Buffer full.Éú²úÕßµÈ´ı£¡");
-				// ÀàËÆÓÚwait()¡£µÈ´ıÖ±µ½occupiedÎª¿Õ¡£
+				System.out.print("ç”Ÿäº§è€…å°è¯•å†™å…¥");
+				displayState("Buffer full.ç”Ÿäº§è€…ç­‰å¾…ï¼");
+				// ç±»ä¼¼äºwait()ã€‚ç­‰å¾…ç›´åˆ°occupiedä¸ºç©ºã€‚
 				canWrite.await();
 			}
 			buffer = value;
 			occupied = true;
-			displayState("Éú²úÕßĞ´Èë£º" + buffer);
-			// Í¨ÖªµÈ´ı´Óbuffer¶ÁÈ¡µÄÈÎºÎÏß³Ì¡£ÀàËÆÓÚnotifyAll();
+			displayState("ç”Ÿäº§è€…å†™å…¥ï¼š" + buffer);
+			// é€šçŸ¥ç­‰å¾…ä»bufferè¯»å–çš„ä»»ä½•çº¿ç¨‹ã€‚ç±»ä¼¼äºnotifyAll();
 			canRead.signalAll();
 		} finally {
 			// unlock this object
-			// ¼´Ê¹·¢ÉúÁËÒì³££¬unlock±ØĞëÖ´ĞĞ£¬·ñÔò»á·¢ÉúËÀËø¡£
+			// å³ä½¿å‘ç”Ÿäº†å¼‚å¸¸ï¼Œunlockå¿…é¡»æ‰§è¡Œï¼Œå¦åˆ™ä¼šå‘ç”Ÿæ­»é”ã€‚
 			accessLock.unlock();
 		}
 	}
@@ -48,23 +48,23 @@ public class synchronizedBuffer implements Buffer {
 	@Override
 	public int get() throws InterruptedException {
 		int readValue = 0;
-		// lock this object »ñµÃsynchronizedBuffer¶ÔÏóµÄËø
+		// lock this object è·å¾—synchronizedBufferå¯¹è±¡çš„é”
 		accessLock.lock();
 		try {
 			while (!occupied) {
-				System.out.println("Ïû·ÑÕß³¢ÊÔ¶ÁÈ¡£¡");
-				displayState("Buffer empty,Ïû·ÑÕßµÈ´ı£¡");
-				// µÈ´ıÖ±µ½buffer²»Îª¿Õ¡£
+				System.out.println("æ¶ˆè´¹è€…å°è¯•è¯»å–ï¼");
+				displayState("Buffer empty,æ¶ˆè´¹è€…ç­‰å¾…ï¼");
+				// ç­‰å¾…ç›´åˆ°bufferä¸ä¸ºç©ºã€‚
 				canRead.await();
 			}
 
 			occupied = false;
 			readValue = buffer;
-			displayState("Ïû·ÑÕß¶ÁÈ¡£º" + readValue);
-			// Í¨ÖªµÈ´ıÏòbufferĞ´ÈëµÄÈÎºÎÏß³Ì¡£ÀàËÆÓÚnotifyAll();
+			displayState("æ¶ˆè´¹è€…è¯»å–ï¼š" + readValue);
+			// é€šçŸ¥ç­‰å¾…å‘bufferå†™å…¥çš„ä»»ä½•çº¿ç¨‹ã€‚ç±»ä¼¼äºnotifyAll();
 			canWrite.signalAll();
 		} finally {
-			// ¼´Ê¹·¢ÉúÁËÒì³££¬unlock±ØĞëÖ´ĞĞ£¬·ñÔò»á·¢ÉúËÀËø¡£
+			// å³ä½¿å‘ç”Ÿäº†å¼‚å¸¸ï¼Œunlockå¿…é¡»æ‰§è¡Œï¼Œå¦åˆ™ä¼šå‘ç”Ÿæ­»é”ã€‚
 			accessLock.unlock();
 		}
 		return readValue;

@@ -1,7 +1,7 @@
 package com.zhaoyu.designpattern.abstractfactory;
 
 /**
- * 麦当劳的可乐
+ * 楹﹀綋鍔崇殑鍙箰
  * 
  * @author zhaoyu
  * 
@@ -12,6 +12,6 @@ public class MacdonaldCola implements Cola {
 	}
 
 	void doSomeThing() {
-		System.out.println("做其它事情！");
+		System.out.println("鍋氬叾瀹冧簨鎯咃紒");
 	}
 }

@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * ¾Ö²¿ÄÚ²¿ÀàÊÇ¶¨ÒåÔÚÒ»¶¨µÄ´úÂë¿éÖĞ£¬×÷ÓÃÓò±»ÏŞ¶¨ÔÚÉùÃ÷µÄ´úÂë¿éÖĞ¡£
- * ²»ÄÜÊ¹ÓÃpublic »òÕß privateĞŞÊÎ¡£
+ * å±€éƒ¨å†…éƒ¨ç±»æ˜¯å®šä¹‰åœ¨ä¸€å®šçš„ä»£ç å—ä¸­ï¼Œä½œç”¨åŸŸè¢«é™å®šåœ¨å£°æ˜çš„ä»£ç å—ä¸­ã€‚
+ * ä¸èƒ½ä½¿ç”¨public æˆ–è€… privateä¿®é¥°ã€‚
  *
  * @author xiaoE
  *
@@ -20,7 +20,7 @@ public class LocalInnerClass {
 			}
 
 		}
-		// ¾Ö²¿ÄÚ²¿ÀàÖ»ÄÜÔÚÕâ¸ö´úÂë¿éÖĞ·ÃÎÊ
+		// å±€éƒ¨å†…éƒ¨ç±»åªèƒ½åœ¨è¿™ä¸ªä»£ç å—ä¸­è®¿é—®
 		TimePrint tp = new TimePrint();
 	}
 }

@@ -5,16 +5,16 @@ import java.util.Date;
 public class DateTest {
 	public static void main(String[] args) {
 		System.out.println(new Date());
-		// 1970Äê¹ıÁË200ms;
+		// 1970å¹´è¿‡äº†200ms;
 		Date birthday = new Date(200);
 		System.out.println(new Date(1000 * 3600 * 48));
 		System.out.println(birthday);
 		Date today = new Date();
-		// afterÅĞ¶ÏÊ±¼äÊÇ·ñÍíÓÚÁíÒ»¸öÊ±¼äµã¡£
+		// afteråˆ¤æ–­æ—¶é—´æ˜¯å¦æ™šäºå¦ä¸€ä¸ªæ—¶é—´ç‚¹ã€‚
 		if (today.after(birthday)) {
-			System.out.println("ÎÒÒÑ¾­½µÉú£¡");
+			System.out.println("æˆ‘å·²ç»é™ç”Ÿï¼");
 		} else {
-			System.out.println("ÎÒ»¹Ã»ÓĞ³öÉú£¡");
+			System.out.println("æˆ‘è¿˜æ²¡æœ‰å‡ºç”Ÿï¼");
 		}
 	}
 }

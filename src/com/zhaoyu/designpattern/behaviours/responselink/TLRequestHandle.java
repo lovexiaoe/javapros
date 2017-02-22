@@ -12,7 +12,7 @@ public class TLRequestHandle implements RequestHandler {
 
 	public void handleRequest(HttpServletRequest request) {
 		if (request instanceof LeaveRequest) {
-			System.out.println("ÒªÇë¼Ù, ÏîÄ¿×é³¤ÉóÅú!");
+			System.out.println("è¦è¯·å‡, é¡¹ç›®ç»„é•¿å®¡æ‰¹!");
 		} else {
 			rh.handlerRequest(request);
 		}

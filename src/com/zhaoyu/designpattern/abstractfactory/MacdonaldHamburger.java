@@ -1,7 +1,7 @@
 package com.zhaoyu.designpattern.abstractfactory;
 
 /**
- * Âóµ±ÀÍµÄºº±¤°ü
+ * éº¦å½“åŠ³çš„æ±‰å ¡åŒ…
  * 
  * @author zhaoyu
  * 
@@ -12,6 +12,6 @@ public class MacdonaldHamburger implements Hamburger {
 	}
 
 	void doSomeThing() {
-		System.out.println("×öÆäËüÊÂÇé£¡");
+		System.out.println("åšå…¶å®ƒäº‹æƒ…ï¼");
 	}
 }

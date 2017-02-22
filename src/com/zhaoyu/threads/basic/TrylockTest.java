@@ -5,7 +5,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * ÓÃÓÚÀí½âtrylock¼°³¬Ê±¡£
+ * ç”¨äºç†è§£trylockåŠè¶…æ—¶ã€‚
  *
  * @author xiaoE
  *
@@ -32,9 +32,9 @@ class ThreadRunTest2 implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("Ïß³Ì£º" + Thread.currentThread().getId() + " µÄi¼Ó1ÔÙ*2¿ªÊ¼£¬iÎª£º" + clazz.getI());
+		System.out.println("çº¿ç¨‹ï¼š" + Thread.currentThread().getId() + " çš„iåŠ 1å†*2å¼€å§‹ï¼Œiä¸ºï¼š" + clazz.getI());
 		clazz.addI();
-		System.out.println("Ïß³Ì£º" + Thread.currentThread().getId() + "²âÊÔend! iÎª£º" + clazz.getI());
+		System.out.println("çº¿ç¨‹ï¼š" + Thread.currentThread().getId() + "æµ‹è¯•end! iä¸ºï¼š" + clazz.getI());
 	}
 
 }
@@ -45,7 +45,7 @@ class TrylockClazz {
 
 	public int addI() {
 		try {
-			// ³¢ÊÔËøÓë³¬Ê±¡£
+			// å°è¯•é”ä¸è¶…æ—¶ã€‚
 			if (iLock.tryLock(100, TimeUnit.MILLISECONDS)) {
 				i++;
 				i = i * 2;

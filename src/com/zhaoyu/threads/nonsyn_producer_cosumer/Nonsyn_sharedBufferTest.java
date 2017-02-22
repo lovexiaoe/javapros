@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 public class Nonsyn_sharedBufferTest {
 	
 	/**
-	 * ÆôÓÃÁ½¸öÏß³Ì·Ö±ğµ÷ÓÃÉú²úÕßºÍÏû·ÑÕß
+	 * å¯ç”¨ä¸¤ä¸ªçº¿ç¨‹åˆ†åˆ«è°ƒç”¨ç”Ÿäº§è€…å’Œæ¶ˆè´¹è€…
 	 * @param args
 	 */
 	public static void main(String[] args) {

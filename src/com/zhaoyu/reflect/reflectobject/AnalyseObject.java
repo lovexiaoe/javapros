@@ -7,16 +7,16 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
 /**
- * ´ËÀàÖĞÖ÷ÒªÊÇÍ¨¹ı·´Éä¶Ô¶ÔÏó½øĞĞ²Ù×÷¡£
+ * æ­¤ç±»ä¸­ä¸»è¦æ˜¯é€šè¿‡åå°„å¯¹å¯¹è±¡è¿›è¡Œæ“ä½œã€‚
  *
  */
 public class AnalyseObject {
 	private ArrayList<Object> visited = new ArrayList<Object>();
 
 	/**
-	 * ÕâÀï±àĞ´µÄÊÇÒ»¸öÍ¨ÓÃµÄToString·½·¨¡£
-	 * Ò»²ãÒ»²ã¼ìË÷¶ÔÏó²¢toString¡£
-	 * Ê¹ÓÃÁËµİ¹é
+	 * è¿™é‡Œç¼–å†™çš„æ˜¯ä¸€ä¸ªé€šç”¨çš„ToStringæ–¹æ³•ã€‚
+	 * ä¸€å±‚ä¸€å±‚æ£€ç´¢å¯¹è±¡å¹¶toStringã€‚
+	 * ä½¿ç”¨äº†é€’å½’
 	 *
 	 * @param obj
 	 * @return
@@ -35,7 +35,7 @@ public class AnalyseObject {
 		}
 		if (c1.isArray()) {
 			String r = c1.getComponentType() + "[]{";
-			// »ñÈ¡ËùÓĞ×Ö¶ÎµÄÃû³ÆºÍÖµ¡£
+			// è·å–æ‰€æœ‰å­—æ®µçš„åç§°å’Œå€¼ã€‚
 			for (int i = 0; i < Array.getLength(obj); i++) {
 				if (i > 0) {
 					r += ",";

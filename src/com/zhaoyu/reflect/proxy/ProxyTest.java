@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class ProxyTest {
 	public static void main(String[] args) {
-		// IntegerÊµÏÖÁËComparable½Ó¿Ú£¬½«Integer¶ÔÏó´«Èë´úÀí¡£¹¹ÔìÒ»¸öInteger´úÀíµÄÊı×é¡£
+		// Integerå®ç°äº†Comparableæ¥å£ï¼Œå°†Integerå¯¹è±¡ä¼ å…¥ä»£ç†ã€‚æ„é€ ä¸€ä¸ªIntegerä»£ç†çš„æ•°ç»„ã€‚
 		Object[] elements = new Object[1000];
 		for (int i = 0; i < elements.length; i++) {
 			Integer value = i + 1;
@@ -21,14 +21,14 @@ public class ProxyTest {
 			Object proxy = Proxy.newProxyInstance(null, new Class[] { Comparable.class }, handler);
 			elements[i] = proxy;
 		}
-		// ¹¹ÔìÒ»¸öInteger£¬Õâ¸öInteger¶ÔÏóÊÇ´úÀíÊı×éÖĞµÄÄ³¸öÖµ ¡£
+		// æ„é€ ä¸€ä¸ªIntegerï¼Œè¿™ä¸ªIntegerå¯¹è±¡æ˜¯ä»£ç†æ•°ç»„ä¸­çš„æŸä¸ªå€¼ ã€‚
 		Integer key = new Random().nextInt(elements.length) + 1;
-		// ÓÃ¶ş·Ö·¨²éÕÒÉÏÃæµÄÖµ £¬¶ş·Ö·¨²éÕÒÊ±ÒªÓÃµ½compareTO·½·¨¡£Êı×éÖĞ¶¼ÊÇ´úÀí¶ÔÏó£¬»áµ÷ÓÃ´úÀíÖĞµÄ·½·¨¡£
-		// ´úÀí¶ÔÏóÊôĞÔÔÚÔËĞĞÊ±¶¨ÒåµÄÀà£¬ËüÓĞÒ»¸öÃû×Ö£¬Èç$Proxy0
+		// ç”¨äºŒåˆ†æ³•æŸ¥æ‰¾ä¸Šé¢çš„å€¼ ï¼ŒäºŒåˆ†æ³•æŸ¥æ‰¾æ—¶è¦ç”¨åˆ°compareTOæ–¹æ³•ã€‚æ•°ç»„ä¸­éƒ½æ˜¯ä»£ç†å¯¹è±¡ï¼Œä¼šè°ƒç”¨ä»£ç†ä¸­çš„æ–¹æ³•ã€‚
+		// ä»£ç†å¯¹è±¡å±æ€§åœ¨è¿è¡Œæ—¶å®šä¹‰çš„ç±»ï¼Œå®ƒæœ‰ä¸€ä¸ªåå­—ï¼Œå¦‚$Proxy0
 		int result = Arrays.binarySearch(elements, key);
 
-		// ´òÓ¡½á¹ûÖĞ»áÓĞÒ»¸ötoStringÏÔÊ¾,´´½¨InvokeHandlerµÄÊ±ºò²»½ö´«ÈëÁËcomparable½Ó¿Ú£¬Ò²´«ÈëÁËObjectµÄtoString·½·¨¡£
-		// ËùÒÔ´òÓ¡ÔªËØÊ±»áÓĞÒ»¸ötoString·½·¨±»´úÀí¡£
+		// æ‰“å°ç»“æœä¸­ä¼šæœ‰ä¸€ä¸ªtoStringæ˜¾ç¤º,åˆ›å»ºInvokeHandlerçš„æ—¶å€™ä¸ä»…ä¼ å…¥äº†comparableæ¥å£ï¼Œä¹Ÿä¼ å…¥äº†Objectçš„toStringæ–¹æ³•ã€‚
+		// æ‰€ä»¥æ‰“å°å…ƒç´ æ—¶ä¼šæœ‰ä¸€ä¸ªtoStringæ–¹æ³•è¢«ä»£ç†ã€‚
 		if (result >= 0) {
 			System.out.print(result + " ---");
 			System.out.println(elements[result]);
@@ -37,7 +37,7 @@ public class ProxyTest {
 }
 
 /**
- * ¸ÃÀà¶¨ÒåÒ»¸öÒ»TraceHander,ÆäÖĞinvoke·½·¨´òÓ¡³ö±»µ÷ÓÃ·½·¨µÄÃû×ÖºÍ²ÎÊı ¡£È»ºóµ÷ÓÃÕâ¸ö·½·¨¡£
+ * è¯¥ç±»å®šä¹‰ä¸€ä¸ªä¸€TraceHander,å…¶ä¸­invokeæ–¹æ³•æ‰“å°å‡ºè¢«è°ƒç”¨æ–¹æ³•çš„åå­—å’Œå‚æ•° ã€‚ç„¶åè°ƒç”¨è¿™ä¸ªæ–¹æ³•ã€‚
  *
  * @author xiaoE
  *
@@ -45,7 +45,7 @@ public class ProxyTest {
 class TraceHandler implements InvocationHandler {
 
 	/**
-	 * ±»µ÷ÓÃ·½·¨µÄËùÊô¶ÔÏó¡£ÓÃÓÚ´«¸øµ÷ÓÃ´¦ÀíÆ÷¡£
+	 * è¢«è°ƒç”¨æ–¹æ³•çš„æ‰€å±å¯¹è±¡ã€‚ç”¨äºä¼ ç»™è°ƒç”¨å¤„ç†å™¨ã€‚
 	 */
 	private Object target;
 
@@ -55,11 +55,11 @@ class TraceHandler implements InvocationHandler {
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		// ´òÓ¡±»µ÷ÓÃ·½·¨ËùÊô¶ÔÏó
+		// æ‰“å°è¢«è°ƒç”¨æ–¹æ³•æ‰€å±å¯¹è±¡
 		System.out.print(target);
-		// ´òÓ¡±»µ÷ÓÃ·½·¨Ãû¡£
+		// æ‰“å°è¢«è°ƒç”¨æ–¹æ³•åã€‚
 		System.out.print(method.getName());
-		// ´òÓ¡²ÎÊı
+		// æ‰“å°å‚æ•°
 		if (args != null) {
 			for (int i = 0; i < args.length; i++) {
 				System.out.print(args[i]);

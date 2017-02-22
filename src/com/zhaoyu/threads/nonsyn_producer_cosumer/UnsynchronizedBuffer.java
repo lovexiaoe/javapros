@@ -1,23 +1,23 @@
 package com.zhaoyu.threads.nonsyn_producer_cosumer;
 
 /**
- * ¹²Ïí»º³åÇø£¬Éú²úÕß½øĞĞĞ´Èë£¬Ïû·ÑÕß½øĞĞ¶ÁÈ¡
+ * å…±äº«ç¼“å†²åŒºï¼Œç”Ÿäº§è€…è¿›è¡Œå†™å…¥ï¼Œæ¶ˆè´¹è€…è¿›è¡Œè¯»å–
  * @author xiaoe
  *
  */
 public class UnsynchronizedBuffer implements Buffer{
 
-	//ÕâÀïÎªÁË¼òµ¥£¬¶¨ÒåÒ»¸ö³¤¶ÈÎª1µÄ»º³åÇø£¬¹©producerºÍcosumerĞ´¶Á¡£
+	//è¿™é‡Œä¸ºäº†ç®€å•ï¼Œå®šä¹‰ä¸€ä¸ªé•¿åº¦ä¸º1çš„ç¼“å†²åŒºï¼Œä¾›producerå’Œcosumerå†™è¯»ã€‚
 	private int buffer=-1;
 	@Override
 	public int get() throws InterruptedException {
-		System.out.printf("Ïû·ÑÕß¶ÁÈ¡ÁË\t%2d",buffer);
+		System.out.printf("æ¶ˆè´¹è€…è¯»å–äº†\t%2d",buffer);
 		return buffer;
 	}
 
 	@Override
 	public void set(int value) throws InterruptedException {
-		System.out.printf("Éú²úÕßĞ´ÈëÁË\t%2d",value);
+		System.out.printf("ç”Ÿäº§è€…å†™å…¥äº†\t%2d",value);
 		buffer=value;
 	}
 

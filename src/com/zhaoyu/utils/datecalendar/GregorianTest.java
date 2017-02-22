@@ -8,22 +8,22 @@ import java.util.GregorianCalendar;
 public class GregorianTest {
 	public static void main(String[] args) {
 		GregorianCalendar calendar1 = new GregorianCalendar();
-		// ×¢ÒâÕâÀïµÄÔÂ·İÊÇ´Ó0¿ªÊ¼µÄ¡£
+		// æ³¨æ„è¿™é‡Œçš„æœˆä»½æ˜¯ä»0å¼€å§‹çš„ã€‚
 		GregorianCalendar calendar2 = new GregorianCalendar(1992, 0, 1);
 		GregorianCalendar calendar3 = new GregorianCalendar(1993, Calendar.JANUARY, 31, 22, 59, 59);
-		// getTime·½·¨ºÍsetTime·½·¨ÄÜÔÚcalendarºÍdateÖ®¼ä×ª»»¡£
+		// getTimeæ–¹æ³•å’ŒsetTimeæ–¹æ³•èƒ½åœ¨calendarå’Œdateä¹‹é—´è½¬æ¢ã€‚
 		calendar1.setTime(new Date());
-		System.out.println("ÈÕÀú1£º" + calendar1.getTime());
-		System.out.println("ÈÕÀú2£º" + calendar2.getTime());
-		System.out.println("ÈÕÀú3£º" + calendar3.getTime());
-		// µÃµ½ÈÕÀúµÄÄê,ÉèÖÃÈÕÀúµÄÔÂ¡£
-		System.out.println("ÈÕÀú3µÄÄêÎª" + calendar3.get(Calendar.YEAR));
+		System.out.println("æ—¥å†1ï¼š" + calendar1.getTime());
+		System.out.println("æ—¥å†2ï¼š" + calendar2.getTime());
+		System.out.println("æ—¥å†3ï¼š" + calendar3.getTime());
+		// å¾—åˆ°æ—¥å†çš„å¹´,è®¾ç½®æ—¥å†çš„æœˆã€‚
+		System.out.println("æ—¥å†3çš„å¹´ä¸º" + calendar3.get(Calendar.YEAR));
 		calendar3.set(Calendar.MONTH, 6);
-		System.out.println("ÈÕÀú3µÄÔÂÎª" + calendar3.get(Calendar.MONTH));
+		System.out.println("æ—¥å†3çš„æœˆä¸º" + calendar3.get(Calendar.MONTH));
 
 		calendar3.add(Calendar.DATE, 1);
 		System.out.println(calendar3.getTime());
-		System.out.println("ÈÕÀú3µÄÔÂÎª" + calendar3.get(Calendar.MONTH));
+		System.out.println("æ—¥å†3çš„æœˆä¸º" + calendar3.get(Calendar.MONTH));
 
 		System.out.println("===" + getExpireTime());
 		lastDayOfYearAddOneDay();
@@ -31,10 +31,10 @@ public class GregorianTest {
 		SetCalendar();
 	}
 
-	// ¼ÆËãµ½µ±ÌìÍíÉÏ0µãµÄÃëÊı
+	// è®¡ç®—åˆ°å½“å¤©æ™šä¸Š0ç‚¹çš„ç§’æ•°
 	public static Long getExpireTime() {
 		Date time = new Date();
-		// ¼ÆËãµ½µ±ÌìÍíÉÏ12µãµÄÃëÊı¡£
+		// è®¡ç®—åˆ°å½“å¤©æ™šä¸Š12ç‚¹çš„ç§’æ•°ã€‚
 		Calendar ca = new GregorianCalendar();
 		ca.setTime(time);
 		ca.add(Calendar.DATE, 1);
@@ -56,10 +56,10 @@ public class GregorianTest {
 		return mid / 1000;
 	}
 
-	// Ò»ÄêµÄ×îºóÒ»Ìì¼ÓÒ»Ìì£¬ÎªµÚ¶şÄêµÄµÚÒ»Ìì
+	// ä¸€å¹´çš„æœ€åä¸€å¤©åŠ ä¸€å¤©ï¼Œä¸ºç¬¬äºŒå¹´çš„ç¬¬ä¸€å¤©
 	public static void lastDayOfYearAddOneDay() {
 		Date time = new Date();
-		// ¼ÆËãµ½µ±ÌìÍíÉÏ12µãµÄÃëÊı¡£
+		// è®¡ç®—åˆ°å½“å¤©æ™šä¸Š12ç‚¹çš„ç§’æ•°ã€‚
 		Calendar ca = new GregorianCalendar();
 		ca.setTime(time);
 		ca.set(Calendar.MONTH, 12);
@@ -68,10 +68,10 @@ public class GregorianTest {
 		System.out.println("lastDayOfYearAddOneDay:" + ca.getTime());
 	}
 
-	// Ò»ÄêµÄ×îºóÒ»Ìì¼ÓÒ»Ìì£¬ÎªµÚ¶şÄêµÄµÚÒ»Ìì
+	// ä¸€å¹´çš„æœ€åä¸€å¤©åŠ ä¸€å¤©ï¼Œä¸ºç¬¬äºŒå¹´çš„ç¬¬ä¸€å¤©
 	public static void OneDayAdd24Hour() {
 		Date time = new Date();
-		// ¼ÆËãµ½µ±ÌìÍíÉÏ12µãµÄÃëÊı¡£
+		// è®¡ç®—åˆ°å½“å¤©æ™šä¸Š12ç‚¹çš„ç§’æ•°ã€‚
 		Calendar ca = new GregorianCalendar();
 		ca.setTime(time);
 		System.out.println("OneDay:" + ca.getTime());

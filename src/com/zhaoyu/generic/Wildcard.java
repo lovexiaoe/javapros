@@ -3,17 +3,17 @@ package com.zhaoyu.generic;
 import java.util.ArrayList;
 
 /**
- * Í¨Åä·û´¦Àí
+ * é€šé…ç¬¦å¤„ç†
  *
- * ´øÓĞ³¬ÀàĞÍÏŞ¶¨µÄÍ¨Åä·û¿ÉÒÔÏò·ºĞÍ¶ÔÏóĞ´Èë£¬´øÓĞ×ÓÀàĞÍÏŞ¶¨µÄÍ¨Åä·û¿ÉÒÔ´Ó·ºĞÍ¶ÔÏó¶ÁÈ¡¡£
+ * å¸¦æœ‰è¶…ç±»å‹é™å®šçš„é€šé…ç¬¦å¯ä»¥å‘æ³›å‹å¯¹è±¡å†™å…¥ï¼Œå¸¦æœ‰å­ç±»å‹é™å®šçš„é€šé…ç¬¦å¯ä»¥ä»æ³›å‹å¯¹è±¡è¯»å–ã€‚
  *
  * @author xiaoE
  *
  */
 public class Wildcard {
 	public static void main(String[] args) {
-		// ´øÓĞ³¬ÀàĞÍÏŞ¶¨µÄÍ¨Åä·û
-		// ÔÚÏÂÃæÃûÖĞÊ¹ÓÃ<? extends Employee>²ÅÄÜ¶ÔEmployee¼°×ÓÀà½øĞĞ²Ù×÷¡£
+		// å¸¦æœ‰è¶…ç±»å‹é™å®šçš„é€šé…ç¬¦
+		// åœ¨ä¸‹é¢åä¸­ä½¿ç”¨<? extends Employee>æ‰èƒ½å¯¹EmployeeåŠå­ç±»è¿›è¡Œæ“ä½œã€‚
 		ArrayList<?> wildList;
 		ArrayList<Manager> maList = new ArrayList<Manager>();
 		ArrayList<? extends Employee> emList = maList; // ok
@@ -27,7 +27,7 @@ class Employee {
 }
 
 class Manager extends Employee {
-	// ´øÓĞ×ÓÀàĞÍÏŞ¶¨µÄÍ¨Åä·û
+	// å¸¦æœ‰å­ç±»å‹é™å®šçš„é€šé…ç¬¦
 	public static ArrayList<? super Manager> getsub(Manager[] a, ArrayList<? super Manager> elist) {
 		for (int i = 0; i < a.length; i++) {
 			if (i < 2) {
@@ -39,16 +39,16 @@ class Manager extends Employee {
 }
 
 /**
- * Comparable½Ó¿Ú±¾Éí¾ÍÊÇÒ»¸ö·ºĞÍÀàĞÍ£¬
- * ¿ÉÒÔ°ÑÊı×éÖĞÈ¡µÃ×îĞ¡ Öµ µÄ·½·¨ÉùÃ÷ Îª
+ * Comparableæ¥å£æœ¬èº«å°±æ˜¯ä¸€ä¸ªæ³›å‹ç±»å‹ï¼Œ
+ * å¯ä»¥æŠŠæ•°ç»„ä¸­å–å¾—æœ€å° å€¼ çš„æ–¹æ³•å£°æ˜ ä¸º
  * public static <T extends Comparable<T>> T min(T[] a)
  *
- * <T extends Comparable<? super T>>µÄ½âÊÍ¡£
- * GregorianCalendar ÊÇCalendarµÄ×ÓÀà£¬²¢ÇÒCalendarÊµÏÖÁËComparable<Calendar>¡£Òò´ËGregorianCalendar
- * ÊµÏÖµÄÊÇComparable<Calendar>,¶ø²»ÊÇComparable<GregorianCalendar>,ÔÚÕâÖÖÇé¿öÏÂ£¬µ±´¦ÀíÒ»¸ö
- * GregorianCalendar¶ÔÏóµÄÊı×éÊ±£¬Ó¦¸Ã½«ÉÏÃæ·½·¨Ğ´³É£º
+ * <T extends Comparable<? super T>>çš„è§£é‡Šã€‚
+ * GregorianCalendar æ˜¯Calendarçš„å­ç±»ï¼Œå¹¶ä¸”Calendarå®ç°äº†Comparable<Calendar>ã€‚å› æ­¤GregorianCalendar
+ * å®ç°çš„æ˜¯Comparable<Calendar>,è€Œä¸æ˜¯Comparable<GregorianCalendar>,åœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œå½“å¤„ç†ä¸€ä¸ª
+ * GregorianCalendarå¯¹è±¡çš„æ•°ç»„æ—¶ï¼Œåº”è¯¥å°†ä¸Šé¢æ–¹æ³•å†™æˆï¼š
  * public static <T extends Comparable<? super T>> T min(T[] a)
- * compareTo·½·¨Ğ´³É£º
+ * compareToæ–¹æ³•å†™æˆï¼š
  * int compareTo(? super T)
  */
 

@@ -3,12 +3,12 @@ package com.zhaoyu.designpattern.structure.adapter;
 public class Test {
 
 	public static void main(String[] args) {
-		// ÀàÊÊÅä
+		// ç±»é€‚é…
 		Target target1 = new Adapter1();
 		target1.adapteeMethod();
 		target1.adapterMethod();
 
-		// ¶ÔÏóÊÊÅä
+		// å¯¹è±¡é€‚é…
 		Adaptee adaptee = new Adaptee();
 		Target target = new Adapter(adaptee);
 		target.adapteeMethod();

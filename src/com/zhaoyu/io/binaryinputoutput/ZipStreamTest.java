@@ -22,24 +22,24 @@ import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
 /**
- * ZipÎÄµµ
- * ZipÍ¨³£ÒÔÑ¹Ëõ¸ñÊ½´æ´¢Ò»¸ö»òÕß¶à¸öÎÄ¼ş£¬Ã¿¸özipÎÄ¼ş¶¼°üº¬ÁËÒ»¸öÍ·ĞÅÏ¢£¬Õâ¸öÍ·ĞÅÏ¢°üº¬ÁËÎÄ¼şÃû³Æ¡¢Ê¹ÓÃµÄÑ¹Ëõ·½Ê½µÈ¡£ÔÚjavaÖĞÊ¹ÓÃZipInputStreamÀ´¶ÁÈ¡ZIPÎÄµµ¡£
- * ÎÄµµÖĞ°üº¬ÁË¶à¸öµ¥¶ÀµÄÏî£¬getNextEntry·µ»ØÒ»¸öÃèÊöÕâĞ©ÏîµÄZipEntryÀàĞÍµÄ¶ÔÏó¡£
- * ZipInputStreamµÄread·½·¨ÔÚÅöµ½µ±Ç°ÏîµÄ½áÎ²Ê±·µ»Ø-1£¨¶ø²»ÊÇÕû¸özipÎÄ¼şµÄ½áÎ²£©£¬È»ºóÄã±ØĞëµ÷ÓÃcloseEntryÀ´¶ÁÈëÏÂÒ»Ïî¡£
+ * Zipæ–‡æ¡£
+ * Zipé€šå¸¸ä»¥å‹ç¼©æ ¼å¼å­˜å‚¨ä¸€ä¸ªæˆ–è€…å¤šä¸ªæ–‡ä»¶ï¼Œæ¯ä¸ªzipæ–‡ä»¶éƒ½åŒ…å«äº†ä¸€ä¸ªå¤´ä¿¡æ¯ï¼Œè¿™ä¸ªå¤´ä¿¡æ¯åŒ…å«äº†æ–‡ä»¶åç§°ã€ä½¿ç”¨çš„å‹ç¼©æ–¹å¼ç­‰ã€‚åœ¨javaä¸­ä½¿ç”¨ZipInputStreamæ¥è¯»å–ZIPæ–‡æ¡£ã€‚
+ * æ–‡æ¡£ä¸­åŒ…å«äº†å¤šä¸ªå•ç‹¬çš„é¡¹ï¼ŒgetNextEntryè¿”å›ä¸€ä¸ªæè¿°è¿™äº›é¡¹çš„ZipEntryç±»å‹çš„å¯¹è±¡ã€‚
+ * ZipInputStreamçš„readæ–¹æ³•åœ¨ç¢°åˆ°å½“å‰é¡¹çš„ç»“å°¾æ—¶è¿”å›-1ï¼ˆè€Œä¸æ˜¯æ•´ä¸ªzipæ–‡ä»¶çš„ç»“å°¾ï¼‰ï¼Œç„¶åä½ å¿…é¡»è°ƒç”¨closeEntryæ¥è¯»å…¥ä¸‹ä¸€é¡¹ã€‚
  *
- * ZIPÊäÈëÁ÷Í¨³£ÔÚÎÄ¼ş±»ÆÆ»µÊ±Å×³öZipException¡£
+ * ZIPè¾“å…¥æµé€šå¸¸åœ¨æ–‡ä»¶è¢«ç ´åæ—¶æŠ›å‡ºZipExceptionã€‚
  *
- * ÒªĞ´³öµ½ZIPÎÄ¼ş£¬¿ÉÒÔÊ¹ÓÃZipOutputStream£¬¶ÔÓÚ·ÅÈëZIPÎÄ¼şÖĞµÄÃ¿Ò»Ïî£¬¶¼Ó¦¸Ã´´½¨Ò»¸öZipEntry¶ÔÏó¡£µ÷ÓÃZipOutputStreamµÄputNextEntry·½·¨À´¿ªÊ¼Ğ´³öĞÂÎÄ¼ş£¬
- * ²¢½«ÎÄ¼şÊı¾İ·¢ËÍµ½ZIPÁ÷ÖĞ¡£µ±Íê³ÉÊ±£¬ĞèÒªµ÷ÓÃcloseEntry¡£
+ * è¦å†™å‡ºåˆ°ZIPæ–‡ä»¶ï¼Œå¯ä»¥ä½¿ç”¨ZipOutputStreamï¼Œå¯¹äºæ”¾å…¥ZIPæ–‡ä»¶ä¸­çš„æ¯ä¸€é¡¹ï¼Œéƒ½åº”è¯¥åˆ›å»ºä¸€ä¸ªZipEntryå¯¹è±¡ã€‚è°ƒç”¨ZipOutputStreamçš„putNextEntryæ–¹æ³•æ¥å¼€å§‹å†™å‡ºæ–°æ–‡ä»¶ï¼Œ
+ * å¹¶å°†æ–‡ä»¶æ•°æ®å‘é€åˆ°ZIPæµä¸­ã€‚å½“å®Œæˆæ—¶ï¼Œéœ€è¦è°ƒç”¨closeEntryã€‚
  *
- * JARÎÄ¼şÊÇ°üº¬ÁËÇåµ¥ÏîµÄZipÎÄ¼ş£¬Äã¿ÉÒÔÊ¹ÓÃJarInputStreamºÍJarOutputStreamÀ´¶ÁĞ´Çåµ¥Ïî¡£
+ * JARæ–‡ä»¶æ˜¯åŒ…å«äº†æ¸…å•é¡¹çš„Zipæ–‡ä»¶ï¼Œä½ å¯ä»¥ä½¿ç”¨JarInputStreamå’ŒJarOutputStreamæ¥è¯»å†™æ¸…å•é¡¹ã€‚
  */
 
 /**
- * ¸Ã³ÌĞòËµÃ÷ÁËZipÁ÷µÄÊ¹ÓÃ¡£
+ * è¯¥ç¨‹åºè¯´æ˜äº†Zipæµçš„ä½¿ç”¨ã€‚
  *
- * ³ÌĞò½âÎöÒ»¸öZip¸ñÊ½µÄÑ¹ËõÎÄ¼ş£¬²¢¶ÔÎÄ±¾ÎÄ¼ş½øĞĞä¯ÀÀ£¬ÔÚÎÄ±¾¿ò ÖĞÏÔÊ¾ÆäÄÚÈİ¡£Èç¹ûÑ¹ËõÎÄ¼şÖĞ°üº¬ÁËÆäËü·ÇÎÄ±¾¸ñÊ½µÄÎÄ¼ş£¬Ôò»á±¨´í¡£
- * wordÎÄ¼şÓÉÓÚÄ³ÖÖÔ­Òò½âÎöÎªÂÒÂë¡£txtÖĞÎÄ½âÎöÕı³£¡£
+ * ç¨‹åºè§£æä¸€ä¸ªZipæ ¼å¼çš„å‹ç¼©æ–‡ä»¶ï¼Œå¹¶å¯¹æ–‡æœ¬æ–‡ä»¶è¿›è¡Œæµè§ˆï¼Œåœ¨æ–‡æœ¬æ¡† ä¸­æ˜¾ç¤ºå…¶å†…å®¹ã€‚å¦‚æœå‹ç¼©æ–‡ä»¶ä¸­åŒ…å«äº†å…¶å®ƒéæ–‡æœ¬æ ¼å¼çš„æ–‡ä»¶ï¼Œåˆ™ä¼šæŠ¥é”™ã€‚
+ * wordæ–‡ä»¶ç”±äºæŸç§åŸå› è§£æä¸ºä¹±ç ã€‚txtä¸­æ–‡è§£ææ­£å¸¸ã€‚
  *
  * @author xiaoE
  *
@@ -120,7 +120,7 @@ class ZipTestFrame extends JFrame {
 	}
 
 	/**
-	 * ÓÃÓÚÔÚÏÂÀ­¿òÑ¡ÔñÖĞÏÔÊ¾Ñ¹ËõÎÄ¼şÃû³ÆÁĞ±í¡£
+	 * ç”¨äºåœ¨ä¸‹æ‹‰æ¡†é€‰æ‹©ä¸­æ˜¾ç¤ºå‹ç¼©æ–‡ä»¶åç§°åˆ—è¡¨ã€‚
 	 */
 	public void scanZipFile() {
 		new SwingWorker<Void, String>() {
@@ -129,7 +129,7 @@ class ZipTestFrame extends JFrame {
 				ZipInputStream zin = new ZipInputStream(new FileInputStream(zipName));
 				ZipEntry entry;
 				while ((entry = zin.getNextEntry()) != null) {
-					// Ïòprocess·½·¨·¢ËÍÊı¾İ¡£ÕâÀï·¢ËÍµÄÊÇÑ¹ËõÏîµÄÃû³Æ¡£
+					// å‘processæ–¹æ³•å‘é€æ•°æ®ã€‚è¿™é‡Œå‘é€çš„æ˜¯å‹ç¼©é¡¹çš„åç§°ã€‚
 					publish(entry.getName());
 					zin.closeEntry();
 				}
@@ -139,7 +139,7 @@ class ZipTestFrame extends JFrame {
 
 			@Override
 			protected void process(List<String> names) {
-				// ÏòÏÂÀ­¿òÖĞÌí¼ÓÎÄ¼şÃû³Æ¡£
+				// å‘ä¸‹æ‹‰æ¡†ä¸­æ·»åŠ æ–‡ä»¶åç§°ã€‚
 				for (String name : names) {
 					fileCombo.addItem(name);
 				}
@@ -157,7 +157,7 @@ class ZipTestFrame extends JFrame {
 				try {
 					ZipInputStream zin = new ZipInputStream(new FileInputStream(zipName));
 					ZipEntry entry;
-					// ¸ù¾İÎÄ¼şÃû³Æ£¬Ê¹ÎÄ±¾¿ò¼ÓÔØ¶ÔÓ¦ÎÄ¼şµÄÄÚÈİ¡£
+					// æ ¹æ®æ–‡ä»¶åç§°ï¼Œä½¿æ–‡æœ¬æ¡†åŠ è½½å¯¹åº”æ–‡ä»¶çš„å†…å®¹ã€‚
 					while ((entry = zin.getNextEntry()) != null) {
 						if (entry.getName().equals(name)) {
 							Scanner in = new Scanner(zin);

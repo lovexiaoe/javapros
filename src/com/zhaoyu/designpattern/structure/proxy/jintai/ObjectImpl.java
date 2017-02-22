@@ -4,7 +4,7 @@ public class ObjectImpl implements Object {
 	@Override
 	public void action() {
 		System.out.println("========");
-		System.out.println("ÕâÊÇ±»´úÀíµÄÀà");
+		System.out.println("è¿™æ˜¯è¢«ä»£ç†çš„ç±»");
 		System.out.println("========");
 	}
 

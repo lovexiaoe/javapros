@@ -6,10 +6,10 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * ÓÃÓÚÀí½âReentrantReadWriteLockµÄÊ¹ÓÃ¡£ ÊÊÓÃÓÚºÜ¶àÏß³Ì´ÓÒ»¸öÊı¾İ½á¹¹¶ÁÈ¡Êı¾İ¶øºÜÉÙÏß³ÌĞŞ¸ÄÆäÖĞµÄÊı¾İ
- * ¡£ÔÚÕâÖÖÇé¿öÏÂÔÊĞí¶ÁÏß³Ì¹²Ïí·ÃÎÊ¡£Ğ´Ïß³Ì»¥³â·ÃÎÊ¡£
+ * ç”¨äºç†è§£ReentrantReadWriteLockçš„ä½¿ç”¨ã€‚ é€‚ç”¨äºå¾ˆå¤šçº¿ç¨‹ä»ä¸€ä¸ªæ•°æ®ç»“æ„è¯»å–æ•°æ®è€Œå¾ˆå°‘çº¿ç¨‹ä¿®æ”¹å…¶ä¸­çš„æ•°æ®
+ * ã€‚åœ¨è¿™ç§æƒ…å†µä¸‹å…è®¸è¯»çº¿ç¨‹å…±äº«è®¿é—®ã€‚å†™çº¿ç¨‹äº’æ–¥è®¿é—®ã€‚
  * 
- * ¶ÁÈ¡ Ã»ÓĞÏß³ÌÕıÔÚ×öĞ´²Ù×÷£¬ÇÒÃ»ÓĞÏß³ÌÔÚÇëÇóĞ´²Ù×÷¡£ Ğ´Èë Ã»ÓĞÏß³ÌÕıÔÚ×ö¶ÁĞ´²Ù×÷¡£
+ * è¯»å– æ²¡æœ‰çº¿ç¨‹æ­£åœ¨åšå†™æ“ä½œï¼Œä¸”æ²¡æœ‰çº¿ç¨‹åœ¨è¯·æ±‚å†™æ“ä½œã€‚ å†™å…¥ æ²¡æœ‰çº¿ç¨‹æ­£åœ¨åšè¯»å†™æ“ä½œã€‚
  *
  * @author xiaoE
  *
@@ -36,16 +36,16 @@ class ThreadRunTest3 implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("Ïß³Ì£º" + Thread.currentThread().getId() + " µÄi¼Ó1ÔÙ*2¿ªÊ¼£¬iÎª£º" + clazz.getI());
+		System.out.println("çº¿ç¨‹ï¼š" + Thread.currentThread().getId() + " çš„iåŠ 1å†*2å¼€å§‹ï¼Œiä¸ºï¼š" + clazz.getI());
 		clazz.addI();
-		System.out.println("Ïß³Ì£º" + Thread.currentThread().getId() + "²âÊÔend! iÎª£º" + clazz.getI());
+		System.out.println("çº¿ç¨‹ï¼š" + Thread.currentThread().getId() + "æµ‹è¯•end! iä¸ºï¼š" + clazz.getI());
 	}
 
 }
 
 class TrylockClazz1 {
 	private int i = 0;
-	// ÖØÈë¶ÁĞ´ËøµÄÊ¹ÓÃ
+	// é‡å…¥è¯»å†™é”çš„ä½¿ç”¨
 	ReadWriteLock iLock = new ReentrantReadWriteLock();
 	private Lock readLock = iLock.readLock();
 	private Lock writeLock = iLock.writeLock();

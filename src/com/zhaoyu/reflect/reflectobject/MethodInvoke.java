@@ -3,19 +3,19 @@ package com.zhaoyu.reflect.reflectobject;
 import java.lang.reflect.Method;
 
 /**
- * javaÓïÑÔÖĞ²¢Ã»ÓĞÏñc++ÓïÑÔÖĞµÄÄÇÑùÓµÓĞ·½·¨Ö¸Õë£¬¼´½«Ò»¸ö·½·¨µÄµØÖ·´«µİ¸ø±ğÒ»¸ö·½·¨£¬·½±ã±ğÒ»¸ö·½·¨½øĞĞµ÷ÓÃ ¡£
- * µ«ÊÇÎÒÃÇ¿ÉÒÔÍ¨¹ı·´ÉäµÄinvokeµ÷ÓÃÁíÒ»¸ö·½·¨¡£¼´Method.invoke·½·¨¡£
- * ÕâÖÖ´«µİ·½·¨µØÖ·µÄ·½Ê½»¹¿ÉÒÔ²ÉÓÃ½Ó¿Ú»Øµ÷ÊµÏÖ£¬·´ÉäµÄ·½Ê½²»³£ÓÃ¡£
+ * javaè¯­è¨€ä¸­å¹¶æ²¡æœ‰åƒc++è¯­è¨€ä¸­çš„é‚£æ ·æ‹¥æœ‰æ–¹æ³•æŒ‡é’ˆï¼Œå³å°†ä¸€ä¸ªæ–¹æ³•çš„åœ°å€ä¼ é€’ç»™åˆ«ä¸€ä¸ªæ–¹æ³•ï¼Œæ–¹ä¾¿åˆ«ä¸€ä¸ªæ–¹æ³•è¿›è¡Œè°ƒç”¨ ã€‚
+ * ä½†æ˜¯æˆ‘ä»¬å¯ä»¥é€šè¿‡åå°„çš„invokeè°ƒç”¨å¦ä¸€ä¸ªæ–¹æ³•ã€‚å³Method.invokeæ–¹æ³•ã€‚
+ * è¿™ç§ä¼ é€’æ–¹æ³•åœ°å€çš„æ–¹å¼è¿˜å¯ä»¥é‡‡ç”¨æ¥å£å›è°ƒå®ç°ï¼Œåå°„çš„æ–¹å¼ä¸å¸¸ç”¨ã€‚
  *
- * ±¾Àı×ÓÍ¨¹ı·´Éäµ÷ÓÃsquareºÍsqrt·½·¨£¬·Ö±ğ´òÓ¡³öÁ½×é±í¡£
+ * æœ¬ä¾‹å­é€šè¿‡åå°„è°ƒç”¨squareå’Œsqrtæ–¹æ³•ï¼Œåˆ†åˆ«æ‰“å°å‡ºä¸¤ç»„è¡¨ã€‚
  *
  * @author xiaoe
  *
  */
 public class MethodInvoke {
 	public static void main(String[] args) throws SecurityException, NoSuchMethodException {
-		// »ñÈ¡Method
-		// square±ØĞëÊÇpublic£¬ÒòÎªClass.getMethod²»ÊôÓÚÕâ¸ö°ü¡£
+		// è·å–Method
+		// squareå¿…é¡»æ˜¯publicï¼Œå› ä¸ºClass.getMethodä¸å±äºè¿™ä¸ªåŒ…ã€‚
 		Method square = MethodInvoke.class.getMethod("square", double.class);
 		Method sqrt = Math.class.getMethod("sqrt", double.class);
 
@@ -24,7 +24,7 @@ public class MethodInvoke {
 	}
 
 	/**
-	 * ·µ»ØÆ½·½Êı
+	 * è¿”å›å¹³æ–¹æ•°
 	 *
 	 * @param x
 	 * @return
@@ -33,9 +33,9 @@ public class MethodInvoke {
 		return x * x;
 	}
 
-	// ¸ù¾İ´«ÈëµÄ²ÎÊıºÍ·½·¨²ÎÊı £¬ÀûÓÃ·´ÉäÖ´ĞĞ·½·¨¡£
+	// æ ¹æ®ä¼ å…¥çš„å‚æ•°å’Œæ–¹æ³•å‚æ•° ï¼Œåˆ©ç”¨åå°„æ‰§è¡Œæ–¹æ³•ã€‚
 	static void printTable(double from, double to, int n, Method f) {
-		// ´òÓ¡·½·¨Ãû³Æ
+		// æ‰“å°æ–¹æ³•åç§°
 		System.out.println(f);
 
 		double dx = (to - from) / (n - 1);

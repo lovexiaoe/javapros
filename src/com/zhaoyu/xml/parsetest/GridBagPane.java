@@ -20,7 +20,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 /**
- * ÕâÊÇÒ»¸öÓÃXMLÎÄ¼şÃèÊöÃæ°åµÄ×é¼ş£¬¼°×é¼ş·ç¸ñ²¼¾ÖµÄÎ»ÖÃ¡£
+ * è¿™æ˜¯ä¸€ä¸ªç”¨XMLæ–‡ä»¶æè¿°é¢æ¿çš„ç»„ä»¶ï¼ŒåŠç»„ä»¶é£æ ¼å¸ƒå±€çš„ä½ç½®ã€‚
  *
  * @author xiaoE
  *
@@ -36,21 +36,21 @@ public class GridBagPane extends JPanel {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setValidating(true);
 
-			// xsdÑéÖ¤´¦Àí
+			// xsdéªŒè¯å¤„ç†
 			if (filename.contains("-schema")) {
-				// xmlµÄ½âÎö¹ı³ÌÌá¹©¶ÔxmlÃüÃû¿Õ¼äµÄÖ§³Ö¡£
+				// xmlçš„è§£æè¿‡ç¨‹æä¾›å¯¹xmlå‘½åç©ºé—´çš„æ”¯æŒã€‚
 				factory.setNamespaceAware(true);
 				final String JAXP_SCHEMA_LANGUAGE = "http:java.sun.com/xml/jaxp/properties/schemaLanguage";
 				final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
 				factory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
 			}
-			// ÉèÖÃ½âÎöÆ÷È¥³ıÔªËØÄÚÈİµÄ¿Õ°×·û
+			// è®¾ç½®è§£æå™¨å»é™¤å…ƒç´ å†…å®¹çš„ç©ºç™½ç¬¦
 			factory.setIgnoringElementContentWhitespace(true);
 
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = builder.parse(new File(filename));
 
-			// xsdÑéÖ¤´¦Àí
+			// xsdéªŒè¯å¤„ç†
 			// if (filename.contains("-schema")) {
 			int count = removeElementContentWhitespace(doc.getDocumentElement());
 			System.out.println(count + "whitespace nodes removed.");
@@ -63,7 +63,7 @@ public class GridBagPane extends JPanel {
 	}
 
 	/**
-	 * ÒÆ³ıÎÄµµÖĞµÄ¿Õ°×·û½Úµã¡£ÈçÔªËØÖ®¼äµÄ¿Õ°×·û¡£
+	 * ç§»é™¤æ–‡æ¡£ä¸­çš„ç©ºç™½ç¬¦èŠ‚ç‚¹ã€‚å¦‚å…ƒç´ ä¹‹é—´çš„ç©ºç™½ç¬¦ã€‚
 	 *
 	 * @param e
 	 * @return
@@ -71,9 +71,9 @@ public class GridBagPane extends JPanel {
 	private int removeElementContentWhitespace(Element e) {
 		NodeList children = e.getChildNodes();
 		int count = 0;
-		// ÊÇ·ñËùÓĞµÄ×ÓÎÄ±¾½ÚµãÎª¿Õ°×·û
+		// æ˜¯å¦æ‰€æœ‰çš„å­æ–‡æœ¬èŠ‚ç‚¹ä¸ºç©ºç™½ç¬¦
 		boolean allTextChildrenAreWhitespace = true;
-		// children·ÇÎÄ±¾×ÓÔªËØµÄ¼ÆÊı¡£
+		// childrenéæ–‡æœ¬å­å…ƒç´ çš„è®¡æ•°ã€‚
 		int elements = 0;
 
 		for (int i = 0; i < children.getLength() && allTextChildrenAreWhitespace; i++) {
@@ -85,7 +85,7 @@ public class GridBagPane extends JPanel {
 				count += removeElementContentWhitespace((Element) child);
 			}
 		}
-		// Èç¹ûÓĞÔªËØÎªÎÄ±¾ÇÒËùÓĞµÄÎÄ±¾Îª¿Õ°×·û£¬ÔòÒÆ³ıÕâ¸ö¿Õ°×·û¡£ÒÆ³ı¼ÆÊı×ÔÔö
+		// å¦‚æœæœ‰å…ƒç´ ä¸ºæ–‡æœ¬ä¸”æ‰€æœ‰çš„æ–‡æœ¬ä¸ºç©ºç™½ç¬¦ï¼Œåˆ™ç§»é™¤è¿™ä¸ªç©ºç™½ç¬¦ã€‚ç§»é™¤è®¡æ•°è‡ªå¢
 		if (elements > 0 && allTextChildrenAreWhitespace) {
 			for (int i = children.getLength() - 1; i >= 0; i--) {
 				Node child = children.item(i);
@@ -99,7 +99,7 @@ public class GridBagPane extends JPanel {
 	}
 
 	/**
-	 * »ñÈ¡Ö¸¶¨Ãû³ÆµÄ×é¼ş
+	 * è·å–æŒ‡å®šåç§°çš„ç»„ä»¶
 	 *
 	 * @param name
 	 * @return
@@ -115,7 +115,7 @@ public class GridBagPane extends JPanel {
 	}
 
 	/**
-	 * ¶ÔÍø¸ñ×é½øĞĞ·ÖÎö
+	 * å¯¹ç½‘æ ¼ç»„è¿›è¡Œåˆ†æ
 	 *
 	 * @param e
 	 */
@@ -133,14 +133,14 @@ public class GridBagPane extends JPanel {
 	}
 
 	/**
-	 * ¶ÔcellÔªËØ½øĞĞ½âÎö
+	 * å¯¹cellå…ƒç´ è¿›è¡Œè§£æ
 	 *
 	 * @param e
 	 * @param r
 	 * @param c
 	 */
 	private void parseCell(Element e, int r, int c) {
-		// »ñÈ¡gridxÊôĞÔ
+		// è·å–gridxå±æ€§
 		String value = e.getAttribute("gridx");
 		if (value.length() == 0) {
 			if (c == 0) {
@@ -152,7 +152,7 @@ public class GridBagPane extends JPanel {
 			constraints.gridx = Integer.parseInt(value);
 		}
 
-		// »ñÈ¡ÊôĞÔgridy
+		// è·å–å±æ€§gridy
 		value = e.getAttribute("gridy");
 		if (value.length() == 0) {
 			constraints.gridy = r;
@@ -167,7 +167,7 @@ public class GridBagPane extends JPanel {
 		constraints.ipadx = Integer.parseInt(e.getAttribute("ipadx"));
 		constraints.ipady = Integer.parseInt(e.getAttribute("ipady"));
 
-		// Ê¹ÓÃ·´Éä»ñÈ¡¾²Ì¬×Ö¶ÎµÄÖµ ¡£
+		// ä½¿ç”¨åå°„è·å–é™æ€å­—æ®µçš„å€¼ ã€‚
 		Class<GridBagConstraints> c1 = GridBagConstraints.class;
 
 		try {
@@ -186,7 +186,7 @@ public class GridBagPane extends JPanel {
 		add(comp, constraints);
 	}
 
-	// ½âÎöÒ»¸öbeanÔªËØ¡£·µ»ØÕâ¸öbeanµÄÊµÀı
+	// è§£æä¸€ä¸ªbeanå…ƒç´ ã€‚è¿”å›è¿™ä¸ªbeançš„å®ä¾‹
 	private Object parseBean(Element e) {
 		try {
 			NodeList children = e.getChildNodes();
@@ -226,7 +226,7 @@ public class GridBagPane extends JPanel {
 	}
 
 	/**
-	 * ½âÎöÒ»¸öÖµÔªËØ¡£
+	 * è§£æä¸€ä¸ªå€¼å…ƒç´ ã€‚
 	 *
 	 * @param e
 	 * @return

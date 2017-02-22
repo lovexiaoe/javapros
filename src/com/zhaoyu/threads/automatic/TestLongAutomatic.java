@@ -4,7 +4,7 @@ public class TestLongAutomatic {
 	public static void main(String[] args) {
 		final P1 v = new P1();
 
-		// Ïß³Ì 1£ºÉèÖÃ b = 0
+		// çº¿ç¨‹ 1ï¼šè®¾ç½® b = 0
 		final Thread t1 = new Thread() {
 			public void run() {
 				while (true) {
@@ -14,7 +14,7 @@ public class TestLongAutomatic {
 		};
 		t1.start();
 
-		// Ïß³Ì 2£ºÉèÖÃ b = -1
+		// çº¿ç¨‹ 2ï¼šè®¾ç½® b = -1
 		final Thread t2 = new Thread() {
 			public void run() {
 				while (true) {
@@ -24,7 +24,7 @@ public class TestLongAutomatic {
 		};
 		t2.start();
 
-		// Ïß³Ì 3£º¼ì²é 0 != b && -1 != b
+		// çº¿ç¨‹ 3ï¼šæ£€æŸ¥ 0 != b && -1 != b
 		final Thread t3 = new Thread() {
 			public void run() {
 				while (true) {
@@ -49,7 +49,7 @@ class P1 {
 	}
 
 	public void check() {
-		// ifÅĞ¶ÏÖĞ²»ÊÇÒ»¸öÔ­×Ó²Ù×÷£¬ËùÒÔÔÚ¶àÏß³ÌÏÂ£¬»áµ¼ÖÂif³ÉÁ¢£¬¶ø´òÓ¡³ö´íÎó¡£
+		// ifåˆ¤æ–­ä¸­ä¸æ˜¯ä¸€ä¸ªåŸå­æ“ä½œï¼Œæ‰€ä»¥åœ¨å¤šçº¿ç¨‹ä¸‹ï¼Œä¼šå¯¼è‡´ifæˆç«‹ï¼Œè€Œæ‰“å°å‡ºé”™è¯¯ã€‚
 		if (0 != b && -1 != b) {
 			System.out.println(b + "Error");
 		}

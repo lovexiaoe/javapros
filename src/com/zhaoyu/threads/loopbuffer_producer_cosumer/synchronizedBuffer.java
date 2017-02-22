@@ -1,8 +1,8 @@
 package com.zhaoyu.threads.loopbuffer_producer_cosumer;
 
 /**
- * ÕâÀïÎÒÃÇ×Ô¼ºÍ¨¹ıwait¡¢notify¡¢nofityAllÀ´ÊµÏÖÑ­»·»º³åÇøµÄÏß³ÌÍ¬²½ ¹²Ïí»º³åÇø£¬Éú²úÕßÔÚÊı×éºóÃæ½øĞĞĞ´Èë£¬Ïû·ÑÕßÔÚÇ°Ãæ½øĞĞ¶ÁÈ¡¡£
- * ÕâÖÖÀàËÆÓÚ¶ÓÁĞµÄÊı¾İ½á¹¹ÎªÑ­»·µÄÊı×é×é³ÉµÄÑ­»·¶ÓÁĞ£¬Éú²úÕß°´ÕÕË³ĞòĞ´£¬Ïû·ÑÕß °´ÕÕË³Ğò¶Á£¬µ±¼ÆÊıÎª0Ê±£¬Ïû·ÑÕß¶ÁÍêËùÓĞÊı¾İ¡£
+ * è¿™é‡Œæˆ‘ä»¬è‡ªå·±é€šè¿‡waitã€notifyã€nofityAllæ¥å®ç°å¾ªç¯ç¼“å†²åŒºçš„çº¿ç¨‹åŒæ­¥ å…±äº«ç¼“å†²åŒºï¼Œç”Ÿäº§è€…åœ¨æ•°ç»„åé¢è¿›è¡Œå†™å…¥ï¼Œæ¶ˆè´¹è€…åœ¨å‰é¢è¿›è¡Œè¯»å–ã€‚
+ * è¿™ç§ç±»ä¼¼äºé˜Ÿåˆ—çš„æ•°æ®ç»“æ„ä¸ºå¾ªç¯çš„æ•°ç»„ç»„æˆçš„å¾ªç¯é˜Ÿåˆ—ï¼Œç”Ÿäº§è€…æŒ‰ç…§é¡ºåºå†™ï¼Œæ¶ˆè´¹è€… æŒ‰ç…§é¡ºåºè¯»ï¼Œå½“è®¡æ•°ä¸º0æ—¶ï¼Œæ¶ˆè´¹è€…è¯»å®Œæ‰€æœ‰æ•°æ®ã€‚
  * 
  * @author xiaoe
  * 
@@ -11,22 +11,22 @@ public class synchronizedBuffer implements Buffer {
 
 	private final int[] buffer = { -1, -1, -1 };
 
-	// »º³åÇø¼ÆÊıÆ÷
+	// ç¼“å†²åŒºè®¡æ•°å™¨
 	private int count;
-	// ÏÂÒ»¸öĞ´ÈëÔªËØµÄindex
+	// ä¸‹ä¸€ä¸ªå†™å…¥å…ƒç´ çš„index
 	private int writeIndex = 0;
-	// ÏÂÒ»¸ö¶ÁÈ¡ÔªËØµÄindex
+	// ä¸‹ä¸€ä¸ªè¯»å–å…ƒç´ çš„index
 	private int readIndex = 0;
 
 	@Override
 	public synchronized int get() throws InterruptedException {
 		while (count == 0) {
-			// System.out.println("¶ÓÁĞ»º³åÇøÊÇ¿ÕÁË£¡");
+			// System.out.println("é˜Ÿåˆ—ç¼“å†²åŒºæ˜¯ç©ºäº†ï¼");
 			wait();
 		}
 
 		int readValue = buffer[readIndex];
-		System.out.println("Ïû·ÑÕßÏû·ÑÁËÔÚ  " + readIndex + " µÄ  " + readValue);
+		System.out.println("æ¶ˆè´¹è€…æ¶ˆè´¹äº†åœ¨  " + readIndex + " çš„  " + readValue);
 		count--;
 		readIndex = (readIndex + 1) % buffer.length;
 		notifyAll();
@@ -36,11 +36,11 @@ public class synchronizedBuffer implements Buffer {
 	@Override
 	public synchronized void set(int value) throws InterruptedException {
 		while (count == buffer.length) {
-			// System.out.println("¶ÓÁĞ»º³åÇøĞ´ÂúÁË");
+			// System.out.println("é˜Ÿåˆ—ç¼“å†²åŒºå†™æ»¡äº†");
 			wait();
 		}
 		buffer[writeIndex] = value;
-		System.out.println("Éú²úÕßÔÚ  " + writeIndex + " Ğ´Èë  " + value);
+		System.out.println("ç”Ÿäº§è€…åœ¨  " + writeIndex + " å†™å…¥  " + value);
 		count++;
 		writeIndex = (writeIndex + 1) % buffer.length;
 		notifyAll();

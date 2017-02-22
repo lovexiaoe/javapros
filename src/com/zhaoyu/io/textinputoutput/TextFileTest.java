@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 /**
- * ¸ÃÀà²Ù×÷ÎÄ±¾ÄÚÈİĞ´ÈëºÍÊä³ö¡£ÒÔÎÄ±¾·½Ê½´æ´¢¶ÔÏó¡£
+ * è¯¥ç±»æ“ä½œæ–‡æœ¬å†…å®¹å†™å…¥å’Œè¾“å‡ºã€‚ä»¥æ–‡æœ¬æ–¹å¼å­˜å‚¨å¯¹è±¡ã€‚
  *
  * @author xiaoE
  *
@@ -17,16 +17,16 @@ import java.util.Scanner;
 public class TextFileTest {
 	public static void main(String[] args) {
 		Employee[] staff = new Employee[3];
-		staff[0] = new Employee("ÕÔ2", 75000, 1984, 12, 14);
-		staff[1] = new Employee("Íõ°Ë", 50000, 1988, 5, 4);
-		staff[2] = new Employee("Áõ6", 35000, 1990, 6, 13);
+		staff[0] = new Employee("èµµ2", 75000, 1984, 12, 14);
+		staff[1] = new Employee("ç‹å…«", 50000, 1988, 5, 4);
+		staff[2] = new Employee("åˆ˜6", 35000, 1990, 6, 13);
 		try {
-			// Ğ´ÈëÎÄ±¾Êı¾İ¡£
+			// å†™å…¥æ–‡æœ¬æ•°æ®ã€‚
 			PrintWriter out = new PrintWriter("employee.dat");
 			writeData(staff, out);
 			out.close();
 
-			// ¶ÁÈ¡ÎÄ¼şÊı¾İ¡£
+			// è¯»å–æ–‡ä»¶æ•°æ®ã€‚
 			Scanner in = new Scanner(new FileReader("employee.dat"));
 			Employee[] newStaff = readData(in);
 			in.close();

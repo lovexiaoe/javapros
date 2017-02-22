@@ -1,15 +1,15 @@
-×èÈû¶ÓÁÐÊÇÒ»¸öÓÐÓÃµÄ¹¤¾ß¡£Èç¹û¶ÓÁÐÌí¼ÓÔªËØÊ±¶ÓÁÐÒÑÂú£¬»òÕß¶ÓÁÐÒÆ³öÔªËØÊ±¶ÓÁÐÎª¿Õ£¬Ôò×èÈû¶ÓÁÐµ¼ÖÂÏß³Ì×èÈû¡£
-×èÈû¶ÓÁÐµÄ·½·¨£º
+é˜»å¡žé˜Ÿåˆ—æ˜¯ä¸€ä¸ªæœ‰ç”¨çš„å·¥å…·ã€‚å¦‚æžœé˜Ÿåˆ—æ·»åŠ å…ƒç´ æ—¶é˜Ÿåˆ—å·²æ»¡ï¼Œæˆ–è€…é˜Ÿåˆ—ç§»å‡ºå…ƒç´ æ—¶é˜Ÿåˆ—ä¸ºç©ºï¼Œåˆ™é˜»å¡žé˜Ÿåˆ—å¯¼è‡´çº¿ç¨‹é˜»å¡žã€‚
+é˜»å¡žé˜Ÿåˆ—çš„æ–¹æ³•ï¼š
 
-	·½·¨			¶¯×÷						ÌØÊâÇé¿öÏÂµÄ¶¯×÷
-	add			Ìí¼ÓÒ»¸öÔªËØ					Èç¹û¶ÓÁÐÂú£¬Å×³öIllegalStateExceptionÒì³£
-	element		·µ»Ø¶ÓÁÐµÄÍ·ÔªËØ				Èç¹û¶ÓÁÐ¿Õ£¬Å×³öNoSuchElementExceptionÒì³£
-	offer		Ìí¼ÓÒ»¸öÔªËØ²¢·µ»Øtrue			Èç¹û¶ÓÁÐÂú£¬·µ»Øfalse¡£
-	peek		·µ»Ø¶ÓÁÐµÄÍ·ÔªËØ				Èç¹û¶ÓÁÐ¿Õ£¬·µ»Ønull¡£
-	poll		ÒÆ³ö²¢·µ»Ø¶ÓÁÐµÄÍ·ÔªËØ			Èç¹û¶ÓÁÐ¿Õ£¬·µ»Ønull¡£
-	put			Ìí¼ÓÒ»¸öÔªËØ					Èç¹û¶ÓÁÐÂú£¬Ôò×èÈû¡£
-	remove		ÒÆ³ö²¢·µ»ØÍ·ÔªËØ				Èç¹û¶ÓÁÐ¿Õ£¬ÔòÅ×³öNoSuchElementExceptionÒì³£
-	take		ÒÆ³ö²¢·µ»ØÍ·ÔªËØ				Èç¹û¶ÓÁÐ¿Õ£¬Ôò×èÈû¡£
+	æ–¹æ³•			åŠ¨ä½œ						ç‰¹æ®Šæƒ…å†µä¸‹çš„åŠ¨ä½œ
+	add			æ·»åŠ ä¸€ä¸ªå…ƒç´ 					å¦‚æžœé˜Ÿåˆ—æ»¡ï¼ŒæŠ›å‡ºIllegalStateExceptionå¼‚å¸¸
+	element		è¿”å›žé˜Ÿåˆ—çš„å¤´å…ƒç´ 				å¦‚æžœé˜Ÿåˆ—ç©ºï¼ŒæŠ›å‡ºNoSuchElementExceptionå¼‚å¸¸
+	offer		æ·»åŠ ä¸€ä¸ªå…ƒç´ å¹¶è¿”å›žtrue			å¦‚æžœé˜Ÿåˆ—æ»¡ï¼Œè¿”å›žfalseã€‚
+	peek		è¿”å›žé˜Ÿåˆ—çš„å¤´å…ƒç´ 				å¦‚æžœé˜Ÿåˆ—ç©ºï¼Œè¿”å›žnullã€‚
+	poll		ç§»å‡ºå¹¶è¿”å›žé˜Ÿåˆ—çš„å¤´å…ƒç´ 			å¦‚æžœé˜Ÿåˆ—ç©ºï¼Œè¿”å›žnullã€‚
+	put			æ·»åŠ ä¸€ä¸ªå…ƒç´ 					å¦‚æžœé˜Ÿåˆ—æ»¡ï¼Œåˆ™é˜»å¡žã€‚
+	remove		ç§»å‡ºå¹¶è¿”å›žå¤´å…ƒç´ 				å¦‚æžœé˜Ÿåˆ—ç©ºï¼Œåˆ™æŠ›å‡ºNoSuchElementExceptionå¼‚å¸¸
+	take		ç§»å‡ºå¹¶è¿”å›žå¤´å…ƒç´ 				å¦‚æžœé˜Ÿåˆ—ç©ºï¼Œåˆ™é˜»å¡žã€‚
 
-Èç¹û¶ÓÁÐµ±×÷Ïß³Ì¹ÜÀí¹¤¾ßÀ´ÓÃ£¬ÔòÊ¹ÓÃputºÍtake·½·¨¡£
-pollºÍpeek·½·¨·µ»Ø¿ÕÀ´Ö¸Ê¾Ê§°Ü£¬Òò´Ë£¬Ïò¶ÓÁÐÖÐ²åÈënullÖµÊÇ·Ç·¨µÄ¡£
+å¦‚æžœé˜Ÿåˆ—å½“ä½œçº¿ç¨‹ç®¡ç†å·¥å…·æ¥ç”¨ï¼Œåˆ™ä½¿ç”¨putå’Œtakeæ–¹æ³•ã€‚
+pollå’Œpeekæ–¹æ³•è¿”å›žç©ºæ¥æŒ‡ç¤ºå¤±è´¥ï¼Œå› æ­¤ï¼Œå‘é˜Ÿåˆ—ä¸­æ’å…¥nullå€¼æ˜¯éžæ³•çš„ã€‚

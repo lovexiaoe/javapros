@@ -9,8 +9,8 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /**
- * cÖĞµÄ»Øµ÷ÊÇÍ¨¹ı´«µİ·½·¨Ö¸ÕëÀ´ÊµÏÖ¡£javaÖĞ»Øµ÷ÊÇÍ¨¹ı´«µİ¶ÔÏó²¢Ö¸¶¨·½·¨À´ÊµÏÖµÄ¡£
- * ±»´«µİµÄ¶ÔÏóĞèÒªÊµÏÖjava.awt.event°üÖĞµÄActionListener½Ó¿Ú¡£ <code>
+ * cä¸­çš„å›è°ƒæ˜¯é€šè¿‡ä¼ é€’æ–¹æ³•æŒ‡é’ˆæ¥å®ç°ã€‚javaä¸­å›è°ƒæ˜¯é€šè¿‡ä¼ é€’å¯¹è±¡å¹¶æŒ‡å®šæ–¹æ³•æ¥å®ç°çš„ã€‚
+ * è¢«ä¼ é€’çš„å¯¹è±¡éœ€è¦å®ç°java.awt.eventåŒ…ä¸­çš„ActionListeneræ¥å£ã€‚ <code>
  * 		public interface ActionListener
  * 		{
  * 			void actionPerformed(ActionEvent event);
@@ -25,8 +25,8 @@ public class ActionListenerInterface {
 		ActionListener listener = new TimePrinter();
 
 		/*
-		 * ÕâÀï¶¨ÒåÁËÒ»¸öÃ¿10sÏÔÊ¾Ê±¼äµÄ¶¨Ê±Æ÷ÈÎÎñ¡£
-		 * awt.TimerÊÇÓÃÓÚÖ´ĞĞ¶¨Ê±ÈÎÎñµÄ£¬util.TimerÊÇÓÃÓÚµ÷¶ÈºóÌ¨ÈÎÎñ¡£
+		 * è¿™é‡Œå®šä¹‰äº†ä¸€ä¸ªæ¯10sæ˜¾ç¤ºæ—¶é—´çš„å®šæ—¶å™¨ä»»åŠ¡ã€‚
+		 * awt.Timeræ˜¯ç”¨äºæ‰§è¡Œå®šæ—¶ä»»åŠ¡çš„ï¼Œutil.Timeræ˜¯ç”¨äºè°ƒåº¦åå°ä»»åŠ¡ã€‚
 		 */
 		Timer t = new Timer(10000, listener);
 		t.start();

@@ -4,7 +4,7 @@ import java.util.Random;
 
 
 /**
- * Éú²úÕß¶Ô»º³åÇø½øĞĞĞ´Èë
+ * ç”Ÿäº§è€…å¯¹ç¼“å†²åŒºè¿›è¡Œå†™å…¥
  * @author xiaoe
  *
  */
@@ -29,6 +29,6 @@ public class Producer implements Runnable{
 			}
 		}
 		
-		System.out.println("Éú²úÕßÍê³ÉÉú²ú");
+		System.out.println("ç”Ÿäº§è€…å®Œæˆç”Ÿäº§");
 	}
 }

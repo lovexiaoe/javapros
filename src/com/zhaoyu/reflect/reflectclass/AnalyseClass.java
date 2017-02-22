@@ -6,17 +6,17 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 /**
- * ´ËÀàÖ÷ÒªÌåÏÖ·´Éä¶ÔÀàĞÅÏ¢µÄ²Ù×÷¡£
+ * æ­¤ç±»ä¸»è¦ä½“ç°åå°„å¯¹ç±»ä¿¡æ¯çš„æ“ä½œã€‚
  *
- * ÔÚreflect°üÖĞÓĞÈı¸öÀàField,MethodºÍConstructor·Ö±ğÓÃÀ´ÃèÊöÀàµÄ×Ö¶Î£¬·½·¨ºÍ¹¹ÔìÆ÷¡£
+ * åœ¨reflectåŒ…ä¸­æœ‰ä¸‰ä¸ªç±»Field,Methodå’ŒConstructoråˆ†åˆ«ç”¨æ¥æè¿°ç±»çš„å­—æ®µï¼Œæ–¹æ³•å’Œæ„é€ å™¨ã€‚
  *
- * ClassÀàÖĞµÄgetFields¡¢getMethods¡¢getConstructors·½·¨·Ö±ğ·µ»ØÀàÌá¹©µÄpublic×Ö¶Î¡¢·½·¨ºÍ¹¹ÔìÆ÷Êı×é¡£
- * ÆäÖĞ°üÀ¨³¬ÀàµÄ½öÓĞ³ÉÔ±¡£
+ * Classç±»ä¸­çš„getFieldsã€getMethodsã€getConstructorsæ–¹æ³•åˆ†åˆ«è¿”å›ç±»æä¾›çš„publicå­—æ®µã€æ–¹æ³•å’Œæ„é€ å™¨æ•°ç»„ã€‚
+ * å…¶ä¸­åŒ…æ‹¬è¶…ç±»çš„ä»…æœ‰æˆå‘˜ã€‚
  *
- * ClassÀàÖĞµÄgetDeclaredFields¡¢getDeclaredMethods¡¢getDeclaredConstructors·½·¨·Ö±ğ·µ»ØÀàÖĞÉùÃ÷µÄÈ«²¿Óò¡¢·½·¨¡¢
- * ¹¹ÔìÆ÷¡£ÆäÖĞ°üÀ¨ÁËprivateºÍprotected³ÉÔ±£¬µ«ÊÇ²»°üÀ¨³¬ÀàµÄ³ÉÔ± ¡£
+ * Classç±»ä¸­çš„getDeclaredFieldsã€getDeclaredMethodsã€getDeclaredConstructorsæ–¹æ³•åˆ†åˆ«è¿”å›ç±»ä¸­å£°æ˜çš„å…¨éƒ¨åŸŸã€æ–¹æ³•ã€
+ * æ„é€ å™¨ã€‚å…¶ä¸­åŒ…æ‹¬äº†privateå’Œprotectedæˆå‘˜ï¼Œä½†æ˜¯ä¸åŒ…æ‹¬è¶…ç±»çš„æˆå‘˜ ã€‚
  *
- * ÏÂÃæ³ÌĞò´òÓ¡Ò»¸öÀàµÄÈ«²¿ĞÅÏ¢¡£
+ * ä¸‹é¢ç¨‹åºæ‰“å°ä¸€ä¸ªç±»çš„å…¨éƒ¨ä¿¡æ¯ã€‚
  *
  * @author xiaoe
  *
@@ -48,7 +48,7 @@ public class AnalyseClass {
 	}
 
 	/**
-	 * ´òÓ¡Ò»¸öÀàµÄËùÓĞ¹¹Ôìº¯Êı¡£
+	 * æ‰“å°ä¸€ä¸ªç±»çš„æ‰€æœ‰æ„é€ å‡½æ•°ã€‚
 	 *
 	 */
 	static void printConstructors(Class<?> clazz) {
@@ -56,15 +56,15 @@ public class AnalyseClass {
 		for (Constructor<?> constructor : constructors) {
 			String name = constructor.getName();
 			System.out.print("	");
-			// Í¨¹ıModifier»ñÈ¡ºÍ´òÓ¡ĞŞÊÎ·û¡£
+			// é€šè¿‡Modifierè·å–å’Œæ‰“å°ä¿®é¥°ç¬¦ã€‚
 			String modifiers = Modifier.toString(constructor.getModifiers());
 			if (modifiers.length() > 0) {
 				System.out.print(modifiers + " ");
 			}
-			// ´òÓ¡Ãû³Æ
+			// æ‰“å°åç§°
 			System.out.print(name + "(");
 
-			// ´òÓ¡²ÎÊıÀàĞÍ
+			// æ‰“å°å‚æ•°ç±»å‹
 			Class[] paramTypes = constructor.getParameterTypes();
 			for (int i = 0; i < paramTypes.length; i++) {
 				if (i > 0) {
@@ -77,7 +77,7 @@ public class AnalyseClass {
 	}
 
 	/**
-	 * ´òÓ¡Ò»¸öÀàµÄËùÓĞ·½·¨¡£
+	 * æ‰“å°ä¸€ä¸ªç±»çš„æ‰€æœ‰æ–¹æ³•ã€‚
 	 *
 	 * @param clazz
 	 */
@@ -89,16 +89,16 @@ public class AnalyseClass {
 
 			String name = method.getName();
 			System.out.print("	");
-			// ´òÓ¡modifier
+			// æ‰“å°modifier
 			String modifiers = Modifier.toString(method.getModifiers());
 			if (modifiers.length() > 0) {
 				System.out.print(modifiers + " ");
 			}
 
-			// ´òÓ¡Ãû³Æ
+			// æ‰“å°åç§°
 			System.out.print(retType.getName() + " " + name + "(");
 
-			// ´òÓ¡²ÎÊı
+			// æ‰“å°å‚æ•°
 			Class<?>[] paramTypes = method.getParameterTypes();
 			for (int i = 0; i < paramTypes.length; i++) {
 				if (i > 0) {

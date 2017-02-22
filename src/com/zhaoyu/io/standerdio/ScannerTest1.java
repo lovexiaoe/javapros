@@ -2,7 +2,7 @@ package com.zhaoyu.io.standerdio;
 
 import java.util.Scanner;
 
-//¼òµ¥µÄÊäÈë£¬³ÌĞò²»½¡×³£¬ÔËĞĞÊ±»á±¨´í¡£
+//ç®€å•çš„è¾“å…¥ï¼Œç¨‹åºä¸å¥å£®ï¼Œè¿è¡Œæ—¶ä¼šæŠ¥é”™ã€‚
 public class ScannerTest1 {
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
@@ -11,8 +11,8 @@ public class ScannerTest1 {
 		int number2;
 		int sum;
 
-		// ÕâÀïµÄÊäÈëÅĞ¶ÏºÜ´Ö²Ú£¬Èç¹û²»½øĞĞÅĞ¶ÏÊäÈëµÄÀàĞÍ£¬Ôò³ÌĞò»áÔËĞĞ±¨InputMismatchException´í¡£
-		// ²Î¿¼ScannerTest2.java
+		// è¿™é‡Œçš„è¾“å…¥åˆ¤æ–­å¾ˆç²—ç³™ï¼Œå¦‚æœä¸è¿›è¡Œåˆ¤æ–­è¾“å…¥çš„ç±»å‹ï¼Œåˆ™ç¨‹åºä¼šè¿è¡ŒæŠ¥InputMismatchExceptioné”™ã€‚
+		// å‚è€ƒScannerTest2.java
 		System.out.print("Enter first integer: ");
 		number1 = input.nextInt();
 

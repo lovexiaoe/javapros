@@ -1,5 +1,8 @@
 package com.zhaoyu.designpattern.structure.proxy.dongtai;
 
+/**
+ * author:大神
+ */
 public class Test {
 	public static void main(String[] args) {
 		LogHandler logHandler = new LogHandler();

@@ -5,11 +5,11 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-//¶ÁĞ´ËøµÄÊ¹ÓÃ£¬ÑİÊ¾Ò»¸öĞ´²Ù×÷³ÖĞø3Ãë£¬Á¬ĞøµÄ¶Á²Ù×÷¡£ÔÚĞ´µÄ¹ı³ÌÖĞ£¬»ñÈ¡²»µ½¶ÁËø£¬ËùÒÔÖĞ¼ä·µ»Ø0¡£
+//è¯»å†™é”çš„ä½¿ç”¨ï¼Œæ¼”ç¤ºä¸€ä¸ªå†™æ“ä½œæŒç»­3ç§’ï¼Œè¿ç»­çš„è¯»æ“ä½œã€‚åœ¨å†™çš„è¿‡ç¨‹ä¸­ï¼Œè·å–ä¸åˆ°è¯»é”ï¼Œæ‰€ä»¥ä¸­é—´è¿”å›0ã€‚
 
 /**
- * ReadWriteLock½Ó¿Ú£¬ÔÚÃ»ÓĞĞ´µÄÇé¿öÏÂ£¬readLock¿ÉÒÔÍ¬Ê±±»¶à¸ö¶ÁÈ¡Õß¹²ÏíÊ¹ÓÃ£¬Ğ´ËøÊÇÅÅËûµÄ¡£
- * Ò»¸öReadWriteLock½Ó¿ÚµÄÊµÏÖÕß±ØĞë±£Ö¤ËùÓĞ¶ÁÈ¡Õß¿´µ½µÄÊÇ×îºóÒ»´ÎĞŞ¸ÄºóµÄÊı¾İ¡£
+ * ReadWriteLockæ¥å£ï¼Œåœ¨æ²¡æœ‰å†™çš„æƒ…å†µä¸‹ï¼ŒreadLockå¯ä»¥åŒæ—¶è¢«å¤šä¸ªè¯»å–è€…å…±äº«ä½¿ç”¨ï¼Œå†™é”æ˜¯æ’ä»–çš„ã€‚
+ * ä¸€ä¸ªReadWriteLockæ¥å£çš„å®ç°è€…å¿…é¡»ä¿è¯æ‰€æœ‰è¯»å–è€…çœ‹åˆ°çš„æ˜¯æœ€åä¸€æ¬¡ä¿®æ”¹åçš„æ•°æ®ã€‚
  * 
  * @author dmall223
  *
@@ -19,9 +19,9 @@ public class ReadWriteLockTest {
 		Resource1 resource = new Resource1();
 		UpdateResource1 ur1 = new UpdateResource1(resource);
 		Thread t1 = new Thread(ur1);
-		// ×ÓÏß³Ìµ÷ÓÃaddI¡£
+		// å­çº¿ç¨‹è°ƒç”¨addIã€‚
 		t1.start();
-		// Ö÷Ïß³Ì³ÖĞø¶Á8´Î£¬¹²4Ãë¡£
+		// ä¸»çº¿ç¨‹æŒç»­è¯»8æ¬¡ï¼Œå…±4ç§’ã€‚
 		for (int i = 0; i < 8; i++) {
 			System.out.println(resource.getI());
 			try {
@@ -69,7 +69,7 @@ class Resource1 {
 	}
 
 	public int getI() {
-		// ÔÚĞ´Ëø±»Ëø¶¨Ê±£¬¶ÁËø»ñÈ¡²»µ½¡£
+		// åœ¨å†™é”è¢«é”å®šæ—¶ï¼Œè¯»é”è·å–ä¸åˆ°ã€‚
 		if (readLock.tryLock()) {
 			try {
 				return i;

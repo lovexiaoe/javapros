@@ -6,21 +6,21 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * ´´½¨Á½¸öÏß³Ì£¬¶ÔÒ»¸öÎ´Í¬²½µÄsimpleArray½øĞĞ²åÈë£¬
- * Ò»¸öÏß³Ì²åÈë1-3µÄÊı×Ö£¬ÁíÒ»¸öÏß³Ì²åÈë11-13µÄÊı×Ö¡£
+ * åˆ›å»ºä¸¤ä¸ªçº¿ç¨‹ï¼Œå¯¹ä¸€ä¸ªæœªåŒæ­¥çš„simpleArrayè¿›è¡Œæ’å…¥ï¼Œ
+ * ä¸€ä¸ªçº¿ç¨‹æ’å…¥1-3çš„æ•°å­—ï¼Œå¦ä¸€ä¸ªçº¿ç¨‹æ’å…¥11-13çš„æ•°å­—ã€‚
  * @author xiaoe
  *
  */
 public class SharedArrayTest {
 	public static void main(String[] args) {
 		
-		//¹¹½¨simpleArray
+		//æ„å»ºsimpleArray
 		SimpleArray sharedSimpleArray=new SimpleArray(6);
 		
 		ArrayWriter writer1=new ArrayWriter(1, sharedSimpleArray);
 		ArrayWriter writer2=new ArrayWriter(11, sharedSimpleArray);
 		
-		//ÓÃExecutorServiceÖ´ĞĞÏß³Ì
+		//ç”¨ExecutorServiceæ‰§è¡Œçº¿ç¨‹
 		ExecutorService executor=Executors.newCachedThreadPool();
 		executor.execute(writer1);
 		executor.execute(writer2);
@@ -33,27 +33,27 @@ public class SharedArrayTest {
 				System.out.println(sharedSimpleArray);
 			}
 			else {
-				System.out.println("µÈ´ıÈÎÎñ´¦Àí³¬Ê±£¡");
+				System.out.println("ç­‰å¾…ä»»åŠ¡å¤„ç†è¶…æ—¶ï¼");
 			}
 		}catch (InterruptedException e) {
-			System.out.println("ÈÎÎñ´¦Àí±»´ò¶Ï");
+			System.out.println("ä»»åŠ¡å¤„ç†è¢«æ‰“æ–­");
 		}
 	}
 	
 }
 
-/*pool-1-thread-2 ÔÚ 0 Ğ´Èë 11
-ÏÂ¸öĞ´ÈëÎ»ÖÃ£º1
-pool-1-thread-1 ÔÚ 0 Ğ´Èë  1
-ÏÂ¸öĞ´ÈëÎ»ÖÃ£º2
-pool-1-thread-2 ÔÚ 1 Ğ´Èë 12
-ÏÂ¸öĞ´ÈëÎ»ÖÃ£º3
-pool-1-thread-1 ÔÚ 2 Ğ´Èë  2
-ÏÂ¸öĞ´ÈëÎ»ÖÃ£º4
-pool-1-thread-1 ÔÚ 4 Ğ´Èë  3
-ÏÂ¸öĞ´ÈëÎ»ÖÃ£º5
-pool-1-thread-2 ÔÚ 3 Ğ´Èë 13
-ÏÂ¸öĞ´ÈëÎ»ÖÃ£º6
+/*pool-1-thread-2 åœ¨ 0 å†™å…¥ 11
+ä¸‹ä¸ªå†™å…¥ä½ç½®ï¼š1
+pool-1-thread-1 åœ¨ 0 å†™å…¥  1
+ä¸‹ä¸ªå†™å…¥ä½ç½®ï¼š2
+pool-1-thread-2 åœ¨ 1 å†™å…¥ 12
+ä¸‹ä¸ªå†™å…¥ä½ç½®ï¼š3
+pool-1-thread-1 åœ¨ 2 å†™å…¥  2
+ä¸‹ä¸ªå†™å…¥ä½ç½®ï¼š4
+pool-1-thread-1 åœ¨ 4 å†™å…¥  3
+ä¸‹ä¸ªå†™å…¥ä½ç½®ï¼š5
+pool-1-thread-2 åœ¨ 3 å†™å…¥ 13
+ä¸‹ä¸ªå†™å…¥ä½ç½®ï¼š6
 
-SimpleArrayµÄÄÚÈİÎª:
+SimpleArrayçš„å†…å®¹ä¸º:
 [1, 12, 2, 13, 3, 0]*/

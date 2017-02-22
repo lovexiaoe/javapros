@@ -8,7 +8,7 @@ public class ScannerTest2 {
 		showInput();
 	}
 
-	// Õâ¸öÊäÈë»á³öÏÖÎÊÌâ£¬Á½¸önextInt¶ÔÓ¦Ò»¸öhasNextInt,ËùÒÔºóÃæÒ»¸öÃ»ÓĞµÃµ½¼ì²é¡£
+	// è¿™ä¸ªè¾“å…¥ä¼šå‡ºç°é—®é¢˜ï¼Œä¸¤ä¸ªnextIntå¯¹åº”ä¸€ä¸ªhasNextInt,æ‰€ä»¥åé¢ä¸€ä¸ªæ²¡æœ‰å¾—åˆ°æ£€æŸ¥ã€‚
 	static void getAdd() {
 		Scanner cin = new Scanner(System.in);
 		int a, b;
@@ -19,14 +19,14 @@ public class ScannerTest2 {
 		}
 	}
 
-	// µ¥¸öÊäÈëÕûÊıĞÍ×Ö·û£¬
+	// å•ä¸ªè¾“å…¥æ•´æ•°å‹å­—ç¬¦ï¼Œ
 	static void showInput() {
 		Scanner cin = new Scanner(System.in);
 		int b;
 
 		while (cin.hasNext()) {
 			if (!cin.hasNextInt()) {
-				// Èç¹û²»ÊÇÕûĞÎ£¬ÊÍ·ÅnextInt£¬½øÈëÏÂÒ»¸öÑ­»·¡£
+				// å¦‚æœä¸æ˜¯æ•´å½¢ï¼Œé‡Šæ”¾nextIntï¼Œè¿›å…¥ä¸‹ä¸€ä¸ªå¾ªç¯ã€‚
 				String ss = cin.next();
 			} else {
 				b = cin.nextInt();

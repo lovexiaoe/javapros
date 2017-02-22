@@ -2,7 +2,7 @@ package com.zhaoyu.threads.conditionlock_producer_consumer;
 
 
 /**
- * ¹²ÏíÇøµÄ½Ó¿Ú£¬Éú²úÕßÐèÒªÔÚ¹²ÏíÇøÐ´Èë£¬Ïû·ÑÕßÐèÒªÔÚ¹²ÏíÇø¶ÁÈ¡¡£
+ * å…±äº«åŒºçš„æŽ¥å£ï¼Œç”Ÿäº§è€…éœ€è¦åœ¨å…±äº«åŒºå†™å…¥ï¼Œæ¶ˆè´¹è€…éœ€è¦åœ¨å…±äº«åŒºè¯»å–ã€‚
  * @author xiaoe
  *
  */

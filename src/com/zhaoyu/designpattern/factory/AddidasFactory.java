@@ -1,5 +1,8 @@
 package com.zhaoyu.designpattern.factory;
 
+/**
+ * author 多点
+ */
 public class AddidasFactory implements Factory {
 
 	@Override

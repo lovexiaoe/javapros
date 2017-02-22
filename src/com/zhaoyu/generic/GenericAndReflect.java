@@ -11,26 +11,26 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * ĞéÄâ»úÖĞµÄ·ºĞÍÀàĞÍĞÅÏ¢
- * ¶ÔÓÚÏÂÁĞ´úÂë£º
+ * è™šæ‹Ÿæœºä¸­çš„æ³›å‹ç±»å‹ä¿¡æ¯
+ * å¯¹äºä¸‹åˆ—ä»£ç ï¼š
  * public static <T extends Comparable<? super T>> T min(T[] a)
- * ·ºĞÍ²Á³ıºóÈçÏÂ£º
+ * æ³›å‹æ“¦é™¤åå¦‚ä¸‹ï¼š
  * public static Comparable min(Comparable[] a)
- * µ«ÊÇÀàĞÍ²Á³ıÈÔÈ»±£ÁôÒ»Ğ©·ºĞÍµÄ¼ÇÒä¡£ ¿ÉÒÔÊ¹ÓÃjavase5Ìá¹©µÄ·´ÉäAPIÀ´È·¶¨£º
- * 1£¬Õâ¸ö·½·¨ÓĞÒ»¸öTµÄ²ÎÊıÀàĞÍ
- * 2£¬Õâ¸öTµÄÀàĞÍ²ÎÊıÓĞÒ»¸ö×ÓÀàĞÍÏŞ¶¨£¬Æä×ÔÉíÓÖÊÇÒ»¸ö·ºĞÍÀàĞÍ¡£
- * 3£¬Õâ¸öÏŞ¶¨ÀàĞÍÓĞÒ»¸öÍ¨Åä·û²ÎÊı¡£
- * 4£¬Õâ¸öÍ¨Åä·û²ÎÊıÓĞÒ»¸ö³¬ÀàĞÍÏŞ¶¨¡£
- * 5£¬Õâ¸ö·ºĞÍ·½·¨ÓĞÒ»¸ö·ºĞÍÊı×é²ÎÊı¡£
+ * ä½†æ˜¯ç±»å‹æ“¦é™¤ä»ç„¶ä¿ç•™ä¸€äº›æ³›å‹çš„è®°å¿†ã€‚ å¯ä»¥ä½¿ç”¨javase5æä¾›çš„åå°„APIæ¥ç¡®å®šï¼š
+ * 1ï¼Œè¿™ä¸ªæ–¹æ³•æœ‰ä¸€ä¸ªTçš„å‚æ•°ç±»å‹
+ * 2ï¼Œè¿™ä¸ªTçš„ç±»å‹å‚æ•°æœ‰ä¸€ä¸ªå­ç±»å‹é™å®šï¼Œå…¶è‡ªèº«åˆæ˜¯ä¸€ä¸ªæ³›å‹ç±»å‹ã€‚
+ * 3ï¼Œè¿™ä¸ªé™å®šç±»å‹æœ‰ä¸€ä¸ªé€šé…ç¬¦å‚æ•°ã€‚
+ * 4ï¼Œè¿™ä¸ªé€šé…ç¬¦å‚æ•°æœ‰ä¸€ä¸ªè¶…ç±»å‹é™å®šã€‚
+ * 5ï¼Œè¿™ä¸ªæ³›å‹æ–¹æ³•æœ‰ä¸€ä¸ªæ³›å‹æ•°ç»„å‚æ•°ã€‚
  *
- * ÎªÁË±í´ï·ºĞÍÀàĞÍµÄÉùÃ÷£¬javaSE5ÔÚreflect°üÖĞÌá¹©ÁËÒ»¸öĞÂµÄ½Ó¿ÚType¡£Õâ¸ö½Ó¿Ú°üº¬ÏÂÁĞ×ÓÀàĞÍ£º
- * 1£¬ClassÀà£¬ÃèÊö¾ßÌåÀàĞÍ¡£
- * 2£¬TypeVariable½Ó¿Ú£¬ÃèÊöÀàĞÍ±äÁ¿£¨Èç T extends Comparable<? super T>,E£©¡£
- * 3£¬WildcardType½Ó¿Ú£¬ÃèÊöÍ¨Åä·û£¨Èç? super T,?£©¡£
- * 4£¬ParameterizedType½Ó¿Ú£¬ÃèÊö·ºĞÍÀà»ò½Ó¿ÚÀàĞÍ£¨ÈçComparable<? super T>,Collection<E>µÈ£©¡£
- * 5£¬GenericArrayType½Ó¿Ú£¬ÃèÊö·ºĞÍÊı×é£¨ÈçT[]£©¡£
+ * ä¸ºäº†è¡¨è¾¾æ³›å‹ç±»å‹çš„å£°æ˜ï¼ŒjavaSE5åœ¨reflectåŒ…ä¸­æä¾›äº†ä¸€ä¸ªæ–°çš„æ¥å£Typeã€‚è¿™ä¸ªæ¥å£åŒ…å«ä¸‹åˆ—å­ç±»å‹ï¼š
+ * 1ï¼ŒClassç±»ï¼Œæè¿°å…·ä½“ç±»å‹ã€‚
+ * 2ï¼ŒTypeVariableæ¥å£ï¼Œæè¿°ç±»å‹å˜é‡ï¼ˆå¦‚ T extends Comparable<? super T>,Eï¼‰ã€‚
+ * 3ï¼ŒWildcardTypeæ¥å£ï¼Œæè¿°é€šé…ç¬¦ï¼ˆå¦‚? super T,?ï¼‰ã€‚
+ * 4ï¼ŒParameterizedTypeæ¥å£ï¼Œæè¿°æ³›å‹ç±»æˆ–æ¥å£ç±»å‹ï¼ˆå¦‚Comparable<? super T>,Collection<E>ç­‰ï¼‰ã€‚
+ * 5ï¼ŒGenericArrayTypeæ¥å£ï¼Œæè¿°æ³›å‹æ•°ç»„ï¼ˆå¦‚T[]ï¼‰ã€‚
  *
- * ´ËÀàÀûÓÃ·ºĞÍ·´ÉäAPI´òÓ¡³öÀàµÄ¶¨ÒåºÍ·½·¨¡£
+ * æ­¤ç±»åˆ©ç”¨æ³›å‹åå°„APIæ‰“å°å‡ºç±»çš„å®šä¹‰å’Œæ–¹æ³•ã€‚
  *
  * @author xiaoE
  *
@@ -42,7 +42,7 @@ public class GenericAndReflect {
 			name = args[0];
 		} else {
 			Scanner in = new Scanner(System.in);
-			System.out.println("ÊäÈëÀàµÄÃû³Æ£¬Èçjava.util.Collections:");
+			System.out.println("è¾“å…¥ç±»çš„åç§°ï¼Œå¦‚java.util.Collections:");
 			name = in.next();
 		}
 
@@ -58,13 +58,13 @@ public class GenericAndReflect {
 	}
 
 	/**
-	 * ´òÓ¡ÀàÃû³Æ£¬²¢´òÓ¡³öextends ºÍ implementsµÄÄÚÈİ¡£
+	 * æ‰“å°ç±»åç§°ï¼Œå¹¶æ‰“å°å‡ºextends å’Œ implementsçš„å†…å®¹ã€‚
 	 *
 	 * @param c1
 	 */
 	public static void printClass(Class c1) {
 		System.out.print(c1);
-		// ´òÓ¡Õâ¸öÀàµÄÀàĞÍ±äÁ¿¡£ÈçList<E>ÖĞµÄ<E>¡£
+		// æ‰“å°è¿™ä¸ªç±»çš„ç±»å‹å˜é‡ã€‚å¦‚List<E>ä¸­çš„<E>ã€‚
 		printTypes(c1.getTypeParameters(), "<", ", ", ">", true);
 		Type sc = c1.getGenericSuperclass();
 		if (sc != null) {
@@ -75,7 +75,7 @@ public class GenericAndReflect {
 		System.out.println();
 	}
 
-	// ´òÓ¡·½·¨¡£
+	// æ‰“å°æ–¹æ³•ã€‚
 	public static void printMethod(Method m) {
 		String name = m.getName();
 		System.out.print(Modifier.toString(m.getModifiers()));
@@ -91,7 +91,7 @@ public class GenericAndReflect {
 	}
 
 	/**
-	 * ´òÓ¡ÀàĞÍ²ÎÊıÁĞ±í¡£
+	 * æ‰“å°ç±»å‹å‚æ•°åˆ—è¡¨ã€‚
 	 *
 	 * @param types
 	 * @param pre
@@ -100,7 +100,7 @@ public class GenericAndReflect {
 	 * @param isDefinition
 	 */
 	public static void printTypes(Type[] types, String pre, String sep, String suf, boolean isDefinition) {
-		// ¼Ì³Ğ×ÔObjectµÄÀàĞÍ²»´òÓ¡
+		// ç»§æ‰¿è‡ªObjectçš„ç±»å‹ä¸æ‰“å°
 		if (pre.equals(" extends ") && Arrays.equals(types, new Type[] { Object.class })) {
 			return;
 		}
@@ -119,31 +119,31 @@ public class GenericAndReflect {
 	}
 
 	/**
-	 * ¶ÔÒ»¸öÀàĞÍ½øĞĞ´òÓ¡£¬Õâ¸öÀàĞÍ¿ÉÒÔÊÇ5ÖÖ×ÓÀàĞÍ ¡£
+	 * å¯¹ä¸€ä¸ªç±»å‹è¿›è¡Œæ‰“å°ï¼Œè¿™ä¸ªç±»å‹å¯ä»¥æ˜¯5ç§å­ç±»å‹ ã€‚
 	 *
 	 * @param type
 	 * @param isDefinition
-	 *            ÀàĞÍ±äÁ¿ÊÇ·ñÏŞ¶¨¡£
+	 *            ç±»å‹å˜é‡æ˜¯å¦é™å®šã€‚
 	 */
 	public static void printType(Type type, boolean isDefinition) {
 		if (type instanceof Class) {
 			Class t = (Class) type;
 			System.out.print(t.getName());
 		} else if (type instanceof TypeVariable) {
-			// ·ºĞÍÀàĞÍµÄ´òÓ¡<T>,<T extends Number>
+			// æ³›å‹ç±»å‹çš„æ‰“å°<T>,<T extends Number>
 			TypeVariable t = (TypeVariable) type;
 			System.out.print(t.getName());
 			if (isDefinition) {
 				printTypes(t.getBounds(), " extends ", " & ", "", false);
 			}
 		} else if (type instanceof WildcardType) {
-			// Í¨Åä·û´òÓ¡£¬? extends Number
+			// é€šé…ç¬¦æ‰“å°ï¼Œ? extends Number
 			WildcardType t = (WildcardType) type;
 			System.out.print("?");
 			printTypes(t.getUpperBounds(), " extends ", " & ", "", false);
 			printTypes(t.getLowerBounds(), " super ", " & ", "", false);
 		} else if (type instanceof ParameterizedType) {
-			// ²ÎÊı»¯ÀàĞÍµÄ´òÓ¡£¬ÈçCollection<E>
+			// å‚æ•°åŒ–ç±»å‹çš„æ‰“å°ï¼Œå¦‚Collection<E>
 			ParameterizedType t = (ParameterizedType) type;
 			// getOwnerType if this type is O<T>.I<S>, return a representation of O<T>.
 			Type owner = t.getOwnerType();
@@ -154,7 +154,7 @@ public class GenericAndReflect {
 			printType(t.getRawType(), false);
 			printTypes(t.getActualTypeArguments(), "<", ", ", ">", false);
 		} else if (type instanceof GenericArrayType) {
-			// ·ºĞÍÊı×éÀàĞÍµÄ´òÓ¡£¬ÈçT[]
+			// æ³›å‹æ•°ç»„ç±»å‹çš„æ‰“å°ï¼Œå¦‚T[]
 			GenericArrayType t = (GenericArrayType) type;
 			System.out.print("");
 			printType(t.getGenericComponentType(), isDefinition);

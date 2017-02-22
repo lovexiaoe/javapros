@@ -8,17 +8,17 @@ import java.io.PushbackInputStream;
 
 public class CreateStream {
 	public static void main(String[] args) throws IOException {
-		// ÎÄ¼şÊäÈëÁ÷
+		// æ–‡ä»¶è¾“å…¥æµ
 		FileInputStream fin = new FileInputStream("employee.txt");
 
-		// ¹¹½¨Ò»¸öÊı¾İÊäÈëÁ÷£¬¶ÁÈ¡DoubleÀàĞÍ¡£
+		// æ„å»ºä¸€ä¸ªæ•°æ®è¾“å…¥æµï¼Œè¯»å–Doubleç±»å‹ã€‚
 		DataInputStream din = new DataInputStream(fin);
 		double s = din.readDouble();
 
-		// ¹¹½¨ Ò»¸ö´øÓĞ»º³åµÄÊı¾İÊäÁ÷
+		// æ„å»º ä¸€ä¸ªå¸¦æœ‰ç¼“å†²çš„æ•°æ®è¾“æµ
 		DataInputStream din2 = new DataInputStream(new BufferedInputStream(fin));
 
-		// java»¹Ìá¹©ÁË¿ÉÒÔ»ØÍËµÄÊäÈëÁ÷PushbackInputStream,ÈçÏÂ¿É¹¹½¨Ò»¸ö¿É»ØÍËµÄÊäÈëÁ÷
+		// javaè¿˜æä¾›äº†å¯ä»¥å›é€€çš„è¾“å…¥æµPushbackInputStream,å¦‚ä¸‹å¯æ„å»ºä¸€ä¸ªå¯å›é€€çš„è¾“å…¥æµ
 		PushbackInputStream pbin = new PushbackInputStream(new BufferedInputStream(fin));
 
 	}

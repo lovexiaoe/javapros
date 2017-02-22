@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * ´ËÀà¸ù¾İmanager¼Ì³ĞÁËemployeeµÄ¹ØÏµÖØĞ´ÁËequal,hashCode,toString·½·¨¡£
+ * æ­¤ç±»æ ¹æ®managerç»§æ‰¿äº†employeeçš„å…³ç³»é‡å†™äº†equal,hashCode,toStringæ–¹æ³•ã€‚
  *
  * @author xiaoe
  *
@@ -51,7 +51,7 @@ class Employee {
 		this.date = date;
 	}
 
-	// ÖØĞ´equals
+	// é‡å†™equals
 	@Override
 	public boolean equals(Object otherObject) {
 		if (this == otherObject) {
@@ -68,13 +68,13 @@ class Employee {
 		return name.equals(other.getName()) && salary == other.getSalary() && date.equals(other.getDate());
 	}
 
-	// ÖØĞ´hashCode
+	// é‡å†™hashCode
 	@Override
 	public int hashCode() {
 		return 7 * name.hashCode() + 11 * new Double(salary).hashCode() + 13 * date.hashCode();
 	}
 
-	// ÖØĞ´toString
+	// é‡å†™toString
 	@Override
 	public String toString() {
 		return this.getClass().getName() + "[name=" + name + ",salary=" + salary + ",date=" + date + "]";
@@ -97,24 +97,24 @@ class Manager extends Employee {
 		this.bonus = 0;
 	}
 
-	// ¸ù¾İ¸¸ÀàÖØĞ´equals
+	// æ ¹æ®çˆ¶ç±»é‡å†™equals
 	@Override
 	public boolean equals(Object otherObject) {
 		if (!super.equals(otherObject)) {
 			return false;
 		}
-		// super.equalsÒÑ¾­Ê¹ÓÃgetClass¼ì²âÁËotherObjectºÍthisÊôÓÚÍ¬Ò»¸öÀà£¬ËùÒÔ¿ÉÒÔÖ±½Ó×ª»»¡£
+		// super.equalså·²ç»ä½¿ç”¨getClassæ£€æµ‹äº†otherObjectå’Œthiså±äºåŒä¸€ä¸ªç±»ï¼Œæ‰€ä»¥å¯ä»¥ç›´æ¥è½¬æ¢ã€‚
 		Manager other = (Manager) otherObject;
 		return bonus == other.bonus;
 	}
 
-	// ¸ù¾İ¸¸ÀàÖØĞ´hashCode
+	// æ ¹æ®çˆ¶ç±»é‡å†™hashCode
 	@Override
 	public int hashCode() {
 		return super.hashCode() + 17 * new Double(bonus).hashCode();
 	}
 
-	// ÖØĞ´toString
+	// é‡å†™toString
 	@Override
 	public String toString() {
 		return super.toString() + "[bonus=" + bonus + "]";

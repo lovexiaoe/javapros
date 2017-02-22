@@ -1,7 +1,7 @@
 package com.zhaoyu.designpattern.abstractfactory;
 
 /**
- * @author 肯德基的可乐
+ * @author 鑲痉鍩虹殑鍙箰
  * 
  */
 public class KFCCola implements Cola {
@@ -10,6 +10,6 @@ public class KFCCola implements Cola {
 	}
 
 	void doSomething() {
-		System.out.println("做其它事情！");
+		System.out.println("鍋氬叾瀹冧簨鎯咃紒");
 	}
 }

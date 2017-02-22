@@ -9,25 +9,25 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * ¸ÃÀàÊ¹ÓÃĞòÁĞ»¯Á÷½áºÏclone¶Ô¶ÔÏó½øĞĞÉî²ã¸´ÖÆ¡£ÊµÏÖSerializable½Ó¿ÚµÄ¶ÔÏó´¦Àí½øĞĞµÄÊÇÉî¿½±´¡£
- * ¸Ä±ä¶ÔÏóÄ¬ÈÏµÄĞòÁĞ»¯ĞĞÎªĞèÒª£¬¿ÉĞòÁĞ»¯µÄÀà¿ÉÒÔ¶¨ÒåÏÂÃæ·½·¨ÊµÏÖ×Ô¶¨ÒåĞòÁĞ»¯¡£
+ * è¯¥ç±»ä½¿ç”¨åºåˆ—åŒ–æµç»“åˆcloneå¯¹å¯¹è±¡è¿›è¡Œæ·±å±‚å¤åˆ¶ã€‚å®ç°Serializableæ¥å£çš„å¯¹è±¡å¤„ç†è¿›è¡Œçš„æ˜¯æ·±æ‹·è´ã€‚
+ * æ”¹å˜å¯¹è±¡é»˜è®¤çš„åºåˆ—åŒ–è¡Œä¸ºéœ€è¦ï¼Œå¯åºåˆ—åŒ–çš„ç±»å¯ä»¥å®šä¹‰ä¸‹é¢æ–¹æ³•å®ç°è‡ªå®šä¹‰åºåˆ—åŒ–ã€‚
  * private void readObject(ObjectInputStream in)throws IOException,ClassNotFoundException;
  * private void writeObject(ObjectOutputStream out)throws IOException;
  *
- * ¸ü¸ß¼¶µÄ×Ô¶¨ÒåĞòÁĞ»¯·½·¨»¹ÓĞreadExternalºÍwriteExternal·½·¨¡£
+ * æ›´é«˜çº§çš„è‡ªå®šä¹‰åºåˆ—åŒ–æ–¹æ³•è¿˜æœ‰readExternalå’ŒwriteExternalæ–¹æ³•ã€‚
  *
  * @author xiaoE
  *
  */
 
 /**
- * µ¥ÀıºÍÃ¶¾ÙÔÚ½øĞĞĞòÁĞ»¯Ê±£¬ÓÉÓÚĞòÁĞ»¯²úÉúÒ»¸öÈ«ĞÂµÄ¶ÔÏó£¬ÔÚÊ¹ÓÃ==¼ì²â¶ÔÏóµÄÏàµÈĞÔÊ±£¬»á´òÆÆÔ­ÓĞµÄÕâÖÖ°²È«»úÖÆ¡£
- * ÎªÁË½â¾öÕâÒ»ÎÊÌâĞèÒª¶¨ÒåÒ»¸öreadResolveµÄÌØÊâĞòÁĞ»¯·½·¨¡£ÔÚjava5ºóµÄenum½á¹¹ÖĞ£¬jdkÒÑ¾­ÊµÏÖÁËÕâÖÖ°²È«»úÖÆ¡£
- * ÔÚÊµÏÖjava5ÒÔÇ°µÄÃ¶¾Ù»òÕß µ¥ÀıÉè¼ÆÄ£Ê½µÄÀàÖĞĞèÒªÊµÏÖÕâÒ»ÌØÊâ·½·¨¡£
+ * å•ä¾‹å’Œæšä¸¾åœ¨è¿›è¡Œåºåˆ—åŒ–æ—¶ï¼Œç”±äºåºåˆ—åŒ–äº§ç”Ÿä¸€ä¸ªå…¨æ–°çš„å¯¹è±¡ï¼Œåœ¨ä½¿ç”¨==æ£€æµ‹å¯¹è±¡çš„ç›¸ç­‰æ€§æ—¶ï¼Œä¼šæ‰“ç ´åŸæœ‰çš„è¿™ç§å®‰å…¨æœºåˆ¶ã€‚
+ * ä¸ºäº†è§£å†³è¿™ä¸€é—®é¢˜éœ€è¦å®šä¹‰ä¸€ä¸ªreadResolveçš„ç‰¹æ®Šåºåˆ—åŒ–æ–¹æ³•ã€‚åœ¨java5åçš„enumç»“æ„ä¸­ï¼Œjdkå·²ç»å®ç°äº†è¿™ç§å®‰å…¨æœºåˆ¶ã€‚
+ * åœ¨å®ç°java5ä»¥å‰çš„æšä¸¾æˆ–è€… å•ä¾‹è®¾è®¡æ¨¡å¼çš„ç±»ä¸­éœ€è¦å®ç°è¿™ä¸€ç‰¹æ®Šæ–¹æ³•ã€‚
  */
 
 /**
- * ĞòÁĞ»¯Ê±£¬ĞéÄâ»ú±ØĞëÒªÁË½âÃ¿¸ö¶ÔÏóµÄ½á¹¹£¬ËùÒÔÓĞĞ©Âı£¬Èç¹û¹ØĞÄĞÔÄÜÎÊÌâ£¬²¢ÇÒÒª¶ÁĞ´Ä³¸öÌØ¶¨ÀàµÄ´óÁ¿¶ÔÏó£¬ĞèÒªÑĞ¾¿Externalizable½Ó¿Ú¡£
+ * åºåˆ—åŒ–æ—¶ï¼Œè™šæ‹Ÿæœºå¿…é¡»è¦äº†è§£æ¯ä¸ªå¯¹è±¡çš„ç»“æ„ï¼Œæ‰€ä»¥æœ‰äº›æ…¢ï¼Œå¦‚æœå…³å¿ƒæ€§èƒ½é—®é¢˜ï¼Œå¹¶ä¸”è¦è¯»å†™æŸä¸ªç‰¹å®šç±»çš„å¤§é‡å¯¹è±¡ï¼Œéœ€è¦ç ”ç©¶Externalizableæ¥å£ã€‚
  * 
  * @author xiaoE
  *
@@ -35,7 +35,7 @@ import java.util.GregorianCalendar;
 
 public class SerialCloneTest {
 	public static void main(String[] args) {
-		Employee harry = new Employee("ºàÀû", 35000, 1989, 10, 1);
+		Employee harry = new Employee("äº¨åˆ©", 35000, 1989, 10, 1);
 		Employee harry2 = (Employee) harry.clone();
 		harry.raiseSalary(10);
 
@@ -45,8 +45,8 @@ public class SerialCloneTest {
 }
 
 /**
- * ¸ÃÀàÀûÓÃ¶ÔÏóĞòÁĞ»¯ÊµÏÖÁË¶ÔÏóµÄ¿ËÂ¡¡£
- * ¶ÔÏóÊä³öÊäÈëÁ÷µÄÊ¹ÓÃĞèÒªÊµÏÖSerializable½Ó¿Ú
+ * è¯¥ç±»åˆ©ç”¨å¯¹è±¡åºåˆ—åŒ–å®ç°äº†å¯¹è±¡çš„å…‹éš†ã€‚
+ * å¯¹è±¡è¾“å‡ºè¾“å…¥æµçš„ä½¿ç”¨éœ€è¦å®ç°Serializableæ¥å£
  *
  * @author xiaoE
  *
@@ -55,16 +55,16 @@ class SerialCloneable implements Cloneable, Serializable {
 	@Override
 	public Object clone() {
 		try {
-			// ½«¶ÔÏóĞ´Èë×Ö½ÚÊı×é»º´æ£¬
+			// å°†å¯¹è±¡å†™å…¥å­—èŠ‚æ•°ç»„ç¼“å­˜ï¼Œ
 			ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			// ¶ÔÏóÊä³öÁ÷
+			// å¯¹è±¡è¾“å‡ºæµ
 			ObjectOutputStream out = new ObjectOutputStream(bout);
 			out.writeObject(this);
 			out.close();
 
-			// ´Ó×Ö½ÚÊı×é»º´æ¶ÁÈ¡¶ÔÏó£¬·µ»Ø¡£
+			// ä»å­—èŠ‚æ•°ç»„ç¼“å­˜è¯»å–å¯¹è±¡ï¼Œè¿”å›ã€‚
 			ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
-			// ¶ÔÏóÊäÈëÁ÷
+			// å¯¹è±¡è¾“å…¥æµ
 			ObjectInputStream in = new ObjectInputStream(bin);
 			Object ret = in.readObject();
 			in.close();
@@ -79,7 +79,7 @@ class SerialCloneable implements Cloneable, Serializable {
 class Employee extends SerialCloneable {
 	private String name;
 	private double salary;
-	// transiendÓÃÓÚ×èÖ¹ĞòÁĞ»¯¶Ô×Ö¶ÎµÄ¶ÁĞ´¡£ÏÂÃæhireDayÔÚĞòÁĞ»¯ºóÎªnull¡£
+	// transiendç”¨äºé˜»æ­¢åºåˆ—åŒ–å¯¹å­—æ®µçš„è¯»å†™ã€‚ä¸‹é¢hireDayåœ¨åºåˆ—åŒ–åä¸ºnullã€‚
 	private transient Date hireDay;
 
 	public static final int NAME_SIZE = 40;

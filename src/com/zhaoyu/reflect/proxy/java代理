@@ -1,23 +1,23 @@
-´úÀí¿ÉÒÔÔÚÔËÐÐÊ±´´½¨Ò»¸öÊµÏÖÁËÒ»×é¸ø¶¨½Ó¿ÚµÄÐÂÀà¡£
+ä»£ç†å¯ä»¥åœ¨è¿è¡Œæ—¶åˆ›å»ºä¸€ä¸ªå®žçŽ°äº†ä¸€ç»„ç»™å®šæŽ¥å£çš„æ–°ç±»ã€‚
 
-ÔÚ±àÒëÊ±ÎÞ·¨È·¶¨ÐèÒªÊµÏÖÄÄ¸ö½Ó¿ÚÊ±Ê¹ÓÃ¡£
+åœ¨ç¼–è¯‘æ—¶æ— æ³•ç¡®å®šéœ€è¦å®žçŽ°å“ªä¸ªæŽ¥å£æ—¶ä½¿ç”¨ã€‚
 
-ÓÈÆäÊÇ´úÀíÀà¾ßÓÐÏÂÁÐ·½·¨£º
-1£¬Ö¸¶¨ ½Ó¿ÚËùÓÐµÄ·½·¨¡£
-2£¬ObjectÀàÖÐµÄÈ«²¿·½·¨£¬ÀýÈç£¬toString,equalsµÈ¡£
+å°¤å…¶æ˜¯ä»£ç†ç±»å…·æœ‰ä¸‹åˆ—æ–¹æ³•ï¼š
+1ï¼ŒæŒ‡å®š æŽ¥å£æ‰€æœ‰çš„æ–¹æ³•ã€‚
+2ï¼ŒObjectç±»ä¸­çš„å…¨éƒ¨æ–¹æ³•ï¼Œä¾‹å¦‚ï¼ŒtoString,equalsç­‰ã€‚
 
 
-ËùÓÐ´úÀíÀà¶¼¸²¸ÇÁËObjectÀàÖÐµÄtoString,equalsºÍhashCode·½·¨¡£
+æ‰€æœ‰ä»£ç†ç±»éƒ½è¦†ç›–äº†Objectç±»ä¸­çš„toString,equalså’ŒhashCodeæ–¹æ³•ã€‚
 
-¶ÔÓÚÌØ¶¨µÄÀà¼ÓÔØÆ÷ºÍÌØ¶¨µÄÒ»×é½Ó¿ÚÀ´Ëµ£¬Ö»ÄÜÓÐÒ»¸ö´úÀíÀà£¬Ò²¾ÍÊÇËµÈç¹û Ê¹ÓÃÍ¬Ò»¸öÀà¼ÓÔØÆ÷ºÍ½Ó¿Ú
-µ÷ÓÃ ÔÙ´ÎnewProxyInstance·½·¨µÄ»°Ö»ÄÜµÃµ½ÏÖÒ»¸öÀàµÄÁ½¸öÊµÀý¡£Èç£º
+å¯¹äºŽç‰¹å®šçš„ç±»åŠ è½½å™¨å’Œç‰¹å®šçš„ä¸€ç»„æŽ¥å£æ¥è¯´ï¼Œåªèƒ½æœ‰ä¸€ä¸ªä»£ç†ç±»ï¼Œä¹Ÿå°±æ˜¯è¯´å¦‚æžœ ä½¿ç”¨åŒä¸€ä¸ªç±»åŠ è½½å™¨å’ŒæŽ¥å£
+è°ƒç”¨ å†æ¬¡newProxyInstanceæ–¹æ³•çš„è¯åªèƒ½å¾—åˆ°çŽ°ä¸€ä¸ªç±»çš„ä¸¤ä¸ªå®žä¾‹ã€‚å¦‚ï¼š
 	Object proxy1 = Proxy.newProxyInstance(null, new Class[] { Comparable.class }, handler);
 	Object proxy2 = Proxy.newProxyInstance(null, new Class[] { Comparable.class }, handler);
-proxy1ºÍproxy2ÊÇÍ¬Ò»¸öÀàµÄÁ½¸ö¶ÔÏó¡£
+proxy1å’Œproxy2æ˜¯åŒä¸€ä¸ªç±»çš„ä¸¤ä¸ªå¯¹è±¡ã€‚
 
-Ò²¿ÉÒÔÊ¹ÓÃgetProxyClass·½·¨»ñµÃÕâ¸öÀà¡£
+ä¹Ÿå¯ä»¥ä½¿ç”¨getProxyClassæ–¹æ³•èŽ·å¾—è¿™ä¸ªç±»ã€‚
 	Class proxyClass=Proxy.getProxyClass(null,interfaces);
 
-´úÀíÀàÒ»¶¨ÊÇpublicºÍfinalµÄ¡£
+ä»£ç†ç±»ä¸€å®šæ˜¯publicå’Œfinalçš„ã€‚
 
-¿ÉÒÔÊ¹ÓÃProxyÀàÖÐµÄisProxyClass·½·¨¼ì²âÒ»¸öÌØ¶¨µÄClass¶ÔÏóÊÇ·ñ´ú±íÒ»¸ö´úÀíÀà¡£
+å¯ä»¥ä½¿ç”¨Proxyç±»ä¸­çš„isProxyClassæ–¹æ³•æ£€æµ‹ä¸€ä¸ªç‰¹å®šçš„Classå¯¹è±¡æ˜¯å¦ä»£è¡¨ä¸€ä¸ªä»£ç†ç±»ã€‚

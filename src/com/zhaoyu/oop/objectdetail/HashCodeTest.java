@@ -1,17 +1,17 @@
 package com.zhaoyu.oop.objectdetail;
 
 /**
- * hashCodeÒ²ÊÇObjectµÄ·½·¨¡£
- * Èç¹ûÒªÖØĞ´equals·½·¨£¬¾Í±ØĞëÖØĞ´hashCode·½·¨£¬ÒÔ±ãÓÃ»§¿ÉÒÔ½«¶ÔÏó²åÈëµ½É¢ÁĞ±íÖĞ¡£
+ * hashCodeä¹Ÿæ˜¯Objectçš„æ–¹æ³•ã€‚
+ * å¦‚æœè¦é‡å†™equalsæ–¹æ³•ï¼Œå°±å¿…é¡»é‡å†™hashCodeæ–¹æ³•ï¼Œä»¥ä¾¿ç”¨æˆ·å¯ä»¥å°†å¯¹è±¡æ’å…¥åˆ°æ•£åˆ—è¡¨ä¸­ã€‚
  *
- * equalsÓëhashCode·½·¨±ØĞë±£³ÖÒ»ÖÂ£¬x.equals(y)·µ»Øtrue£¬ÄÇÃ´x.hashCodeºÍy.hashCode±ØĞë·µ»ØÏàÍ¬µÄÖµ¡£
- * ÀıÈç£ºÈç¹û¶¨ÒåEmployee.equals±È½ÏµÄÊÇ¹ÍÔ±µÄID£¬ÄÇÃ´¶¨ÒåhashCodeÊ±¾ÍÒªÉ¢ÁĞID£¬¶ø²»ÊÇ¹ÍÔ±µÄÃû³Æ»òÕßÆäËüĞÅÏ¢¡£
+ * equalsä¸hashCodeæ–¹æ³•å¿…é¡»ä¿æŒä¸€è‡´ï¼Œx.equals(y)è¿”å›trueï¼Œé‚£ä¹ˆx.hashCodeå’Œy.hashCodeå¿…é¡»è¿”å›ç›¸åŒçš„å€¼ã€‚
+ * ä¾‹å¦‚ï¼šå¦‚æœå®šä¹‰Employee.equalsæ¯”è¾ƒçš„æ˜¯é›‡å‘˜çš„IDï¼Œé‚£ä¹ˆå®šä¹‰hashCodeæ—¶å°±è¦æ•£åˆ—IDï¼Œè€Œä¸æ˜¯é›‡å‘˜çš„åç§°æˆ–è€…å…¶å®ƒä¿¡æ¯ã€‚
  *
  * @author xiaoe
  *
  */
 public class HashCodeTest {
 	public static void main(String[] args) {
-		System.out.println("hashCodeÊÇObjectµÄ·½·¨£¬");
+		System.out.println("hashCodeæ˜¯Objectçš„æ–¹æ³•ï¼Œ");
 	}
 }

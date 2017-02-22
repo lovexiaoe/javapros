@@ -1,15 +1,15 @@
-1,�����û�������ʵ�������Ͳ���
-	��û��Pair<double>��ֻ��Pair<Double>��
-2������ʱ���ͼ��ֻ�ܼ��ԭʼ���ͣ����ܼ����������͡�
-	��if(a instanceof Pair<String>)��ֻ�ܼ���a��һ��Pair��getClassҲ��ͬ���ģ�ֻ�ܵõ�ԭʼ���͡�
-3�������׳���׽������ʵ�������ǿ������쳣����ʹ�÷��͡�
-4�����������͵����鲻�Ϸ���
-	��Pair<String>[] table �ǲ��Ϸ��ġ�
-5�����͵����ͱ�������ʵ����
-6�������ھ�̬���������ֶ���ʹ�����ͱ�����
-7��������߽ӿڵļ̳в㼶��ϵ�У�Ҫע�����Ͳ�������ĳ�ͻ���磺
+1,不能用基本类型实例化类型参数
+	如没有Pair<double>，只有Pair<Double>。
+2，运行时类型检查只能检查原始类型，不能检查出参数类型。
+	如if(a instanceof Pair<String>)，只能检查出a是一个Pair，getClass也是同样的，只能得到原始类型。
+3，不能抛出或捕捉泛型类实例。但是可以在异常类中使用泛型。
+4，参数化类型的数组不合法。
+	如Pair<String>[] table 是不合法的。
+5，泛型的类型变量不能实例化
+6，不能在静态方法或者字段中使用类型变量。
+7，在类或者接口的继承层级关系中，要注意类型擦除引起的冲突。如：
 	class Calendar implements Comparable<Calendar>{...}
 	class GregorianCalendar extends Calendar implements Comparable<GregorianCalendar> //error
-	GregorianCalendar��ʵ��Comparable�ӿڵ�Comparable<Calendar>��Comparable<GregorianCalendar>
-	���ǲ�ͬ�������������Ͳ�������ͻ��
+	GregorianCalendar会实现Comparable接口的Comparable<Calendar>和Comparable<GregorianCalendar>
+	这是不同参数化。在类型擦除后会冲突。
     

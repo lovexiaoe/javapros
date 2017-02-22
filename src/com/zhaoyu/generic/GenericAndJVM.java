@@ -1,28 +1,28 @@
 package com.zhaoyu.generic;
 
 /**
- * ÐéÄâ»úÃ»ÓÐ·ºÐÍÀàÐÍ¶ÔÏó£¬ËùÓÐµÄ¶ÔÏó¶¼ÊôÓÚÆÕÍ¨Àà¡£
- * Èç¹û´úÂëÊ¹ÓÃÁËjava·ºÐÍ,¾Í²»ÄÜÔÚ5.0Ö®Ç°µÄÐéÄâ»úÉÏÔËÐÐ¡£
+ * è™šæ‹Ÿæœºæ²¡æœ‰æ³›åž‹ç±»åž‹å¯¹è±¡ï¼Œæ‰€æœ‰çš„å¯¹è±¡éƒ½å±žäºŽæ™®é€šç±»ã€‚
+ * å¦‚æžœä»£ç ä½¿ç”¨äº†javaæ³›åž‹,å°±ä¸èƒ½åœ¨5.0ä¹‹å‰çš„è™šæ‹Ÿæœºä¸Šè¿è¡Œã€‚
  *
- * ÀàÐÍ²Á³ý£¨erased£©----ÓÉÓÚjvmÃ»ÓÐ¶ÔÓ¦µÄ·ºÐÍÀàÐÍ£¬
- * Õë¶ÔµÚÒ»ÖÖ·ºÐÍÀàÐÍ£¬jvm¶¼»áÌá¹©Ò»¸öÏàÓ¦µÄÔ­Ê¼ÀàÐÍ(raw type)¡£
- * ËùÒÔÔÚ±àÒëÊ±£¬jvm¾Í»áÈ¥µôÀàÐÍ±äÁ¿£¬Ìæ»»Îª¶ÔÓ¦µÄÏÞ¶¨ÀàÐÍ£¨Èç<? extends Comparable>µÄÏÞ¶¨ÀàÐÍÎªComParable£©£¬
- * Èç¹ûÃ»ÓÐÏÞ¶¨£¬ÔòÊ¹ÓÃObject¡£
+ * ç±»åž‹æ“¦é™¤ï¼ˆerasedï¼‰----ç”±äºŽjvmæ²¡æœ‰å¯¹åº”çš„æ³›åž‹ç±»åž‹ï¼Œ
+ * é’ˆå¯¹ç¬¬ä¸€ç§æ³›åž‹ç±»åž‹ï¼Œjvméƒ½ä¼šæä¾›ä¸€ä¸ªç›¸åº”çš„åŽŸå§‹ç±»åž‹(raw type)ã€‚
+ * æ‰€ä»¥åœ¨ç¼–è¯‘æ—¶ï¼Œjvmå°±ä¼šåŽ»æŽ‰ç±»åž‹å˜é‡ï¼Œæ›¿æ¢ä¸ºå¯¹åº”çš„é™å®šç±»åž‹ï¼ˆå¦‚<? extends Comparable>çš„é™å®šç±»åž‹ä¸ºComParableï¼‰ï¼Œ
+ * å¦‚æžœæ²¡æœ‰é™å®šï¼Œåˆ™ä½¿ç”¨Objectã€‚
  *
- * µ±³ÌÐòµ÷ÓÃ·ºÐÍ·½·¨Ê±£¬Èç¹û²Á³ý·µ»ØÀàÐÍ£¬±àÒëÆ÷²åÈëÇ¿ÖÆÀàÐÍ×ª»»¡£ÀýÈç£¬ÏÂÃæÕâ¸öÓï¾äÐòÁÐ <code>
+ * å½“ç¨‹åºè°ƒç”¨æ³›åž‹æ–¹æ³•æ—¶ï¼Œå¦‚æžœæ“¦é™¤è¿”å›žç±»åž‹ï¼Œç¼–è¯‘å™¨æ’å…¥å¼ºåˆ¶ç±»åž‹è½¬æ¢ã€‚ä¾‹å¦‚ï¼Œä¸‹é¢è¿™ä¸ªè¯­å¥åºåˆ— <code>
  * 	Pair<Employee> buddies=..;
  * 	Employee buddy=buddies.getFirst();
  * </code>
  *
- * ÀàÐÍ²Á³ýÒ²»á³öÏÖÔÚ·ºÐÍ·½·¨ÖÐ¡£ÈçÏÂÃæ·½·¨ <code>
+ * ç±»åž‹æ“¦é™¤ä¹Ÿä¼šå‡ºçŽ°åœ¨æ³›åž‹æ–¹æ³•ä¸­ã€‚å¦‚ä¸‹é¢æ–¹æ³• <code>
  * 	public static <T extends Comparable> T min(T[] a)
  * </code>
  *
- * ÔÚÀàÐÍ²Á³ýºó£¬Ö»Ê£ÏÂÒ»¸ö·½·¨£º <code>
+ * åœ¨ç±»åž‹æ“¦é™¤åŽï¼Œåªå‰©ä¸‹ä¸€ä¸ªæ–¹æ³•ï¼š <code>
  * 	public static  Comparable min(Comparable[] a)
  * </code>
  *
- * ÕâÑù´øÀ´Á½¸ö¸´ÔÓµÄÎÊÌâ¡£ <code>
+ * è¿™æ ·å¸¦æ¥ä¸¤ä¸ªå¤æ‚çš„é—®é¢˜ã€‚ <code>
  * Class DateInterval extends Pair<Date>
  * {
  * 	public void setSecond(Date second){
@@ -31,24 +31,24 @@ package com.zhaoyu.generic;
  * }
  * </code>
  *
- * Èç¹ûPairÓÐ·½·¨setSecond(Object second),ÄÇÃ´ÔÚÀàÐÍ²Á³ýºó»áÓÐÁ½¸öÏàÍ¬µÄsetSecond·½·¨£¬ÕâÊ±ÀàÐÍ²Á³ýºÍ¶àÌ¬·½·¨
- * ·¢Éú³åÍ»¡£Òª½â¾öÕâ¸öÎÊÌâ£¬¾ÍÐèÒª±àÒëÆ÷ÔÚDataInteralÖÐÉú³ÉÒ»¸öÇÅ·½·¨£¨bridge method£©:
+ * å¦‚æžœPairæœ‰æ–¹æ³•setSecond(Object second),é‚£ä¹ˆåœ¨ç±»åž‹æ“¦é™¤åŽä¼šæœ‰ä¸¤ä¸ªç›¸åŒçš„setSecondæ–¹æ³•ï¼Œè¿™æ—¶ç±»åž‹æ“¦é™¤å’Œå¤šæ€æ–¹æ³•
+ * å‘ç”Ÿå†²çªã€‚è¦è§£å†³è¿™ä¸ªé—®é¢˜ï¼Œå°±éœ€è¦ç¼–è¯‘å™¨åœ¨DataInteralä¸­ç”Ÿæˆä¸€ä¸ªæ¡¥æ–¹æ³•ï¼ˆbridge methodï¼‰:
  * public void setSecond(Object second){
  * setSecond((Date)second);
  * }
  *
- * ÇÅ·½·¨±äµÃºÜÆæ¹Ö¡£Èç¹ûDateInterval¸²¸ÇÁËgetSecond·½·¨£¬ÄÇÃ´ÔÚÀàÐÍ²Á³ýºó£¬»áÓÐÁ½¸ögetSecond·½·¨ <code>
- * 	Date getSecond()  //ÔÚDateIntervalÖÐ¶¨ÒåµÄ
- * 	Object getSecond() //ÔÚPairÖÐ¶¨ÒåµÄ¡£
+ * æ¡¥æ–¹æ³•å˜å¾—å¾ˆå¥‡æ€ªã€‚å¦‚æžœDateIntervalè¦†ç›–äº†getSecondæ–¹æ³•ï¼Œé‚£ä¹ˆåœ¨ç±»åž‹æ“¦é™¤åŽï¼Œä¼šæœ‰ä¸¤ä¸ªgetSecondæ–¹æ³• <code>
+ * 	Date getSecond()  //åœ¨DateIntervalä¸­å®šä¹‰çš„
+ * 	Object getSecond() //åœ¨Pairä¸­å®šä¹‰çš„ã€‚
  * </code>
  *
- * ÇÅ·½·¨Ö»ÊÇÐéÄâ»úÔÚ´¦ÀíÀàÐÍ²Á³ýÊ±µÄ»úÖÆ£¬²»ÄÜÓÃÓÚÕýÊ½µÄ´úÂë¡£
+ * æ¡¥æ–¹æ³•åªæ˜¯è™šæ‹Ÿæœºåœ¨å¤„ç†ç±»åž‹æ“¦é™¤æ—¶çš„æœºåˆ¶ï¼Œä¸èƒ½ç”¨äºŽæ­£å¼çš„ä»£ç ã€‚
  *
- * ×ÜÖ®£¬java·ºÐÍ×ª»»ÓÐ4¸öÒªËØ£º
- * 1£¬ÐéÄâ»úÃ»ÓÐ·ºÐÍ£¬Ö»ÓÐÆÕÍ¨µÄÀàºÍ·½·¨¡£
- * 2£¬ËùÓÐµÄÀàÐÍ²ÎÊý¶¼ÓÃËüÃÇµÄÏÞ¶¨ÀàÐÍÌæ»»
- * 3£¬ÇÅ·½·¨±»ºÏ³ÉÀ´±£³Ö¶àÌ¬¡£
- * 4£¬Îª±£³ÖÀàÐÍ°²È«ÐÔ£¬±ØÒªÊ±²åÈëÇ¿ÖÆÀàÐÍ×ª»»¡£
+ * æ€»ä¹‹ï¼Œjavaæ³›åž‹è½¬æ¢æœ‰4ä¸ªè¦ç´ ï¼š
+ * 1ï¼Œè™šæ‹Ÿæœºæ²¡æœ‰æ³›åž‹ï¼Œåªæœ‰æ™®é€šçš„ç±»å’Œæ–¹æ³•ã€‚
+ * 2ï¼Œæ‰€æœ‰çš„ç±»åž‹å‚æ•°éƒ½ç”¨å®ƒä»¬çš„é™å®šç±»åž‹æ›¿æ¢
+ * 3ï¼Œæ¡¥æ–¹æ³•è¢«åˆæˆæ¥ä¿æŒå¤šæ€ã€‚
+ * 4ï¼Œä¸ºä¿æŒç±»åž‹å®‰å…¨æ€§ï¼Œå¿…è¦æ—¶æ’å…¥å¼ºåˆ¶ç±»åž‹è½¬æ¢ã€‚
  *
  * @author xiaoE
  *
@@ -58,10 +58,10 @@ public class GenericAndJVM {
 }
 
 /**
- * Õâ¸öÊÇpairÔ­Ê¼ÀàÐÍµÄ¶¨Òå¡£¼´ÀàÐÍ²Á³ýºóµÄ¶¨Òå ¡£
+ * è¿™ä¸ªæ˜¯pairåŽŸå§‹ç±»åž‹çš„å®šä¹‰ã€‚å³ç±»åž‹æ“¦é™¤åŽçš„å®šä¹‰ ã€‚
  *
- * ÔÚ³ÌÐòÖÐ¿ÉÒÔ°üº¬²»Í¬ÀàÐÍµÄPair£¬ÀýÈç£¬Pair<String> »òPair<Calendar>
- * ¶øÔÚ²Á³ýÀàÐÍºó¾Í±ä³ÉÔ­Ê¼µÄPairÀàÐÍÁË¡£
+ * åœ¨ç¨‹åºä¸­å¯ä»¥åŒ…å«ä¸åŒç±»åž‹çš„Pairï¼Œä¾‹å¦‚ï¼ŒPair<String> æˆ–Pair<Calendar>
+ * è€Œåœ¨æ“¦é™¤ç±»åž‹åŽå°±å˜æˆåŽŸå§‹çš„Pairç±»åž‹äº†ã€‚
  *
  * @see com.zhaoyu.generic.Pair
  * @author xiaoE

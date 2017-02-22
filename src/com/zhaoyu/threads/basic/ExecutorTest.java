@@ -12,37 +12,37 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * ´´½¨´óÁ¿Ïß³Ì»á½µµÍĞÔÄÜ£¬ÉõÖÁÊ¹ĞéÄâ»ú±ÀÀ£¡£
- * Ê¹ÓÃÏß³Ì³Ø£¬¿ÉÒÔ¼õÉÙ²¢·¢³ÌĞòµÄÊıÄ¿£¬Ó¦¸ÃÊ¹ÓÃÒ»¸öÏß³ÌÊı"¹Ì¶¨µÄ"Ïß³Ì³ØÒÔÏŞÖÆ²¢·¢³ÌĞòµÄ×ÜÊı¡£
- * Ö´ĞĞÆ÷£¨Executor£©ÀàÓĞĞí¶à¾²Ì¬¹¤³§·½·¨À´¹¹½¨Ïß³Ì³Ø£¬
+ * åˆ›å»ºå¤§é‡çº¿ç¨‹ä¼šé™ä½æ€§èƒ½ï¼Œç”šè‡³ä½¿è™šæ‹Ÿæœºå´©æºƒã€‚
+ * ä½¿ç”¨çº¿ç¨‹æ± ï¼Œå¯ä»¥å‡å°‘å¹¶å‘ç¨‹åºçš„æ•°ç›®ï¼Œåº”è¯¥ä½¿ç”¨ä¸€ä¸ªçº¿ç¨‹æ•°"å›ºå®šçš„"çº¿ç¨‹æ± ä»¥é™åˆ¶å¹¶å‘ç¨‹åºçš„æ€»æ•°ã€‚
+ * æ‰§è¡Œå™¨ï¼ˆExecutorï¼‰ç±»æœ‰è®¸å¤šé™æ€å·¥å‚æ–¹æ³•æ¥æ„å»ºçº¿ç¨‹æ± ï¼Œ
  *
- * newCachedThreadPool ±ØÒªÊ±´´½¨ĞÂÏß³Ì£»¿ÕÏĞÏß³Ì»á±»±£Áô60Ãë¡£
- * newFixedThreadPool ¸Ã³Ø°üº¬¹Ì¶¨ÊıÁ¿µÄÏß³Ì£»¿ÕÏĞÏß³Ì»áÒ»Æğ±£Áô¡£
- * newSingleThreadExecutor Ö»ÓĞÒ»¸öÏß³ÌµÄ"³Ø"¡£¸ÃÏß³ÌË³ĞòÖ´ĞĞÃ¿Ò»¸öÌá½»µÄÈÎÎñ¡£
- * newScheduledThreadPool ÓÃÓÚÔ¤¶¨Ö´ĞĞ¶ø¹¹½¨µÄ¹Ì¶¨Ïß³Ì³Ø£¬Ìæ´újava.util.Timer
- * newSingleThreadScheduledExecutor ÓÃÓÚÔ¤¶¨Ö´ĞĞÃæ¹¹½¨µÄµ¥Ïß³Ì"³Ø"¡£
+ * newCachedThreadPool å¿…è¦æ—¶åˆ›å»ºæ–°çº¿ç¨‹ï¼›ç©ºé—²çº¿ç¨‹ä¼šè¢«ä¿ç•™60ç§’ã€‚
+ * newFixedThreadPool è¯¥æ± åŒ…å«å›ºå®šæ•°é‡çš„çº¿ç¨‹ï¼›ç©ºé—²çº¿ç¨‹ä¼šä¸€èµ·ä¿ç•™ã€‚
+ * newSingleThreadExecutor åªæœ‰ä¸€ä¸ªçº¿ç¨‹çš„"æ± "ã€‚è¯¥çº¿ç¨‹é¡ºåºæ‰§è¡Œæ¯ä¸€ä¸ªæäº¤çš„ä»»åŠ¡ã€‚
+ * newScheduledThreadPool ç”¨äºé¢„å®šæ‰§è¡Œè€Œæ„å»ºçš„å›ºå®šçº¿ç¨‹æ± ï¼Œæ›¿ä»£java.util.Timer
+ * newSingleThreadScheduledExecutor ç”¨äºé¢„å®šæ‰§è¡Œé¢æ„å»ºçš„å•çº¿ç¨‹"æ± "ã€‚
  *
- * Ç°3¸ö·½·¨·µ»ØÊµÏÖÁËExecutorService½Ó¿ÚµÄThreadPoolExecutorÀàµÄ¶ÔÏó¡£
- * ScheduledExecutorService½Ó¿Ú¾ßÓĞÎªÔ¤¶¨Ö´ĞĞ£¨scheduled execution£©»òÖØ¸´Ö´ĞĞÈÎÎñ¶øÉè¼ÆµÄÀà¡£
- * ËüÊÇÒ»ÖÖÔÊĞíÊ¹ÓÃÏß³Ì³Ø»úÖÆµÄjava.util.TimerµÄ·º»¯¡£ExecutorÀàµÄnewScheduledThreadPoolºÍ
- * newSingleThreadScheduledExecutor·½·¨½«·µ»ØÊµÏÖÁËScheduledExecutorServiceµÄ¶ÔÏó¡£
+ * å‰3ä¸ªæ–¹æ³•è¿”å›å®ç°äº†ExecutorServiceæ¥å£çš„ThreadPoolExecutorç±»çš„å¯¹è±¡ã€‚
+ * ScheduledExecutorServiceæ¥å£å…·æœ‰ä¸ºé¢„å®šæ‰§è¡Œï¼ˆscheduled executionï¼‰æˆ–é‡å¤æ‰§è¡Œä»»åŠ¡è€Œè®¾è®¡çš„ç±»ã€‚
+ * å®ƒæ˜¯ä¸€ç§å…è®¸ä½¿ç”¨çº¿ç¨‹æ± æœºåˆ¶çš„java.util.Timerçš„æ³›åŒ–ã€‚Executorç±»çš„newScheduledThreadPoolå’Œ
+ * newSingleThreadScheduledExecutoræ–¹æ³•å°†è¿”å›å®ç°äº†ScheduledExecutorServiceçš„å¯¹è±¡ã€‚
  *
- * ¿ÉÒÔÊ¹ÓÃÏÂÁĞ·½·¨½«Ò»¸öRunnable¶ÔÏó»òÕßCallable¶ÔÏóÌá½»¸øExecutorService:
+ * å¯ä»¥ä½¿ç”¨ä¸‹åˆ—æ–¹æ³•å°†ä¸€ä¸ªRunnableå¯¹è±¡æˆ–è€…Callableå¯¹è±¡æäº¤ç»™ExecutorService:
  * Future<?> submit(Runnable task);
  * Future<T> submit(Runnable task,T result);
  * Future<T> submit(Callable<T> task);
- * µÚÒ»¸ö·½·¨·µ»ØÒ»¸öFuture<?>¡£¿ÉÒÔÊ¹ÓÃÕâÑùÒ»¸ö¶ÔÏóµ÷ÓÃisDone,cancel»òisCancelled¡£get·½·¨ÔÚÍê³ÉÊ±·µ»Ønull¡£
- * µÚ¶ş¸ö·½·¨£¬FutureµÄget·½·¨ÔÚÍê³ÉÊ±·µ»ØÖ¸¶¨µÄresult¶ÔÏó¡£
- * µÚÈı¸ö·½·¨£¬Future½«ÔÚ¼ÆËã½á¹û×¼±¸ºÃµÄÊ±ºòµÃµ½Ëü¡£
+ * ç¬¬ä¸€ä¸ªæ–¹æ³•è¿”å›ä¸€ä¸ªFuture<?>ã€‚å¯ä»¥ä½¿ç”¨è¿™æ ·ä¸€ä¸ªå¯¹è±¡è°ƒç”¨isDone,cancelæˆ–isCancelledã€‚getæ–¹æ³•åœ¨å®Œæˆæ—¶è¿”å›nullã€‚
+ * ç¬¬äºŒä¸ªæ–¹æ³•ï¼ŒFutureçš„getæ–¹æ³•åœ¨å®Œæˆæ—¶è¿”å›æŒ‡å®šçš„resultå¯¹è±¡ã€‚
+ * ç¬¬ä¸‰ä¸ªæ–¹æ³•ï¼ŒFutureå°†åœ¨è®¡ç®—ç»“æœå‡†å¤‡å¥½çš„æ—¶å€™å¾—åˆ°å®ƒã€‚
  *
- * Ïß³Ì³ØµÄ¹Ø±Õ£ºµ÷ÓÃshutdownºÍshutdownNow·½·¨¹Ø±ÕÏß³Ì³Ø¡£
+ * çº¿ç¨‹æ± çš„å…³é—­ï¼šè°ƒç”¨shutdownå’ŒshutdownNowæ–¹æ³•å…³é—­çº¿ç¨‹æ± ã€‚
  *
  * @author xiaoE
  *
  */
 
 /**
- * FutureTest£¨²éÕÒÒ»¸öÄ¿Â¼ÖĞ°üº¬Ä³¹Ø¼ü×ÖµÄÎÄ¼ş¸öÊı£© Ê¹ÓÃÏß³Ì³ØÊµÏÖ¡£
+ * FutureTestï¼ˆæŸ¥æ‰¾ä¸€ä¸ªç›®å½•ä¸­åŒ…å«æŸå…³é”®å­—çš„æ–‡ä»¶ä¸ªæ•°ï¼‰ ä½¿ç”¨çº¿ç¨‹æ± å®ç°ã€‚
  *
  * @author xiaoE
  *
@@ -50,10 +50,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class ExecutorTest {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		System.out.print("ÊäÈë¾ø¶ÔÂ·¾¶(Èç£ºc:/mydir):");
+		System.out.print("è¾“å…¥ç»å¯¹è·¯å¾„(å¦‚ï¼šc:/mydir):");
 
 		String directory = sc.nextLine();
-		System.out.print("ÊäÈë¹Ø¼ü×Ö£º");
+		System.out.print("è¾“å…¥å…³é”®å­—ï¼š");
 		String keyword = sc.nextLine();
 
 		ExecutorService pool = Executors.newCachedThreadPool();
@@ -68,7 +68,7 @@ public class ExecutorTest {
 		}
 		pool.shutdown();
 
-		// Executor²»ÄÜ»ñÈ¡Ïß³Ì³Ø×î´óÏß³ÌÊı£¬ĞèÒª½«Æä×ª»»³ÉThreadPoolExecutor¡£
+		// Executorä¸èƒ½è·å–çº¿ç¨‹æ± æœ€å¤§çº¿ç¨‹æ•°ï¼Œéœ€è¦å°†å…¶è½¬æ¢æˆThreadPoolExecutorã€‚
 		int largestPoolSize = ((ThreadPoolExecutor) pool).getLargestPoolSize();
 		System.out.println("large pool size=" + largestPoolSize);
 	}
@@ -95,9 +95,9 @@ class MatchCounter implements Callable<Integer> {
 		ArrayList<Future<Integer>> results = new ArrayList<Future<Integer>>();
 
 		for (File file : files) {
-			// Èç¹ûÕâ¸öÎÄ¼şÊÇÂ·¾¶£¬µİ¹éÖ´ĞĞËÑË÷¡£
+			// å¦‚æœè¿™ä¸ªæ–‡ä»¶æ˜¯è·¯å¾„ï¼Œé€’å½’æ‰§è¡Œæœç´¢ã€‚
 			if (file.isDirectory()) {
-				// ½«ĞÂ½¨ÈÎÎñÌí¼Óµ½Ïß³Ì³Ø¡£
+				// å°†æ–°å»ºä»»åŠ¡æ·»åŠ åˆ°çº¿ç¨‹æ± ã€‚
 				MatchCounter counter = new MatchCounter(file, keyword, pool);
 				Future<Integer> result = pool.submit(counter);
 				results.add(result);

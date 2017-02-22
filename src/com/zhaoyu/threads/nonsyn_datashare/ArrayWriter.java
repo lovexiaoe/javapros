@@ -4,12 +4,12 @@ public class ArrayWriter implements Runnable{
 	private final SimpleArray sharedSimpleArray;
 	private final int startValue;
 	
-	//¹¹Ôì·½·¨
+	//æ„é€ æ–¹æ³•
 	public ArrayWriter(int value,SimpleArray array){
 		startValue=value;
 		sharedSimpleArray=array;
 	}
-	//Ïß³ÌÖ´ĞĞ·½·¨£¬²åÈëstartvalueµ½startvalue+3µÄÊı¾İ¡£
+	//çº¿ç¨‹æ‰§è¡Œæ–¹æ³•ï¼Œæ’å…¥startvalueåˆ°startvalue+3çš„æ•°æ®ã€‚
 	public void run(){
 		for (int i = startValue; i < startValue+3; i++) {
 			sharedSimpleArray.add(i);

@@ -1,7 +1,7 @@
 package com.zhaoyu.designpattern.abstractfactory;
 
 /**
- * �ϵ»�
+ * 肯德基
  * 
  * @author zhaoyu
  * 

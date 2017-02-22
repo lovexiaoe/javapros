@@ -1,6 +1,6 @@
-����ʵ����Fromattable�ӿڵĶ��󶼿��Ե���formatTO��������ģʽ����
-�ڱ�׼����оͿ��Զ��������ģʽ���ˡ�
+对于实现了Fromattable接口的对象都可以调用formatTO方法进行模式化，
+在标准输出中就可以对输出进行模式化了。
 
-��׼�������������ֱ�Ӷ�ȡ��д���ļ���
+标准输入输出还可以直接读取和写入文件如
 Scanner(File f)
 PrintWriter(File f)

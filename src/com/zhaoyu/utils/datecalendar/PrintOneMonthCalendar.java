@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * ´òÓ¡µ±ÔÂµÄÅ©Àú¡£
+ * æ‰“å°å½“æœˆçš„å†œå†ã€‚
  * 
  * @author xiaoe
  *
@@ -14,18 +14,18 @@ public class PrintOneMonthCalendar {
 	public static void main(String[] args) {
 		GregorianCalendar calendar = new GregorianCalendar();
 
-		// »ñÈ¡ºÅÊıºÍÔÂ·İÊı¡£
+		// è·å–å·æ•°å’Œæœˆä»½æ•°ã€‚
 		int today = calendar.get(Calendar.DAY_OF_MONTH);
 		int month = calendar.get(Calendar.MONTH);
 
-		// ÖØĞÂÉèÖÃºÅÊıÎª1
+		// é‡æ–°è®¾ç½®å·æ•°ä¸º1
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		// »ñÈ¡1ºÅµÄĞÇÆÚÊı
+		// è·å–1å·çš„æ˜ŸæœŸæ•°
 		int weekday = calendar.get(Calendar.DAY_OF_WEEK);
-		// »ñÈ¡Ò»ÖÜµÄµÚÒ»ÌìÊÇĞÇÆÚ¼¸
+		// è·å–ä¸€å‘¨çš„ç¬¬ä¸€å¤©æ˜¯æ˜ŸæœŸå‡ 
 		int firstDayOfWeek = calendar.getFirstDayOfWeek();
 
-		// ¼ÆËãµÚÒ»ĞĞµÄËõ½øÊı
+		// è®¡ç®—ç¬¬ä¸€è¡Œçš„ç¼©è¿›æ•°
 		int indent = 0;
 		while (weekday != firstDayOfWeek) {
 			indent++;
@@ -33,7 +33,7 @@ public class PrintOneMonthCalendar {
 			weekday = calendar.get(Calendar.DAY_OF_WEEK);
 		}
 
-		// ´òÓ¡ĞÇÆÚÍ·
+		// æ‰“å°æ˜ŸæœŸå¤´
 		String[] weekdayName = new DateFormatSymbols().getWeekdays();
 		do {
 			System.out.printf("%4s", weekdayName[weekday]);
@@ -42,37 +42,37 @@ public class PrintOneMonthCalendar {
 		} while (weekday != firstDayOfWeek);
 		System.out.println();
 
-		// ´òÓ¡Ëõ½ø
+		// æ‰“å°ç¼©è¿›
 		for (int i = 0; i < indent; i++) {
 			System.out.print("   ");
 		}
 
-		// ´Ó1ºÅ¿ªÊ¼´òÓ¡ÈÕÀú
+		// ä»1å·å¼€å§‹æ‰“å°æ—¥å†
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		do {
-			// ´òÓ¡ºÅÊı
+			// æ‰“å°å·æ•°
 			int day = calendar.get(Calendar.DAY_OF_MONTH);
 			System.out.printf("%3d", day);
 
-			// ±ê¼Ç½ñÌì
+			// æ ‡è®°ä»Šå¤©
 			if (day == today) {
 				System.out.print("*  ");
 			} else {
 				System.out.print("   ");
 			}
 
-			// ÉèÖÃµ½ÏÂÒ»Ìì
+			// è®¾ç½®åˆ°ä¸‹ä¸€å¤©
 			calendar.add(Calendar.DAY_OF_MONTH, 1);
 			weekday = calendar.get(Calendar.DAY_OF_WEEK);
 
-			// Ò»ÖÜÍê»»ĞĞ
+			// ä¸€å‘¨å®Œæ¢è¡Œ
 			if (weekday == firstDayOfWeek) {
 				System.out.println();
 			}
 
 		} while (calendar.get(Calendar.MONTH) == month);
 
-		// ÔÚÏÂÃæ´òÓ¡Ò»¸ö¿ÕĞĞ
+		// åœ¨ä¸‹é¢æ‰“å°ä¸€ä¸ªç©ºè¡Œ
 		if (weekday != firstDayOfWeek) {
 			System.out.println();
 		}

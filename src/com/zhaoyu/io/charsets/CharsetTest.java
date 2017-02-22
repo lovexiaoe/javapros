@@ -5,22 +5,22 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
 /**
- * javase 1.4ÖĞÒıÈëµÄjava.nio°üÒıÓÃCharsetÀàÍ³Ò»¶Ô×Ö·û¼¯½øĞĞ×ª»»¡£
- * ¿ÉÒÔÍ¨¹ıforName·½·¨À´»ñµÃÒ»¸öCharset£¬Ö»ĞèÏòÕâ¸ö·½·¨´«µİÒ»¸ö¹Ù·½Ãû×Ö»òÕßËüµÄÄ³¸ö±ğÃû£º
- * Charset cset=Charset.forName(¡°ISO-8859-1¡±);
- * ×Ö·û¼¯Ãû×ÖÊÇ´óĞ¡Ğ´²»Ãô¸ĞµÄ¡£Ã¿¸ö×Ö·û¼¯¶¼¿ÉÒÔÓĞºÜ¶à±ğÃû¡£ÀıÈç£ºISO-8859-1µÄ±ğÃûÓĞ£º
+ * javase 1.4ä¸­å¼•å…¥çš„java.nioåŒ…å¼•ç”¨Charsetç±»ç»Ÿä¸€å¯¹å­—ç¬¦é›†è¿›è¡Œè½¬æ¢ã€‚
+ * å¯ä»¥é€šè¿‡forNameæ–¹æ³•æ¥è·å¾—ä¸€ä¸ªCharsetï¼Œåªéœ€å‘è¿™ä¸ªæ–¹æ³•ä¼ é€’ä¸€ä¸ªå®˜æ–¹åå­—æˆ–è€…å®ƒçš„æŸä¸ªåˆ«åï¼š
+ * Charset cset=Charset.forName(â€œISO-8859-1â€);
+ * å­—ç¬¦é›†åå­—æ˜¯å¤§å°å†™ä¸æ•æ„Ÿçš„ã€‚æ¯ä¸ªå­—ç¬¦é›†éƒ½å¯ä»¥æœ‰å¾ˆå¤šåˆ«åã€‚ä¾‹å¦‚ï¼šISO-8859-1çš„åˆ«åæœ‰ï¼š
  * ISO8859-1
  * ISO_8859_1
  * 8859-1
  * latin1
- * ¡­¡­
- * aliases·½·¨¿ÉÒÔ·µ»ØÓÉ±ğÃû¹¹³ÉµÄSet¶ÔÏó£º
+ * â€¦â€¦
+ * aliasesæ–¹æ³•å¯ä»¥è¿”å›ç”±åˆ«åæ„æˆçš„Setå¯¹è±¡ï¼š
  * Set<String> aliases=cset.aliases();
  *
- * ÎªÁËÈ·¶¨Ä³¸öÌØ¶¨»·¾³ÖĞÄÄĞ©×Ö·û¼¯ÊÇ¿ÉÓÃµÄ¡£¿ÉÒÔµ÷ÓÃ¾²Ì¬µÄavailableCharset·½·¨¡£Ê¹ÓÃÏÂÃæµÄ´úÂë¿ÉÒÔÈ·¶¨ËùÓĞ¿ÉÓÃµÄ×Ö·û¼¯Ãû×Ö£º
+ * ä¸ºäº†ç¡®å®šæŸä¸ªç‰¹å®šç¯å¢ƒä¸­å“ªäº›å­—ç¬¦é›†æ˜¯å¯ç”¨çš„ã€‚å¯ä»¥è°ƒç”¨é™æ€çš„availableCharsetæ–¹æ³•ã€‚ä½¿ç”¨ä¸‹é¢çš„ä»£ç å¯ä»¥ç¡®å®šæ‰€æœ‰å¯ç”¨çš„å­—ç¬¦é›†åå­—ï¼š
  * Map<String,Charset> charsets=Charset.availableCharset();
  *
- * Èç¹ûÄ³¸ö×Ö·û²»ÄÜ±íÊ¾£¬Ëü½«±»×ª»»³É£¿¡£
+ * å¦‚æœæŸä¸ªå­—ç¬¦ä¸èƒ½è¡¨ç¤ºï¼Œå®ƒå°†è¢«è½¬æ¢æˆï¼Ÿã€‚
  *
  *
  * @author xiaoE
@@ -28,20 +28,20 @@ import java.nio.charset.Charset;
  */
 public class CharsetTest {
 	public static void main(String[] args) {
-		String mystr = "hello ÎÒÊÇÖĞ¹úÈË£¡";
+		String mystr = "hello æˆ‘æ˜¯ä¸­å›½äººï¼";
 		Charset cset = Charset.forName("UTF-8");
 
-		// ±àÂë³É×Ö·ûĞòÁĞ
+		// ç¼–ç æˆå­—ç¬¦åºåˆ—
 		ByteBuffer buffer = cset.encode(mystr);
 		byte[] bytes = buffer.array();
 
-		// ´òÓ¡×Ö·ûĞòÁĞ
+		// æ‰“å°å­—ç¬¦åºåˆ—
 		for (int i = 0; i < bytes.length; i++) {
 			System.out.print(bytes[i]);
 		}
 		System.out.println();
 
-		// ½âÂë×Ö·ûĞòÁĞ
+		// è§£ç å­—ç¬¦åºåˆ—
 		ByteBuffer bbuf = ByteBuffer.wrap(bytes, 0, mystr.length() * 2);
 		CharBuffer cbuf = cset.decode(bbuf);
 		String result = cbuf.toString();

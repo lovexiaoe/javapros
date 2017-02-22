@@ -6,23 +6,23 @@ import java.util.concurrent.Executors;
 
 public class TaskExecutor {
 	public static void main(String[] args){
-		//´´½¨Èı¸öÏß³Ì
+		//åˆ›å»ºä¸‰ä¸ªçº¿ç¨‹
 		PrintTask task1=new PrintTask("task1");
 		PrintTask task2=new PrintTask("task2");
 		PrintTask task3=new PrintTask("task3");
 		
 		System.out.println("Starting Executor");
 		
-		//´´½¨ExecutorService¹ÜÀíÏß³Ì
+		//åˆ›å»ºExecutorServiceç®¡ç†çº¿ç¨‹
 		ExecutorService threadExecutor=Executors.newCachedThreadPool();
-		//¿ªÆôÏß³Ì
+		//å¼€å¯çº¿ç¨‹
 		threadExecutor.execute(task1);
 		threadExecutor.execute(task2);
 		threadExecutor.execute(task3);
 		
-		//µ±ÈÎÎñÍê³ÉÊ±£¬¹Ø±ÕÏß³ÌÖ´ĞĞÆ÷,Õâ»áÍ¨ÖªthreadExecutorÍ£Ö¹½ÓÊÜĞÂÈÎÎñ£¬
-		//µ«ÊÇ»á½«ÒÑ¾­Ìá½»µÄÈÎÎñÍê³É,Ö»ÒªÒÔÇ°Ìá½»µÄRunnable¶ÔÏóÈ«²¿Íê³ÉÁË£¬threadExecutor¾Í»áÖÕÖ¹¡£
+		//å½“ä»»åŠ¡å®Œæˆæ—¶ï¼Œå…³é—­çº¿ç¨‹æ‰§è¡Œå™¨,è¿™ä¼šé€šçŸ¥threadExecutoråœæ­¢æ¥å—æ–°ä»»åŠ¡ï¼Œ
+		//ä½†æ˜¯ä¼šå°†å·²ç»æäº¤çš„ä»»åŠ¡å®Œæˆ,åªè¦ä»¥å‰æäº¤çš„Runnableå¯¹è±¡å…¨éƒ¨å®Œæˆäº†ï¼ŒthreadExecutorå°±ä¼šç»ˆæ­¢ã€‚
 		threadExecutor.shutdown();
-		System.out.println("¿ªÆôÈı¸öÈÎÎñ£¬main½áÊø.\n");
+		System.out.println("å¼€å¯ä¸‰ä¸ªä»»åŠ¡ï¼Œmainç»“æŸ.\n");
 	}
 }

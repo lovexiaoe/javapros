@@ -5,8 +5,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * ÖØÈëËø³ıÁËsychornizeµÄ¹¦ÄÜÍâ£¬»¹ÓĞ¶îÍâµÄ×÷ÓÃ£¬ÖØÈëËø»á±»×îºóÒ»¸ö³É¹¦È¡µÃËø£¬²¢»¹Ã»ÓĞÊÍ·ÅµÄÏß³Ì³ÖÓĞ£¬µ±³ÖÓĞËøµÄÏß³Ì³¢ÊÔlockÊ±£¬»áÁ¢¼´·µ»Ø£¬
- * ¿ÉÒÔÍ¨¹ı·½·¨isHeldByCurrentThreadºÍgetHoldCount¼ì²éµ±Ç°Ïß³ÌÊÇ·ñ³ÖÓĞËø¡£
+ * é‡å…¥é”é™¤äº†sychornizeçš„åŠŸèƒ½å¤–ï¼Œè¿˜æœ‰é¢å¤–çš„ä½œç”¨ï¼Œé‡å…¥é”ä¼šè¢«æœ€åä¸€ä¸ªæˆåŠŸå–å¾—é”ï¼Œå¹¶è¿˜æ²¡æœ‰é‡Šæ”¾çš„çº¿ç¨‹æŒæœ‰ï¼Œå½“æŒæœ‰é”çš„çº¿ç¨‹å°è¯•lockæ—¶ï¼Œä¼šç«‹å³è¿”å›ï¼Œ
+ * å¯ä»¥é€šè¿‡æ–¹æ³•isHeldByCurrentThreadå’ŒgetHoldCountæ£€æŸ¥å½“å‰çº¿ç¨‹æ˜¯å¦æŒæœ‰é”ã€‚
  * 
  * @author dmall223
  *
@@ -16,9 +16,9 @@ public class ReentrantLockTest {
 		Resource resource = new Resource();
 		UpdateResource ur1 = new UpdateResource(resource);
 		Thread t1 = new Thread(ur1);
-		// ×ÓÏß³Ìµ÷ÓÃaddI¡£
+		// å­çº¿ç¨‹è°ƒç”¨addIã€‚
 		t1.start();
-		// Ö÷Ïß³Ì³ÖĞø¶Á8´Î£¬¹²4Ãë¡£
+		// ä¸»çº¿ç¨‹æŒç»­è¯»8æ¬¡ï¼Œå…±4ç§’ã€‚
 		for (int i = 0; i < 8; i++) {
 			System.out.println(resource.getI());
 			try {
@@ -50,7 +50,7 @@ class Resource {
 
 	private Lock lock = new ReentrantLock();
 
-	// Ğ´²Ù×÷¼ÓÖØÈëËø¡£
+	// å†™æ“ä½œåŠ é‡å…¥é”ã€‚
 	public int addI() {
 		try {
 			if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
@@ -66,7 +66,7 @@ class Resource {
 		return i;
 	}
 
-	// ¶ÁÈ¡Ã»ÓĞ¼ÓËø
+	// è¯»å–æ²¡æœ‰åŠ é”
 	public int getI() {
 		return i;
 	}

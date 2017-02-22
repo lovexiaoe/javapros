@@ -1,17 +1,17 @@
-	javaÊÇÁ÷¼Ò×å°üº¬60¶à¸ö¡£°´´¦Àí·½·¨»®·Ö£¬·ÖÎª´¦Àí×Ö½ÚµÄ×Ö½ÚÁ÷ºÍ´¦ÀíUnicode×Ö·ûµÄ×Ö·ûÁ÷¡£
-	java5ÖĞÌí¼ÓÁËËÄ¸öºÍÁ÷Ïà¹ØµÄ½Ó¿Ú£ºCloseable,Flushable,ReadableºÍAppendable,Ç°Á½¸ö½Ó¿Ú·Ç³£¼òµ¥¡£ËüÃÇ·Ö±ğ
-ÓµÓĞÏÂÁĞ·½·¨£º
+	javaæ˜¯æµå®¶æ—åŒ…å«60å¤šä¸ªã€‚æŒ‰å¤„ç†æ–¹æ³•åˆ’åˆ†ï¼Œåˆ†ä¸ºå¤„ç†å­—èŠ‚çš„å­—èŠ‚æµå’Œå¤„ç†Unicodeå­—ç¬¦çš„å­—ç¬¦æµã€‚
+	java5ä¸­æ·»åŠ äº†å››ä¸ªå’Œæµç›¸å…³çš„æ¥å£ï¼šCloseable,Flushable,Readableå’ŒAppendable,å‰ä¸¤ä¸ªæ¥å£éå¸¸ç®€å•ã€‚å®ƒä»¬åˆ†åˆ«
+æ‹¥æœ‰ä¸‹åˆ—æ–¹æ³•ï¼š
 		void close() throws IOException
 		void flush()
 		
-	InputStream,OutputStream,ReaderºÍWriter¶¼ÊµÏÖÁËCloseable½Ó¿Ú£¬¶øOutputStreamºÍWriter»¹ÊµÏÖÁËFlushable
-½Ó¿Ú¡£
-	Readable½Ó¿ÚÖ»ÓĞÒ»¸ö·½·¨£º
+	InputStream,OutputStream,Readerå’ŒWriteréƒ½å®ç°äº†Closeableæ¥å£ï¼Œè€ŒOutputStreamå’ŒWriterè¿˜å®ç°äº†Flushable
+æ¥å£ã€‚
+	Readableæ¥å£åªæœ‰ä¸€ä¸ªæ–¹æ³•ï¼š
 		int read(CharBuffer cb)
-	CharBufferÀàÓµÓĞ°´Ë³ĞòºÍËæ»ú¶ÁĞ´·ÃÎÊµÄ·ÃÇó£¬Ëü±íÊ¾Ò»¸öÄÚ´æÖĞµÄ»º³åÇø»òÕßÒ»¸öÄÚ´æÓ³ÏñµÄÎÄ¼ş
-	Appendable½Ó¿ÚÓĞÁ½¸öÌí¼Óµ¥¸ö×Ö·ûµÄºÍ×ÖÌåĞòÁĞµÄ·½·¨£º
+	CharBufferç±»æ‹¥æœ‰æŒ‰é¡ºåºå’Œéšæœºè¯»å†™è®¿é—®çš„è®¿æ±‚ï¼Œå®ƒè¡¨ç¤ºä¸€ä¸ªå†…å­˜ä¸­çš„ç¼“å†²åŒºæˆ–è€…ä¸€ä¸ªå†…å­˜æ˜ åƒçš„æ–‡ä»¶
+	Appendableæ¥å£æœ‰ä¸¤ä¸ªæ·»åŠ å•ä¸ªå­—ç¬¦çš„å’Œå­—ä½“åºåˆ—çš„æ–¹æ³•ï¼š
 		Appendable append(char c)
 		Appendable append(CharSequence s)
 		
-	ÔÚÁ÷ÀàÖĞ£¬Ö»ÓĞWriterÊµÏÖÁËAppendable¡£
+	åœ¨æµç±»ä¸­ï¼Œåªæœ‰Writerå®ç°äº†Appendableã€‚
 	

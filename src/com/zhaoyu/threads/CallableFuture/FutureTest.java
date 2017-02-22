@@ -11,8 +11,8 @@ import java.util.concurrent.FutureTask;
 
 /**
  *
- * ÏÂÀıÔÚÒ»¸öÄ¿Â¼ÖĞ²éÕÒ°üº¬Ä³¹Ø¼ü×ÖµÄÎÄ¼ş¸öÊı£¬Õâ¸öÄ¿Â¼ÊÇÇ¶Ì×Ä¿Â¼¡£
- * ÔÚÃ¿¸öÄ¿Â¼ÖĞĞÂ½¨Ò»¸öĞÂµÄCallableÏß³Ì£¬²¢½«ËùÓĞÏß³ÌµÄFuture±£´æÔÚÒ»¸öÁĞ±íÖĞ£¬¼ÆËã×îÖÕµÄÁĞ±íÖĞÔªËØµÄ×ÜºÍ¡£
+ * ä¸‹ä¾‹åœ¨ä¸€ä¸ªç›®å½•ä¸­æŸ¥æ‰¾åŒ…å«æŸå…³é”®å­—çš„æ–‡ä»¶ä¸ªæ•°ï¼Œè¿™ä¸ªç›®å½•æ˜¯åµŒå¥—ç›®å½•ã€‚
+ * åœ¨æ¯ä¸ªç›®å½•ä¸­æ–°å»ºä¸€ä¸ªæ–°çš„Callableçº¿ç¨‹ï¼Œå¹¶å°†æ‰€æœ‰çº¿ç¨‹çš„Futureä¿å­˜åœ¨ä¸€ä¸ªåˆ—è¡¨ä¸­ï¼Œè®¡ç®—æœ€ç»ˆçš„åˆ—è¡¨ä¸­å…ƒç´ çš„æ€»å’Œã€‚
  *
  * @author xiaoE
  *
@@ -20,10 +20,10 @@ import java.util.concurrent.FutureTask;
 public class FutureTest {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		System.out.print("ÊäÈë¾ø¶ÔÂ·¾¶(Èç£ºc:/mydir):");
+		System.out.print("è¾“å…¥ç»å¯¹è·¯å¾„(å¦‚ï¼šc:/mydir):");
 
 		String directory = sc.nextLine();
-		System.out.print("ÊäÈë¹Ø¼ü×Ö£º");
+		System.out.print("è¾“å…¥å…³é”®å­—ï¼š");
 		String keyword = sc.nextLine();
 
 		MatchCounter counter = new MatchCounter(new File(directory), keyword);
@@ -59,15 +59,15 @@ class MatchCounter implements Callable<Integer> {
 		ArrayList<Future<Integer>> results = new ArrayList<Future<Integer>>();
 
 		for (File file : files) {
-			// Èç¹ûÕâ¸öÎÄ¼şÊÇÂ·¾¶£¬µİ¹éÖ´ĞĞËÑË÷¡£
+			// å¦‚æœè¿™ä¸ªæ–‡ä»¶æ˜¯è·¯å¾„ï¼Œé€’å½’æ‰§è¡Œæœç´¢ã€‚
 			if (file.isDirectory()) {
 				MatchCounter counter = new MatchCounter(file, keyword);
 				/**
-				 * FutureTaskÊÇÒ»¸ö¿É½«Callable×ª»»³ÉFutureºÍRunnableµÄ°ü×°Æ÷,ËüÍ¬Ê±ÊµÏÖ¶şÕßµÄ½Ó¿Ú¡£ÀıÈç
+				 * FutureTaskæ˜¯ä¸€ä¸ªå¯å°†Callableè½¬æ¢æˆFutureå’ŒRunnableçš„åŒ…è£…å™¨,å®ƒåŒæ—¶å®ç°äºŒè€…çš„æ¥å£ã€‚ä¾‹å¦‚
 				 */
 				FutureTask<Integer> task = new FutureTask<Integer>(counter);
 				results.add(task);
-				// ---taskÈ¡µÃRunnable
+				// ---taskå–å¾—Runnable
 				Thread t = new Thread(task);
 				t.start();
 			} else {
@@ -78,7 +78,7 @@ class MatchCounter implements Callable<Integer> {
 		}
 		for (Future<Integer> result : results) {
 			try {
-				// ---taskÈ¡µÃFuture
+				// ---taskå–å¾—Future
 				count += result.get();
 			} catch (Exception e) {
 				e.printStackTrace();

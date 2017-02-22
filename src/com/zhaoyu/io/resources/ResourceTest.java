@@ -11,10 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
 /**
- * Õâ¸öÀàÓÃÓÚËµÃ÷java¶ÁÈ¡×ÊÔ´ÎÄ¼ş£¬gifºÍtxt²¢Í¨¹ıÓÃ»§½çÃæÏÔÊ¾¡£
- * ¿ÉÒÔ½«¸ÃÀà¼°ÓÃµ½µÄ×ÊÔ´ÎÄ¼şµ¼³öÎªjar£¬²¢Ö¸¶¨Main-class¡£
- * Ò²¿ÉÒÔÔÚManiFestÎÄ¼şÖĞÖ¸¶¨¡£
- * È»ºóÊ¹ÓÃjava -jarÃüÁîÔËĞĞ¸Ã°ü¡£
+ * è¿™ä¸ªç±»ç”¨äºè¯´æ˜javaè¯»å–èµ„æºæ–‡ä»¶ï¼Œgifå’Œtxtå¹¶é€šè¿‡ç”¨æˆ·ç•Œé¢æ˜¾ç¤ºã€‚
+ * å¯ä»¥å°†è¯¥ç±»åŠç”¨åˆ°çš„èµ„æºæ–‡ä»¶å¯¼å‡ºä¸ºjarï¼Œå¹¶æŒ‡å®šMain-classã€‚
+ * ä¹Ÿå¯ä»¥åœ¨ManiFestæ–‡ä»¶ä¸­æŒ‡å®šã€‚
+ * ç„¶åä½¿ç”¨java -jarå‘½ä»¤è¿è¡Œè¯¥åŒ…ã€‚
  *
  *
  * @author xiaoE
@@ -43,13 +43,13 @@ class ResourceTestFrame extends JFrame {
 	public ResourceTestFrame() {
 		setTitle("ResourceTest");
 		setSize(300, 400);
-		// ¶ÁÈ¡Í¼Æ¬,¶¯Ì¬gifÉèÖÃ³ÉÍ¼±ê£¬³ÌĞòÔËĞĞºóÎŞ·´Ó³¡£
+		// è¯»å–å›¾ç‰‡,åŠ¨æ€gifè®¾ç½®æˆå›¾æ ‡ï¼Œç¨‹åºè¿è¡Œåæ— åæ˜ ã€‚
 		URL aboutURL = getClass().getResource("about1.jpg");
 		Image img = Toolkit.getDefaultToolkit().getImage(aboutURL);
 		setIconImage(img);
 
 		JTextArea textArea = new JTextArea();
-		// ¶ÁÈ¡ÎÄ¼şĞÅÏ¢£¬·µ»ØÁ÷¡£
+		// è¯»å–æ–‡ä»¶ä¿¡æ¯ï¼Œè¿”å›æµã€‚
 		InputStream stream = getClass().getResourceAsStream("about.txt");
 		Scanner in = new Scanner(stream);
 		while (in.hasNext()) {

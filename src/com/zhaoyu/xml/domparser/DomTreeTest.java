@@ -36,7 +36,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 /**
- * ½«Ò»¸öxml°´ÕÕÍ¼ĞÎ»¯½çÃæµÄÊ÷ĞÍ½á¹¹ÏÔÊ¾£¬Ö÷ÒªÓÃµ½Í¼ĞÎ»¯½çÃæµÄÊ÷ĞÍÄ£ĞÍºÍÊ÷ĞÎÄ£ĞÍ³ÊÏÖ¡£ÕâÀïdom½âÎöËµÃ÷µÄ²¢²»ÏêÏ¸¡£
+ * å°†ä¸€ä¸ªxmlæŒ‰ç…§å›¾å½¢åŒ–ç•Œé¢çš„æ ‘å‹ç»“æ„æ˜¾ç¤ºï¼Œä¸»è¦ç”¨åˆ°å›¾å½¢åŒ–ç•Œé¢çš„æ ‘å‹æ¨¡å‹å’Œæ ‘å½¢æ¨¡å‹å‘ˆç°ã€‚è¿™é‡Œdomè§£æè¯´æ˜çš„å¹¶ä¸è¯¦ç»†ã€‚
  *
  * @author xiaoE
  *
@@ -125,11 +125,11 @@ class DOMTreeFrame extends JFrame {
 			@Override
 			protected Document doInBackground() throws Exception {
 				if (builder == null) {
-					// ¶ÁÈëÒ»¸öXMLÎÄµµ£¬Ê×ÏÈĞèÒªÒ»¸öDocumentBuilder¶ÔÏó¡£¶Ôbuilder³õÊ¼»¯¡£
+					// è¯»å…¥ä¸€ä¸ªXMLæ–‡æ¡£ï¼Œé¦–å…ˆéœ€è¦ä¸€ä¸ªDocumentBuilderå¯¹è±¡ã€‚å¯¹builderåˆå§‹åŒ–ã€‚
 					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 					builder = factory.newDocumentBuilder();
 				}
-				// Í¨¹ıbuilderµÄparse·½·¨µÃÈ¡Document¶ÔÏó¡£
+				// é€šè¿‡builderçš„parseæ–¹æ³•å¾—å–Documentå¯¹è±¡ã€‚
 				return builder.parse(file);
 			}
 
@@ -137,9 +137,9 @@ class DOMTreeFrame extends JFrame {
 			protected void done() {
 				try {
 					Document doc = get();
-					// ¸ù¾İÎÄµµ¶¨ÒåÒ»¸öÊ÷ĞÎÄ£ĞÍ¡£
+					// æ ¹æ®æ–‡æ¡£å®šä¹‰ä¸€ä¸ªæ ‘å½¢æ¨¡å‹ã€‚
 					JTree tree = new JTree(new DOMTreeModel(doc));
-					// Ê¹ÓÃÊ÷ĞÍÄ£ĞÍÏÔÊ¾Æ÷£¬³ÊÏÖÊ÷ĞÎ½á¹¹¡£
+					// ä½¿ç”¨æ ‘å‹æ¨¡å‹æ˜¾ç¤ºå™¨ï¼Œå‘ˆç°æ ‘å½¢ç»“æ„ã€‚
 					tree.setCellRenderer(new DOMTreeCellRenderer());
 
 					setContentPane(new JScrollPane(tree));
@@ -154,7 +154,7 @@ class DOMTreeFrame extends JFrame {
 }
 
 /**
- * ÏÂÃæÊÇÒ»¸öÊ÷ĞÍÎÄµµÄ£ĞÍÀà¡£
+ * ä¸‹é¢æ˜¯ä¸€ä¸ªæ ‘å‹æ–‡æ¡£æ¨¡å‹ç±»ã€‚
  *
  * @author xiaoE
  *
@@ -233,7 +233,7 @@ class DOMTreeCellRenderer extends DefaultTreeCellRenderer {
 		}
 
 		super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-		// CharacterData°üÀ¨ÎÄ±¾£¬×¢ÊÍ£¬CDATA,¿ÕÎÄ±¾µÈ¡£
+		// CharacterDataåŒ…æ‹¬æ–‡æœ¬ï¼Œæ³¨é‡Šï¼ŒCDATA,ç©ºæ–‡æœ¬ç­‰ã€‚
 		if (node instanceof CharacterData) {
 			setText(characterString((CharacterData) node));
 		} else {

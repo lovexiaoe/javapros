@@ -11,28 +11,28 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * RandomAccessFileÀà¿ÉÒÔÔÚÎÄ¼şÖĞµÄÈÎºÎÎ»ÖÃ²éÕÒ»òĞ´ÈëÊı¾İ¡£´ÅÅÌÎÄ¼ş¶¼ÊÇËæ»ú·ÃÎÊµÄ£¬µ«ÊÇ´ÓÍøÂç¶øÀ´µÄÊı¾İÁ÷È´²»ĞĞ¡£Äã¿ÉÒÔ´ò¿ªÒ»¸ö
- * Ëæ»ú·ÃÎÊÎÄ¼ş£¬Ö»ÓÃÓÚ¶ÁÈë»òÕßÍ¬Ê±ÓÃÓÚ¶ÁĞ´£¬ÎÒÃÇ¿ÉÒÔÍ¨¹ıÊ¹ÓÃ¡±r¡± »ò¡±rw¡±×÷Îª¹¹ÔìÆ÷µÄ²ÎÊıÖ¸¶¨Õâ¸öÑ¡Ïî¡£
+ * RandomAccessFileç±»å¯ä»¥åœ¨æ–‡ä»¶ä¸­çš„ä»»ä½•ä½ç½®æŸ¥æ‰¾æˆ–å†™å…¥æ•°æ®ã€‚ç£ç›˜æ–‡ä»¶éƒ½æ˜¯éšæœºè®¿é—®çš„ï¼Œä½†æ˜¯ä»ç½‘ç»œè€Œæ¥çš„æ•°æ®æµå´ä¸è¡Œã€‚ä½ å¯ä»¥æ‰“å¼€ä¸€ä¸ª
+ * éšæœºè®¿é—®æ–‡ä»¶ï¼Œåªç”¨äºè¯»å…¥æˆ–è€…åŒæ—¶ç”¨äºè¯»å†™ï¼Œæˆ‘ä»¬å¯ä»¥é€šè¿‡ä½¿ç”¨â€râ€ æˆ–â€rwâ€ä½œä¸ºæ„é€ å™¨çš„å‚æ•°æŒ‡å®šè¿™ä¸ªé€‰é¡¹ã€‚
  *
- * Ê¹ÓÃRandomAccessFile¶ÔEmployeeÊı×é½øĞĞÎÄ¼ş¶ÁĞ´¡£
+ * ä½¿ç”¨RandomAccessFileå¯¹Employeeæ•°ç»„è¿›è¡Œæ–‡ä»¶è¯»å†™ã€‚
  *
  * @author xiaoE
  */
 public class RandomAccess {
 	public static void main(String[] args) {
 		Employee[] staff = new Employee[3];
-		staff[0] = new Employee("ÕÔ2", 75000, 1984, 12, 14);
-		staff[1] = new Employee("Íõ°Ë", 50000, 1988, 5, 4);
-		staff[2] = new Employee("Áõ6", 35000, 1990, 6, 13);
+		staff[0] = new Employee("èµµ2", 75000, 1984, 12, 14);
+		staff[1] = new Employee("ç‹å…«", 50000, 1988, 5, 4);
+		staff[2] = new Employee("åˆ˜6", 35000, 1990, 6, 13);
 		try {
-			// Ğ´Èë¹ÍÔ±¼ÇÂ¼
+			// å†™å…¥é›‡å‘˜è®°å½•
 			DataOutputStream out = new DataOutputStream(new FileOutputStream("employee2.dat"));
 			for (Employee employee : staff) {
 				employee.writeData(out);
 			}
 			out.close();
 
-			// RandomAccessFileÊµÏÖ·´Ïò¶ÁÈ¡staffÊı×é£¬Éú³ÉÒ»¸öĞÂµÄ¹ÍÔ±Êı×é¡£
+			// RandomAccessFileå®ç°åå‘è¯»å–staffæ•°ç»„ï¼Œç”Ÿæˆä¸€ä¸ªæ–°çš„é›‡å‘˜æ•°ç»„ã€‚
 			RandomAccessFile in = new RandomAccessFile("employee2.dat", "r");
 			int n = (int) (in.length() / Employee.RECORD_SIZE);
 			Employee[] newStaffs = new Employee[n];
@@ -44,7 +44,7 @@ public class RandomAccess {
 			}
 			in.close();
 
-			// ´òÓ¡ĞÂµÄ¹ÍÔ±Êı×é¡£
+			// æ‰“å°æ–°çš„é›‡å‘˜æ•°ç»„ã€‚
 			for (Employee e : newStaffs) {
 				System.out.println(e);
 			}
@@ -96,7 +96,7 @@ class Employee {
 	}
 
 	/**
-	 * ½«Ò»¸öEmployee¶ÔÏóĞ´ÈëÁ÷ÖĞ¡£Ãû³Æ×Ö·û´®¸ù¾İ¹Ì¶¨´óĞ¡Ğ´Èë¡£
+	 * å°†ä¸€ä¸ªEmployeeå¯¹è±¡å†™å…¥æµä¸­ã€‚åç§°å­—ç¬¦ä¸²æ ¹æ®å›ºå®šå¤§å°å†™å…¥ã€‚
 	 *
 	 * @param out
 	 * @throws IOException
@@ -114,7 +114,7 @@ class Employee {
 	}
 
 	/**
-	 * ´ÓÁ÷ÖĞ¶ÁÈ¡Employee¶ÔÏó£¬
+	 * ä»æµä¸­è¯»å–Employeeå¯¹è±¡ï¼Œ
 	 *
 	 * @param in
 	 * @throws IOException
@@ -132,7 +132,7 @@ class Employee {
 
 class DataIO {
 	/**
-	 * ¹Ì¶¨³¤¶È¶ÁÈ¡£¬Èç¹û¶ÁÈ¡µ½×Ö½Ú0£¬Ôò¶ÁÈ¡½áÊø£¬·ñÔò¶ÁÈ¡size¸ö×Ö½Ú£¬·µ»Ø×Ö·û´®¡£
+	 * å›ºå®šé•¿åº¦è¯»å–ï¼Œå¦‚æœè¯»å–åˆ°å­—èŠ‚0ï¼Œåˆ™è¯»å–ç»“æŸï¼Œå¦åˆ™è¯»å–sizeä¸ªå­—èŠ‚ï¼Œè¿”å›å­—ç¬¦ä¸²ã€‚
 	 *
 	 * @param size
 	 * @param in
@@ -157,7 +157,7 @@ class DataIO {
 	}
 
 	/**
-	 * Ğ´Èë¹Ì¶¨³¤¶È¸öµÄ×Ö·û£¬Èç¹ûÊµ¼Ê³¤¶È²»×ã£¬ÒÔ0×Ö½Ú²¹³ä¡£
+	 * å†™å…¥å›ºå®šé•¿åº¦ä¸ªçš„å­—ç¬¦ï¼Œå¦‚æœå®é™…é•¿åº¦ä¸è¶³ï¼Œä»¥0å­—èŠ‚è¡¥å……ã€‚
 	 *
 	 * @param s
 	 * @param size

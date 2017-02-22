@@ -1,31 +1,31 @@
-������java.util.concurrent����Java Collections API�еĸ��ּ��ϣ�ֻ������ĳ��ʱ��ֻ��һ���߳��ܹ������ڶ���̼߳乲���ļ��ϡ�
+来自于java.util.concurrent包的Java Collections API中的各种集合，只允许在某个时刻只有一个线程能够访问在多个线程间共享的集合。
 
 
-ArrayBlockingQueue             ֧��������/�����߹�ϵ�Ĺ̶���С�Ķ��С��������ܾ��ж�������ߺ������ߡ�
-ConcurrentHashMap              һ��hashӳ�䣬���������κ������Ķ�ȡ�̺߳����޵�д���̡߳�
-ConcurrentLinkedQueue          һ�ֿ��Զ�̬�����Ķ��У�Ϊ���еĲ�������ʵ�֡�
-ConcurrentSkipListMap          һ�ְ�������Ĳ���ӳ�䡣
-ConcurrentSkipListSet          һ������Ĳ������ϡ�
-CopyOnWriteArrayList           һ���̰߳�ȫ��ArrayList���ԸĶ����ϵ�ÿһ���������������ȴ��������ݵ�һ���¸�����
-                                                                                   ���������ϵ�Ƶ��Զ���ڸĶ����ϵ�����ʱ���Ϳ���ʹ������
-CopyOnWriteArraySet            һ������CopyOnWriteArrayListʵ�ֵļ��ϡ�
-DelayQueue                     һ�ְ���Delayed����Ŀɱ䳤�ȶ��С�ֻ���ڶ�����ӳ�ʱ�䵽��֮�󣬶���Żᱻɾ����
-LinkedBlockingDeque            ��ʵ�ֳ�һ�֣����Ա��̶���С�ģ�������˫���������С�
-LinkedBlockingQueue            ��ʵ�ֳ�һ�֣����Ա��̶���С�ģ��������������С�
-PriorityBlockingQueue          һ�ֿɱ䳤�ȵġ��������ȼ��Ķ��У�����PriorityQueue��
-SynchronousQueue               ���߱��ڲ�������һ����������ʵ�֡�һ���߳��еĲ������������ȴ���һ���߳��е�ɾ��������ɺ���ܽ��У���֮��Ȼ��
+ArrayBlockingQueue             支持生产者/消费者关系的固定大小的队列———可能具有多个生产者和消费者。
+ConcurrentHashMap              一个hash映射，允许具有任何数量的读取线程和有限的写入线程。
+ConcurrentLinkedQueue          一种可以动态增长的队列，为队列的并发链表实现。
+ConcurrentSkipListMap          一种按键排序的并发映射。
+ConcurrentSkipListSet          一种排序的并发集合。
+CopyOnWriteArrayList           一种线程安全的ArrayList。对改动集合的每一个操作。都会首先创建它内容的一个新副本。
+                                                                                   当遍历集合的频率远高于改动集合的内容时，就可以使用它。
+CopyOnWriteArraySet            一种利用CopyOnWriteArrayList实现的集合。
+DelayQueue                     一种包含Delayed对象的可变长度队列。只有在对象的延迟时间到达之后，对象才会被删除。
+LinkedBlockingDeque            被实现成一种（可以被固定大小的）链表的双端阻塞队列。
+LinkedBlockingQueue            被实现成一种（可以被固定大小的）链表的阻塞队列。
+PriorityBlockingQueue          一种可变长度的、基于优先级的队列（类似PriorityQueue）
+SynchronousQueue               不具备内部容量的一种阻塞队列实现。一个线程中的插入操作，必须等待另一个线程中的删除操作完成后才能进行，反之亦然。
 
-javaSE 7 �������Ĳ�������
+javaSE 7 中新增的并发集合
  
-ConcurrentLinkedDeque          һ��˫�˶��еĲ�������ʵ��
-LinkedTransferQueue            TransferQueue�ӿڵ�����ʵ�֡�ÿһ�������߶����еȴ���Ϣ�߱�ȡ�߲����Ԫ�ص�ѡ�ͨ��transfer��������
-							        ����ֻ�ǽ�Ԫ�ط�������У�ͨ��put��������������ϻ��ṩ�����ص�tryTransfer����������������Ԫ�ش��ݸ�
-							        ���ڵȴ��������ߣ�������һ��ָ���ĳ�ʱʱ����ڴ��ݡ�������ݹ��̲�����ɣ���Ԫ�ز��ᱻ���ض����С���
-							        ������ͨ�������ڶ���̼߳䴫����Ϣ�ĳ����С�
+ConcurrentLinkedDeque          一种双端队列的并发链表实现
+LinkedTransferQueue            TransferQueue接口的链表实现。每一个生产者都具有等待消息者被取走插入的元素的选项（通过transfer方法），
+							        或者只是将元素放入队列中（通过put方法）。这个集合还提供了重载的tryTransfer方法，它会立即将元素传递给
+							        正在等待的消费者，或者在一个指定的超时时间段内传递。如果传递过程不能完成，则元素不会被驳回队列中。这
+							        个集合通常用于在多个线程间传递消息的程序中。
 
 
-��Ȼ�����ļ������̰߳�ȫ�ģ����ǣ����߼�����ʱ��һ���������߼��ж����ĳ���϶���Ĳ���ʱ���ڶ��߳�����»�����̲߳���ȫ�����⣬
-����������Ҫ�ж�ConcurrentHashMap�е�ֵ����ɾ��������synchronized������£��п��ܳ���һ���̼߳��valueΪ0��ֵ��ɾ��������һ��
-��ͬ����⵽��Ϊ0��ֵ ����ɾ���������߼�����������ģ����ԣ��ڶԶ���ִ�ж���������߼��У�����Ҫ����synchronized������ʱ���������
-�ɲο�mybatis��UnpooledDataSource��ConcurrentHashMap�Ĳ�����
+虽然并发的集合是线程安全的，但是，在逻辑调用时，一个完整的逻辑有多个对某集合对象的操作时，在多线程情况下会出现线程不安全的问题，
+比如我们需要判断ConcurrentHashMap中的值，并删除，不加synchronized的情况下，有可能出现一个线程检测value为0的值并删除，而另一线
+程同样检测到了为0的值 ，并删除。这在逻辑上是有问题的，所以，在对对象执行多个操作的逻辑中，还是要加上synchronized。操作时还需谨慎。
+可参考mybatis中UnpooledDataSource对ConcurrentHashMap的操作。
 

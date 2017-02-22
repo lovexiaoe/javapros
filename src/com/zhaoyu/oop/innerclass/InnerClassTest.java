@@ -11,7 +11,7 @@ import javax.swing.Timer;
 import com.zhaoyu.oop.innerclass.TalkingClock.TimePrinter;
 
 /**
- * ÏÂÃæ½«timeprinter¹¹ÔìÎªTalkingClockµÄÒ»¸öÄÚ²¿Àà¡£
+ * ä¸‹é¢å°†timeprinteræ„é€ ä¸ºTalkingClockçš„ä¸€ä¸ªå†…éƒ¨ç±»ã€‚
  *
  * @author xiaoE
  *
@@ -24,7 +24,7 @@ public class InnerClassTest {
 		JOptionPane.showMessageDialog(null, "Quit Program?");
 		System.exit(0);
 
-		// Íâ²¿¶ÔtimePrinterµÄÊ¹ÓÃ¡£
+		// å¤–éƒ¨å¯¹timePrinterçš„ä½¿ç”¨ã€‚
 		TimePrinter tp = tc.new TimePrinter();
 	}
 }
@@ -46,7 +46,7 @@ class TalkingClock {
 	}
 
 	/**
-	 * ÕâÀïÊÇÒ»¸öÄÚ²¿Àà£¬ÄÚ²¿Àà¿ÉÒÔ·ÃÎÊ×ÔÉíµÄ±äÁ¿£¬Ò²¿ÉÒÔÖ±½Ó·ÃÎÊËüµÄÍâ²¿ÀàµÄ±äÁ¿¡£Èçbeep¡£
+	 * è¿™é‡Œæ˜¯ä¸€ä¸ªå†…éƒ¨ç±»ï¼Œå†…éƒ¨ç±»å¯ä»¥è®¿é—®è‡ªèº«çš„å˜é‡ï¼Œä¹Ÿå¯ä»¥ç›´æ¥è®¿é—®å®ƒçš„å¤–éƒ¨ç±»çš„å˜é‡ã€‚å¦‚beepã€‚
 	 *
 	 * @author xiaoE
 	 *
@@ -57,8 +57,8 @@ class TalkingClock {
 		public void actionPerformed(ActionEvent e) {
 			Date now = new Date();
 			System.err.println("at the tone,the time is " + now);
-			// ÕâÀïµÄbeep±íÊ¾ÁË¶ÔÍâ²¿ÀàbeepµÄÒıÓÃ£¬Ò²¿ÉÒÔĞ´ÎªTalkingClock.this.beep¡£
-			// OuterClass.thisÊÇÄÚ²¿Àà¶ÔÍâ²¿ÀàµÄÒıÓÃ¡£
+			// è¿™é‡Œçš„beepè¡¨ç¤ºäº†å¯¹å¤–éƒ¨ç±»beepçš„å¼•ç”¨ï¼Œä¹Ÿå¯ä»¥å†™ä¸ºTalkingClock.this.beepã€‚
+			// OuterClass.thisæ˜¯å†…éƒ¨ç±»å¯¹å¤–éƒ¨ç±»çš„å¼•ç”¨ã€‚
 			if (beep) {
 				Toolkit.getDefaultToolkit().beep();
 			}

@@ -1,25 +1,25 @@
 package com.zhaoyu.oop.objectdetail;
 
 /**
- * javaÓïÑÔµÄequals·½·¨¾ßÓĞÒÔÏÂÌØĞÔ£º
- * 1£¬×Ô·´ĞÔ£¬·Ç¿ÕÒıÓÃx,x.equals(x) Ó¦¸Ã·µ»Øtrue¡£
- * 2£¬¶Ô³ÆĞÔ£¬·Ç¿ÕÒıÓÃxºÍy,x.equals(y)·µ»Øtrue,Ôòy.equals(x)Ò²Ó¦µ±·µ»Øtrue.
- * 3£¬´«µİĞÔ£¬·Ç¿ÕÒıÓÃx,y,z£¬Èç¹ûx.equals(y)·µ»Øtrue£¬y.equals(z)·µ»Øtrue,x.equals(z)Ò²Ó¦¸Ã·µ»Øtrue¡£
- * 4£¬Ò»ÖÂĞÔ£¬Èç¹ûx,yÒıÓÃµÄ¶ÔÏóÃ»ÓĞ·¢Éú±ä»¯£¬ÄÇÃ´£¬·´¸´µ÷ÓÃx.equals(y)Ó¦¸Ã·µ»ØÏàÍ¬µÄ½á¹û ¡£
- * 5£¬¶ÔÓÚÈÎÒâ·Ç¿ÕÒıÓÃx£¬x.equals(null)Ó¦¸Ã·µ»Øfalse¡£
+ * javaè¯­è¨€çš„equalsæ–¹æ³•å…·æœ‰ä»¥ä¸‹ç‰¹æ€§ï¼š
+ * 1ï¼Œè‡ªåæ€§ï¼Œéç©ºå¼•ç”¨x,x.equals(x) åº”è¯¥è¿”å›trueã€‚
+ * 2ï¼Œå¯¹ç§°æ€§ï¼Œéç©ºå¼•ç”¨xå’Œy,x.equals(y)è¿”å›true,åˆ™y.equals(x)ä¹Ÿåº”å½“è¿”å›true.
+ * 3ï¼Œä¼ é€’æ€§ï¼Œéç©ºå¼•ç”¨x,y,zï¼Œå¦‚æœx.equals(y)è¿”å›trueï¼Œy.equals(z)è¿”å›true,x.equals(z)ä¹Ÿåº”è¯¥è¿”å›trueã€‚
+ * 4ï¼Œä¸€è‡´æ€§ï¼Œå¦‚æœx,yå¼•ç”¨çš„å¯¹è±¡æ²¡æœ‰å‘ç”Ÿå˜åŒ–ï¼Œé‚£ä¹ˆï¼Œåå¤è°ƒç”¨x.equals(y)åº”è¯¥è¿”å›ç›¸åŒçš„ç»“æœ ã€‚
+ * 5ï¼Œå¯¹äºä»»æ„éç©ºå¼•ç”¨xï¼Œx.equals(null)åº”è¯¥è¿”å›falseã€‚
  *
- * javaÖØĞ´equalsµÄ²½Öè£ºÈç¹ûĞèÒª±È½ÏµÄÀàÃûÎªclassName,½«±È½Ï²ÎÊıÃüÃûÎªotherObject,Ôò
- * 1£¬¼ì²âthisÓëotherObjectÊÇ·ñÒıÓÃÍ¬Ò»¸ö¶ÔÏó£ºif(this==otherObject) return true;
- * ÕâÌõÓï¾äÊÇÒ»ÖÖÓÅ»¯£¬Èç¹û ÊÇÍ¬Ò»¸öÒıÓÃ £¬¾Í²»ĞèÒª ½øĞĞ¶Ô±ÈÊôĞÔÁË¡£
- * 2,¼ì²âotherObjectÊÇ·ñÎªnull£¬Èç¹ûÎªnull,·µ»Øfalse¡£if(null==otherObject) return false;
- * 3,±È½ÏotherObjectºÍthisÊÇ·ñÊôÓÚÍ¬Ò»Àà¡£Èç¹ûequalsµÄÓïÒåÔÚ¸÷¸ö×ÓÀàÖĞÓĞËù¸Ä±ä£¬¾ÍÊ¹ÓÃgetClass¼ì²â£º
+ * javaé‡å†™equalsçš„æ­¥éª¤ï¼šå¦‚æœéœ€è¦æ¯”è¾ƒçš„ç±»åä¸ºclassName,å°†æ¯”è¾ƒå‚æ•°å‘½åä¸ºotherObject,åˆ™
+ * 1ï¼Œæ£€æµ‹thisä¸otherObjectæ˜¯å¦å¼•ç”¨åŒä¸€ä¸ªå¯¹è±¡ï¼šif(this==otherObject) return true;
+ * è¿™æ¡è¯­å¥æ˜¯ä¸€ç§ä¼˜åŒ–ï¼Œå¦‚æœ æ˜¯åŒä¸€ä¸ªå¼•ç”¨ ï¼Œå°±ä¸éœ€è¦ è¿›è¡Œå¯¹æ¯”å±æ€§äº†ã€‚
+ * 2,æ£€æµ‹otherObjectæ˜¯å¦ä¸ºnullï¼Œå¦‚æœä¸ºnull,è¿”å›falseã€‚if(null==otherObject) return false;
+ * 3,æ¯”è¾ƒotherObjectå’Œthisæ˜¯å¦å±äºåŒä¸€ç±»ã€‚å¦‚æœequalsçš„è¯­ä¹‰åœ¨å„ä¸ªå­ç±»ä¸­æœ‰æ‰€æ”¹å˜ï¼Œå°±ä½¿ç”¨getClassæ£€æµ‹ï¼š
  * if(getClass()!=otherObject.getClass)return false;
- * Èç¹ûËùÓĞµÄ×ÓÀà¶¼ÓµÓĞÍ³Ò»µÄequals¶¨Òå£¬¾ÍÊ¹ÓÃinstanceof¼ì²â¡£
- * if(!(otherObject instanceof ClassName)) return false¡£
- * 4,½«otherObject×ª»»³ÉÏàÓ¦µÄÀàÀàĞÍ±äÁ¿¡£
+ * å¦‚æœæ‰€æœ‰çš„å­ç±»éƒ½æ‹¥æœ‰ç»Ÿä¸€çš„equalså®šä¹‰ï¼Œå°±ä½¿ç”¨instanceofæ£€æµ‹ã€‚
+ * if(!(otherObject instanceof ClassName)) return falseã€‚
+ * 4,å°†otherObjectè½¬æ¢æˆç›¸åº”çš„ç±»ç±»å‹å˜é‡ã€‚
  * className other=(className)otherObject;
- * 5,Èç¹ûÊÇÔÚ×ÓÀàÖĞÖØĞÂ¶¨Òåequals£¬¾ÍÒªÔÚÆäÖĞ°üº¬µ÷ÓÃsuper.equals(other)¡£
- * 6,Ê¹ÓÃ==±È½Ï»ù±¾ÀàĞÍ×Ö¶Î£¬Ê¹ÓÃequals±È½ÏÒıÓÃ×Ö¶Î¡£Èç¹ûËùÓĞµÄ×Ö¶Î¶¼Æ¥Åä£¬Ôò·µ»Øtrue,·ñÔò£¬·µ»Øfalse¡£
+ * 5,å¦‚æœæ˜¯åœ¨å­ç±»ä¸­é‡æ–°å®šä¹‰equalsï¼Œå°±è¦åœ¨å…¶ä¸­åŒ…å«è°ƒç”¨super.equals(other)ã€‚
+ * 6,ä½¿ç”¨==æ¯”è¾ƒåŸºæœ¬ç±»å‹å­—æ®µï¼Œä½¿ç”¨equalsæ¯”è¾ƒå¼•ç”¨å­—æ®µã€‚å¦‚æœæ‰€æœ‰çš„å­—æ®µéƒ½åŒ¹é…ï¼Œåˆ™è¿”å›true,å¦åˆ™ï¼Œè¿”å›falseã€‚
  *
  *
  * @author xiaoe
@@ -27,6 +27,6 @@ package com.zhaoyu.oop.objectdetail;
  */
 public class EqualsTest {
 	public static void main(String[] args) {
-		System.out.println("equalsÊÇObjectµÄ·½·¨¡£");
+		System.out.println("equalsæ˜¯Objectçš„æ–¹æ³•ã€‚");
 	}
 }

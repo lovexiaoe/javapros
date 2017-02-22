@@ -1,10 +1,13 @@
 package com.zhaoyu.designpattern.factory;
 
+/**
+ * author å¤§ç¥
+ */
 public class NakeShoe implements Shoe {
 
 	@Override
 	public String getShoeName() {
-		return "ÕâÊÇnakeĞ¬";
+		return "ï¿½ï¿½ï¿½ï¿½nakeĞ¬";
 	}
 
 }

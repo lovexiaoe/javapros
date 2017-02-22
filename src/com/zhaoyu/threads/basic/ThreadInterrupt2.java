@@ -20,7 +20,7 @@ public class ThreadInterrupt2 {
 		thread1.start();
 		thread1.interrupt();
 
-		// ÔÚÏß³Ìsleep×´Ì¬ÏÂ½øĞĞÖĞ¶Ï
+		// åœ¨çº¿ç¨‹sleepçŠ¶æ€ä¸‹è¿›è¡Œä¸­æ–­
 		Thread thread2 = new Thread() {
 			@Override
 			public void run() {
@@ -38,7 +38,7 @@ public class ThreadInterrupt2 {
 		thread2.start();
 		thread2.interrupt();
 
-		// ÔÚÏß³Ìwait×´Ì¬ÏÂ½øĞĞÖĞ¶Ï,ÆäÖĞwait()Ã»ÓĞÔÚÍ¬²½¿éÖĞ
+		// åœ¨çº¿ç¨‹waitçŠ¶æ€ä¸‹è¿›è¡Œä¸­æ–­,å…¶ä¸­wait()æ²¡æœ‰åœ¨åŒæ­¥å—ä¸­
 		Thread thread3 = new Thread() {
 			@Override
 			public void run() {
@@ -56,7 +56,7 @@ public class ThreadInterrupt2 {
 		thread3.start();
 		thread3.interrupt();
 
-		// ÔÚÏß³Ìwait×´Ì¬ÏÂ½øĞĞÖĞ¶Ï,ÆäÖĞwait()ÔÚÍ¬²½¿éÖĞ£¬
+		// åœ¨çº¿ç¨‹waitçŠ¶æ€ä¸‹è¿›è¡Œä¸­æ–­,å…¶ä¸­wait()åœ¨åŒæ­¥å—ä¸­ï¼Œ
 		Thread thread4 = new Thread() {
 			@Override
 			public void run() {
@@ -77,7 +77,7 @@ public class ThreadInterrupt2 {
 		thread4.interrupt();
 
 		try {
-			// ÕâÀï»á±¨IllegalThreadStateExceptionÒì³££¬ÕâÀïÓ¦¸ÃÊÇÔÙ´Îµ÷ÓÃstartµÄÔ­Òò¡£
+			// è¿™é‡Œä¼šæŠ¥IllegalThreadStateExceptionå¼‚å¸¸ï¼Œè¿™é‡Œåº”è¯¥æ˜¯å†æ¬¡è°ƒç”¨startçš„åŸå› ã€‚
 			thread4.start();
 			System.out.println("A5");
 		} catch (Exception e) {

@@ -1,9 +1,9 @@
 package com.zhaoyu.designpattern.factory;
 
 /**
- * ¹¤³§Ä£Ê½ £ºÕë¶Ô¹¤³§Ö»Éú²úÄ³Ò»ÖÖ²úÆ·µÄÇéĞÎ£¬ ÈçĞ¬³§Éú²úĞ¬×Ó£¬nakeĞ¬³§Éú²únakeĞ¬£¬AddidasĞ¬Éú²úAddidasĞ¬¡£
- * ¹¤³§Ä£Ê½×ñ´Ó¿ª±ÕÔ­Ôò£¨¶ÔÀ©Õ¹¿ª·Å£»¶ÔĞŞ¸Ä·â±Õ£© ¹¤³§·½·¨´´½¨Ò»°ãÖ»ÓĞÒ»¸ö·½·¨£¬´´½¨Ò»ÖÖ²úÆ·¡£
- * Èç¹ûÊ¹¹¤³§¾ßÓĞÉú²ú¶àÖÖ²úÆ·µÄÄÜÁ¦£¬Ôò¸Ä½øºó£¬Äã»áÓĞÈ¤µØ·¢ÏÖ£¬Ëü»á±ä³É³éÏó¹¤³§Ä£Ê½¡£
+ * å·¥å‚æ¨¡å¼ ï¼šé’ˆå¯¹å·¥å‚åªç”Ÿäº§æŸä¸€ç§äº§å“çš„æƒ…å½¢ï¼Œ å¦‚é‹å‚ç”Ÿäº§é‹å­ï¼Œnakeé‹å‚ç”Ÿäº§nakeé‹ï¼ŒAddidasé‹ç”Ÿäº§Addidasé‹ã€‚
+ * å·¥å‚æ¨¡å¼éµä»å¼€é—­åŸåˆ™ï¼ˆå¯¹æ‰©å±•å¼€æ”¾ï¼›å¯¹ä¿®æ”¹å°é—­ï¼‰ å·¥å‚æ–¹æ³•åˆ›å»ºä¸€èˆ¬åªæœ‰ä¸€ä¸ªæ–¹æ³•ï¼Œåˆ›å»ºä¸€ç§äº§å“ã€‚
+ * å¦‚æœä½¿å·¥å‚å…·æœ‰ç”Ÿäº§å¤šç§äº§å“çš„èƒ½åŠ›ï¼Œåˆ™æ”¹è¿›åï¼Œä½ ä¼šæœ‰è¶£åœ°å‘ç°ï¼Œå®ƒä¼šå˜æˆæŠ½è±¡å·¥å‚æ¨¡å¼ã€‚
  * 
  * @author zhaoyu
  * 
@@ -11,12 +11,12 @@ package com.zhaoyu.designpattern.factory;
 public class FactoryTest {
 
 	public static void main(String[] args) {
-		// ´©nakeĞ¬
+		// ç©¿nakeé‹
 		Factory nakeFactory = new NakeFactory();
 		Shoe shoe = nakeFactory.generateShoe();
 		System.out.println(shoe.getShoeName());
 
-		// ´©addidasĞ¬
+		// ç©¿addidasé‹
 		Factory addidasFactory = new AddidasFactory();
 		Shoe shoe1 = addidasFactory.generateShoe();
 		System.out.println(shoe1.getShoeName());

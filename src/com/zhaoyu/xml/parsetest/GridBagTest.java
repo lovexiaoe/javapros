@@ -27,7 +27,7 @@ public class GridBagTest {
 }
 
 /**
- * �ÿ�ܰ���һ������ѡ�������ѡ����ȡxml�ĵ��е����ݡ�
+ * 该框架包含一个字体选择框，字体选择框获取xml文档中的数据。
  *
  * @author xiaoE
  *
@@ -73,7 +73,7 @@ class FontFrame extends JFrame {
 	}
 
 	/**
-	 * ����ѡ���������ʽ�ʹ�С���������ı���
+	 * 根据选择的字体样式和大小重新设置文本框。
 	 */
 	public void setSample() {
 		String fontFace = (String) face.getSelectedItem();

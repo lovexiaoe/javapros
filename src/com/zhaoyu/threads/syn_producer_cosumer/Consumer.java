@@ -4,7 +4,7 @@ import java.util.Random;
 
 
 /**
- * Ïû·ÑÕß¶Ô»º³åÇø½øĞĞ¶ÁÈ¡
+ * æ¶ˆè´¹è€…å¯¹ç¼“å†²åŒºè¿›è¡Œè¯»å–
  * @author xiaoe
  *
  */
@@ -28,6 +28,6 @@ public class Consumer implements Runnable{
 			}
 		}
 		
-		System.out.printf("\n%s %d\n%s\n","Ïû·ÑÕß¶ÁÈ¡×ÜÊı",sum,"Ïû·ÑÕß¶ÁÈ¡Íê³É");
+		System.out.printf("\n%s %d\n%s\n","æ¶ˆè´¹è€…è¯»å–æ€»æ•°",sum,"æ¶ˆè´¹è€…è¯»å–å®Œæˆ");
 	}
 }

@@ -3,10 +3,10 @@ package com.zhaoyu.threads.arrayblockingqueue_producer_cosumer;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
- * ¸Ã»º³åÇøÊ¹ÓÃÁËÍ¬²½µÄArrayBlockingQueue¡£ArrayBlockingQueueÊÇÒ»¸öÈ«ÃæÊµÏÖÁËBlockingQueue½Ó¿ÚµÄ¡¢
- * Ïß³Ì°²È«µÄ»º³åÇøÀà¡£ArrayBlockingQueue½«¹²ÏíÊı¾İ±£´æÔÚÒ»¸öÊı×éÖĞ£¬Õâ¸öÊı×é´´½¨Ê±¹æ¶¨´óĞ¡£¬
- * ´´½¨ºó²»»áÔÙÀ©Õ¹¡£
- * ¹²Ïí»º³åÇø£¬Éú²úÕß½øĞĞĞ´Èë£¬Ïû·ÑÕß½øĞĞ¶ÁÈ¡
+ * è¯¥ç¼“å†²åŒºä½¿ç”¨äº†åŒæ­¥çš„ArrayBlockingQueueã€‚ArrayBlockingQueueæ˜¯ä¸€ä¸ªå…¨é¢å®ç°äº†BlockingQueueæ¥å£çš„ã€
+ * çº¿ç¨‹å®‰å…¨çš„ç¼“å†²åŒºç±»ã€‚ArrayBlockingQueueå°†å…±äº«æ•°æ®ä¿å­˜åœ¨ä¸€ä¸ªæ•°ç»„ä¸­ï¼Œè¿™ä¸ªæ•°ç»„åˆ›å»ºæ—¶è§„å®šå¤§å°ï¼Œ
+ * åˆ›å»ºåä¸ä¼šå†æ‰©å±•ã€‚
+ * å…±äº«ç¼“å†²åŒºï¼Œç”Ÿäº§è€…è¿›è¡Œå†™å…¥ï¼Œæ¶ˆè´¹è€…è¿›è¡Œè¯»å–
  *
  * @author xiaoe
  *
@@ -22,13 +22,13 @@ public class synchronizedBuffer implements Buffer {
 	@Override
 	public int get() throws InterruptedException {
 		int readValue = buffer.take();
-		System.out.printf("Ïû·ÑÕß¶ÁÈ¡ÁË\t%2d", readValue);
+		System.out.printf("æ¶ˆè´¹è€…è¯»å–äº†\t%2d", readValue);
 		return readValue;
 	}
 
 	@Override
 	public void set(int value) throws InterruptedException {
-		System.out.printf("Éú²úÕßĞ´ÈëÁË\t%2d", value);
+		System.out.printf("ç”Ÿäº§è€…å†™å…¥äº†\t%2d", value);
 		buffer.put(value);
 	}
 

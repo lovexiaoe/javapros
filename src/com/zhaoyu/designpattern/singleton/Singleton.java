@@ -1,7 +1,7 @@
 package com.zhaoyu.designpattern.singleton;
 
 public final class Singleton {
-	// ÕâÀïÊ¹ÓÃµÄÊÇÑÓ³Ù¼ÓÔØ£¬¼´ÔÚgetSingleTon·½·¨µ÷ÓÃÊ±¼ÓÔØÊÂÀı¡£
+	// è¿™é‡Œä½¿ç”¨çš„æ˜¯å»¶è¿ŸåŠ è½½ï¼Œå³åœ¨getSingleTonæ–¹æ³•è°ƒç”¨æ—¶åŠ è½½äº‹ä¾‹ã€‚
 	private static Singleton singleton;
 	String s;
 
@@ -18,12 +18,12 @@ public final class Singleton {
 	}
 
 	public static Singleton getSingleTon() {
-		// Ë«ÖØËøµÄĞÎÊ½£¬±£Ö¤Ïß³Ì°²È«³õÊ¼¡£
-		// Õâ¸öÄ£Ê½½«Í¬²½ÄÚÈİÏÂ·½µ½ifÄÚ²¿£¬Ìá¸ßÁËÖ´ĞĞµÄĞ§ÂÊ£¬²»±ØÃ¿´Î»ñÈ¡¶ÔÏóÊ±¶¼½øĞĞÍ¬²½£¬Ö»ÓĞµÚÒ»´Î²ÅÍ¬²½£¬´´½¨ÁËÒÔºó¾ÍÃ»±ØÒªÁË¡£
+		// åŒé‡é”çš„å½¢å¼ï¼Œä¿è¯çº¿ç¨‹å®‰å…¨åˆå§‹ã€‚
+		// è¿™ä¸ªæ¨¡å¼å°†åŒæ­¥å†…å®¹ä¸‹æ–¹åˆ°ifå†…éƒ¨ï¼Œæé«˜äº†æ‰§è¡Œçš„æ•ˆç‡ï¼Œä¸å¿…æ¯æ¬¡è·å–å¯¹è±¡æ—¶éƒ½è¿›è¡ŒåŒæ­¥ï¼Œåªæœ‰ç¬¬ä¸€æ¬¡æ‰åŒæ­¥ï¼Œåˆ›å»ºäº†ä»¥åå°±æ²¡å¿…è¦äº†ã€‚
 		if (singleton == null) {
 			synchronized (Singleton.class) {
 				if (singleton == null) {
-					singleton = new Singleton("ÎÒÖ»ÓĞÒ»¸öÊµÀı");
+					singleton = new Singleton("æˆ‘åªæœ‰ä¸€ä¸ªå®ä¾‹");
 				}
 			}
 		}

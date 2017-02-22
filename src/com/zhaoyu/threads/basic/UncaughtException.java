@@ -1,17 +1,17 @@
 package com.zhaoyu.threads.basic;
 
 /**
- * Ïß³ÌµÄrun·½·¨²»ÄÜÅ×³öÈÎºÎ±»¼ì²âµÄÒì³£(ÈçÔÚrun·½·¨ÖĞÅ×³öInterruptException»á±¨´í)£¬Î´¼ì²âµÄÒì³£»áµ¼ÖÂÏß³ÌÖÕÖ¹¡£
+ * çº¿ç¨‹çš„runæ–¹æ³•ä¸èƒ½æŠ›å‡ºä»»ä½•è¢«æ£€æµ‹çš„å¼‚å¸¸(å¦‚åœ¨runæ–¹æ³•ä¸­æŠ›å‡ºInterruptExceptionä¼šæŠ¥é”™)ï¼Œæœªæ£€æµ‹çš„å¼‚å¸¸ä¼šå¯¼è‡´çº¿ç¨‹ç»ˆæ­¢ã€‚
  *
- * ²»ĞèÒªÔÚÈÎºÎcatch×Ó¾äÖĞÀ´´¦Àí¿É´«²¥µÄÒì³£¡£ÔÚÏß³ÌËÀÍöÖ®Ç° £¬Òì³£±»´«µİµ½Ò»¸öÓÃÓÚÎ´²¶»ñÒì³£µÄ´¦ÀíÆ÷ÖĞ¡£
- * ´¦ÀíÆ÷ÊµÏÖUncaughtExceptionHandler½Ó¿Ú¡£Õâ¸ö½Ó¿ÚÖ»ÓĞÒ»¸ö·½·¨¡£
+ * ä¸éœ€è¦åœ¨ä»»ä½•catchå­å¥ä¸­æ¥å¤„ç†å¯ä¼ æ’­çš„å¼‚å¸¸ã€‚åœ¨çº¿ç¨‹æ­»äº¡ä¹‹å‰ ï¼Œå¼‚å¸¸è¢«ä¼ é€’åˆ°ä¸€ä¸ªç”¨äºæœªæ•è·å¼‚å¸¸çš„å¤„ç†å™¨ä¸­ã€‚
+ * å¤„ç†å™¨å®ç°UncaughtExceptionHandleræ¥å£ã€‚è¿™ä¸ªæ¥å£åªæœ‰ä¸€ä¸ªæ–¹æ³•ã€‚
  * void uncaughtException(Thread t,Throwable e);
  *
- * ¿ÉÒÔÍ¨¹ı setUncaughtExceptionHandler·½·¨ÎªÈÎºÎÏß³ÌÉèÖÃÒ»¸ö´¦ÀíÆ÷¡£Ò²¿ÉÒÔÊ¹ÓÃ
- * ThreadµÄ¾²Ì¬·½·¨setDefaultUncaughtExceptionHandlerÎªËùÓĞÏß³Ì°²×°Ò»¸öÄ¬ÈÏ´¦ÀíÆ÷¡£
+ * å¯ä»¥é€šè¿‡ setUncaughtExceptionHandleræ–¹æ³•ä¸ºä»»ä½•çº¿ç¨‹è®¾ç½®ä¸€ä¸ªå¤„ç†å™¨ã€‚ä¹Ÿå¯ä»¥ä½¿ç”¨
+ * Threadçš„é™æ€æ–¹æ³•setDefaultUncaughtExceptionHandlerä¸ºæ‰€æœ‰çº¿ç¨‹å®‰è£…ä¸€ä¸ªé»˜è®¤å¤„ç†å™¨ã€‚
  *
- * ThreadGroupÀàÊµÏÖÁËUncaughtExceptionHandler½Ó¿Ú£¬Èç¹ûÃ»ÓĞ¸øÏß³ÌÖ¸¶¨Ä¬ÈÏµÄ´¦ÀíÆ÷¡£ÄÇÃ´´ËÊ±µÄ´¦ÀíÆ÷
- * ¾ÍÊÇ¸ÃÏß³ÌµÄThreadGroup¶ÔÏó¡£
+ * ThreadGroupç±»å®ç°äº†UncaughtExceptionHandleræ¥å£ï¼Œå¦‚æœæ²¡æœ‰ç»™çº¿ç¨‹æŒ‡å®šé»˜è®¤çš„å¤„ç†å™¨ã€‚é‚£ä¹ˆæ­¤æ—¶çš„å¤„ç†å™¨
+ * å°±æ˜¯è¯¥çº¿ç¨‹çš„ThreadGroupå¯¹è±¡ã€‚
  *
  * @author xiaoE
  *
@@ -21,7 +21,7 @@ public class UncaughtException {
 }
 
 /**
- * Ïß³Ì²âÊÔÀà
+ * çº¿ç¨‹æµ‹è¯•ç±»
  *
  * @author xiaoE
  *
@@ -32,13 +32,13 @@ class ThreadRunTest1 implements Runnable {
 
 	@Override
 	public void run() throws InterruptedException {
-		System.out.println("²âÊÔÏß³Ì¿ªÊ¼");
+		System.out.println("æµ‹è¯•çº¿ç¨‹å¼€å§‹");
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			throw new InterruptedException();
 		}
-		System.out.println("²âÊÔÏß³ÌsleepÁË£º" + 5 + "Ãë");
+		System.out.println("æµ‹è¯•çº¿ç¨‹sleepäº†ï¼š" + 5 + "ç§’");
 	}
 
 	public int getI() {

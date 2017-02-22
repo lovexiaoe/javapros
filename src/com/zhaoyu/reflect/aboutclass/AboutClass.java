@@ -3,11 +3,11 @@ package com.zhaoyu.reflect.aboutclass;
 import java.util.Date;
 
 /**
- * ÔÚÔËĞĞÊ±ÆÚ¼ä£¬java±£´æÁËµÚ¸ö¶ÔÏóËùÊôÀàµÄĞÅÏ¢£¬Õâ¸öÀàÊÇClass,
+ * åœ¨è¿è¡Œæ—¶æœŸé—´ï¼Œjavaä¿å­˜äº†ç¬¬ä¸ªå¯¹è±¡æ‰€å±ç±»çš„ä¿¡æ¯ï¼Œè¿™ä¸ªç±»æ˜¯Class,
  *
- * ÔÚ³ÌĞòÆô¶¯Ê±£¬º¬main·½·¨µÄÀà»á±»¼ÓÔØ£¬½Ó×Å£¬³ÌĞò»á¸ù¾İÒÀÀµ¹ØÏµÒÀ´Î¼ÓÔØºÜ¶àÀà£¬
- * ¶ÔÓÚ´óĞÍµÄ³ÌĞòÀ´Ëµ£¬Ã¿´ÎÆô¶¯ĞèÒª»¨·ÑºÜ¶àÊ±¼ä£¬
- * Ò»ÖÖ½â¾ö·½°¸ÊÇ£¬ÔÚmain¾¡Á¿ÉÙ²»ÒªÒıÓÃÆäËüÀà£¬È»ºó£¬ÎÒÃÇÍ¨¹ıforNameÊÖ¶¯¼ÓÔØÀà£¬
+ * åœ¨ç¨‹åºå¯åŠ¨æ—¶ï¼Œå«mainæ–¹æ³•çš„ç±»ä¼šè¢«åŠ è½½ï¼Œæ¥ç€ï¼Œç¨‹åºä¼šæ ¹æ®ä¾èµ–å…³ç³»ä¾æ¬¡åŠ è½½å¾ˆå¤šç±»ï¼Œ
+ * å¯¹äºå¤§å‹çš„ç¨‹åºæ¥è¯´ï¼Œæ¯æ¬¡å¯åŠ¨éœ€è¦èŠ±è´¹å¾ˆå¤šæ—¶é—´ï¼Œ
+ * ä¸€ç§è§£å†³æ–¹æ¡ˆæ˜¯ï¼Œåœ¨mainå°½é‡å°‘ä¸è¦å¼•ç”¨å…¶å®ƒç±»ï¼Œç„¶åï¼Œæˆ‘ä»¬é€šè¿‡forNameæ‰‹åŠ¨åŠ è½½ç±»ï¼Œ
  *
  * @author xiaoe
  *
@@ -16,42 +16,42 @@ public class AboutClass {
 	public static void main(String[] args) {
 		Date date = new Date();
 		Class c1 = date.getClass();
-		// »ñÈ¡¶ÔÏóÀàµÄÃû³Æ¡£
+		// è·å–å¯¹è±¡ç±»çš„åç§°ã€‚
 		System.out.println(c1.getName());
 
 		String className = "java.util.Date";
 		Class c2 = null;
 		try {
-			// Ê¹ÓÃforName»ñÈ¡¶ÔÏóµÄClass¶ÔÏó¡£
-			// Õâ¸ö·½·¨Ö»ÓĞclassNameÊÇÒ»¸öÀà»òÕß½Ó¿ÚÊ±²ÅÄÜÊ¹ÓÃ¡£·ñÔò»áÅ×³öÒ»¸ö¼ì²âÒì³£¡£
+			// ä½¿ç”¨forNameè·å–å¯¹è±¡çš„Classå¯¹è±¡ã€‚
+			// è¿™ä¸ªæ–¹æ³•åªæœ‰classNameæ˜¯ä¸€ä¸ªç±»æˆ–è€…æ¥å£æ—¶æ‰èƒ½ä½¿ç”¨ã€‚å¦åˆ™ä¼šæŠ›å‡ºä¸€ä¸ªæ£€æµ‹å¼‚å¸¸ã€‚
 			c2 = Class.forName(className);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		// ÕâÀï£¬ËäÈ»int²»ÊÇÒ»¸öÀà£¬µ«ÊÇint.classÊÇÒ»¸öClass¶ÔÏó¡£
+		// è¿™é‡Œï¼Œè™½ç„¶intä¸æ˜¯ä¸€ä¸ªç±»ï¼Œä½†æ˜¯int.classæ˜¯ä¸€ä¸ªClasså¯¹è±¡ã€‚
 		Class c3 = int.class;
-		// ´òÓ¡½á¹ûÎª£ºint
+		// æ‰“å°ç»“æœä¸ºï¼šint
 		System.out.println(c3.getName());
 
 		/*
-		 * ÀúÊ·Ô­Òò£¬Êı×éµÄÀàÃû³ÆÊÇÒ»¸öºÜÆæ¹ÖÃû×Ö¡£
+		 * å†å²åŸå› ï¼Œæ•°ç»„çš„ç±»åç§°æ˜¯ä¸€ä¸ªå¾ˆå¥‡æ€ªåå­—ã€‚
 		 * [Ljava.lang.Double;
 		 * [I
 		 */
 		System.out.println(Double[].class.getName());
 		System.out.println(int[].class.getName());
 
-		// Class ÀàµÄ¶ÔÏóÊ¹ÓÃ==±È½Ï
+		// Class ç±»çš„å¯¹è±¡ä½¿ç”¨==æ¯”è¾ƒ
 		if (c2 == Date.class) {
-			System.out.println("c2µÄÀàÎªDate");
+			System.out.println("c2çš„ç±»ä¸ºDate");
 		}
 
-		// Ê¹ÓÃClass.newInstance¿ÉÒÔÊ¹ÓÃÀàÄ¬ÈÏµÄ¹¹Ôìº¯Êı¿ìËÙ´´½¨Ò»¸öÊµÀı¡£
-		// Èç¹ûÃ»ÓĞÄ¬ÈÏµÄ¹¹Ôìº¯ÊıÔò»áÅ×³öÒì³£¡£
+		// ä½¿ç”¨Class.newInstanceå¯ä»¥ä½¿ç”¨ç±»é»˜è®¤çš„æ„é€ å‡½æ•°å¿«é€Ÿåˆ›å»ºä¸€ä¸ªå®ä¾‹ã€‚
+		// å¦‚æœæ²¡æœ‰é»˜è®¤çš„æ„é€ å‡½æ•°åˆ™ä¼šæŠ›å‡ºå¼‚å¸¸ã€‚
 		try {
-			System.out.println("×Ö·û´®".getClass().newInstance() + "µÃµ½ÁË¿Õ×Ö·û´®");
+			System.out.println("å­—ç¬¦ä¸²".getClass().newInstance() + "å¾—åˆ°äº†ç©ºå­—ç¬¦ä¸²");
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

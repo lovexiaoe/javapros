@@ -1,7 +1,7 @@
 package com.zhaoyu.designpattern.abstractfactory;
 
 /**
- * ¿ÏµÂ»ùµÄºº±¤°ü
+ * è‚¯å¾·åŸºçš„æ±‰å ¡åŒ…
  * 
  * @author zhaoyu
  * 

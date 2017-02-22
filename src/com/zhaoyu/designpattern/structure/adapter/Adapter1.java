@@ -1,11 +1,11 @@
 package com.zhaoyu.designpattern.structure.adapter;
 
-//ÀàÊÊÅäÆ÷
+//ç±»é€‚é…å™¨
 public class Adapter1 extends Adaptee implements Target {
 
 	@Override
 	public void adapterMethod() {
-		System.out.println("ÎÒÊÇÊÊÅäÕß");
+		System.out.println("æˆ‘æ˜¯é€‚é…è€…");
 	}
 
 }

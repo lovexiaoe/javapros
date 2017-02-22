@@ -1,15 +1,15 @@
 package com.zhaoyu.threads.threadsynchronize;
 import java.util.Random;
 
-//Ò»¸ö¿ÉÒÔË¯Ãß0-5ÃëµÄÏß³ÌÀà¡£
+//ä¸€ä¸ªå¯ä»¥ç¡çœ 0-5ç§’çš„çº¿ç¨‹ç±»ã€‚
 public class PrintTask implements Runnable{
-	//¶¨ÒåÏß³ÌËæ»úµÄË¯ÃßÊ±¼ä
+	//å®šä¹‰çº¿ç¨‹éšæœºçš„ç¡çœ æ—¶é—´
 	private final int sleepTime;
-	//ÈÎÎñµÄÃû³Æ
+	//ä»»åŠ¡çš„åç§°
 	private final String taskName;
 	private final static Random generator=new Random();
 	
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	public PrintTask(String name){
 		taskName=name;
 		sleepTime=generator.nextInt(5000);
@@ -17,11 +17,11 @@ public class PrintTask implements Runnable{
 	
 	public void run(){
 		try {
-			System.out.printf("%s ½«»áË¯Ãß %d ºÁÃë¡£\n",taskName,sleepTime);
+			System.out.printf("%s å°†ä¼šç¡çœ  %d æ¯«ç§’ã€‚\n",taskName,sleepTime);
 			Thread.sleep(sleepTime);
 		} catch (InterruptedException e) {
-			//¶ÔÕıÔÚsleepµÄÏß³Ìµ÷ÓÃÁËinterrupt,Ôòsleep·½·¨»áÅ×³öinterruptedException¡£
-			System.out.printf("%s %s\n",taskName,"ÓÉÓÚ´ò¶Ï¹ıÔç½áÊø");
+			//å¯¹æ­£åœ¨sleepçš„çº¿ç¨‹è°ƒç”¨äº†interrupt,åˆ™sleepæ–¹æ³•ä¼šæŠ›å‡ºinterruptedExceptionã€‚
+			System.out.printf("%s %s\n",taskName,"ç”±äºæ‰“æ–­è¿‡æ—©ç»“æŸ");
 		}
 		System.out.printf("%s done sleeping\n",taskName);
 	}

@@ -1,10 +1,10 @@
 package com.zhaoyu.threads.syn_producer_cosumer;
 
 /**
- * ÕâÀïÎÒÃÇ×Ô¼ºÍ¨¹ıwait¡¢notify¡¢nofityAllÀ´ÊµÏÖÓĞ½ç»º³åÇøµÄÏß³ÌÍ¬²½
- * ¹²Ïí»º³åÇø£¬Éú²úÕßÔÚÊı×éºóÃæ½øĞĞĞ´Èë£¬Ïû·ÑÕßÔÚÇ°Ãæ½øĞĞ¶ÁÈ¡¡£
- * ÕâÖÖÀàËÆÓÚ¶ÓÁĞµÄÊı¾İ½á¹¹Îª²»Ñ­»·µÄÊı×é×é³ÉµÄ¶ÓÁĞ£¬Éú²úÕßÖ»ÄÜÔÚ¸ßÎ»Ğ´£¬¶øÏû·ÑÕß
- * Ö»ÄÜÔÚµÍÎ»¶Á£¬µ±¶ÁĞ´Ò»ÑùÇÒµÈÓÚ×î¸ßÎ»Ê±¸´Î»Îª×îµÍÎ»¡£
+ * è¿™é‡Œæˆ‘ä»¬è‡ªå·±é€šè¿‡waitã€notifyã€nofityAllæ¥å®ç°æœ‰ç•Œç¼“å†²åŒºçš„çº¿ç¨‹åŒæ­¥
+ * å…±äº«ç¼“å†²åŒºï¼Œç”Ÿäº§è€…åœ¨æ•°ç»„åé¢è¿›è¡Œå†™å…¥ï¼Œæ¶ˆè´¹è€…åœ¨å‰é¢è¿›è¡Œè¯»å–ã€‚
+ * è¿™ç§ç±»ä¼¼äºé˜Ÿåˆ—çš„æ•°æ®ç»“æ„ä¸ºä¸å¾ªç¯çš„æ•°ç»„ç»„æˆçš„é˜Ÿåˆ—ï¼Œç”Ÿäº§è€…åªèƒ½åœ¨é«˜ä½å†™ï¼Œè€Œæ¶ˆè´¹è€…
+ * åªèƒ½åœ¨ä½ä½è¯»ï¼Œå½“è¯»å†™ä¸€æ ·ä¸”ç­‰äºæœ€é«˜ä½æ—¶å¤ä½ä¸ºæœ€ä½ä½ã€‚
  * @author xiaoe
  *
  */
@@ -12,17 +12,17 @@ public class synchronizedBuffer implements Buffer{
 
 	private final int[] buffer={-1,-1,-1};
 	
-	//ÏÂÒ»¸öĞ´ÈëÔªËØµÄindex
+	//ä¸‹ä¸€ä¸ªå†™å…¥å…ƒç´ çš„index
 	private int writeIndex=0;
-	//ÏÂÒ»¸ö¶ÁÈ¡ÔªËØµÄindex
+	//ä¸‹ä¸€ä¸ªè¯»å–å…ƒç´ çš„index
 	private int readIndex=0;
 
 	@Override
 	public synchronized int get() throws InterruptedException {
 		while (readIndex==writeIndex) {
-			//System.out.println("¶ÓÁĞ»º³åÇøÊÇ¿ÕÁË£¡");
+			//System.out.println("é˜Ÿåˆ—ç¼“å†²åŒºæ˜¯ç©ºäº†ï¼");
 			if (readIndex==buffer.length) {
-				//µ±¶ÓÁĞÏû·ÑÍê×î¶¥²¿µÄÔªËØÊ±£¬ÖØÖÃ¶ÁĞ´Ë÷Òı£¬²¢notifyÉú²úÕß¡£
+				//å½“é˜Ÿåˆ—æ¶ˆè´¹å®Œæœ€é¡¶éƒ¨çš„å…ƒç´ æ—¶ï¼Œé‡ç½®è¯»å†™ç´¢å¼•ï¼Œå¹¶notifyç”Ÿäº§è€…ã€‚
 				readIndex=writeIndex=0;
 				notifyAll();
 			}else {
@@ -32,7 +32,7 @@ public class synchronizedBuffer implements Buffer{
 		}
 		
 		int readValue=buffer[readIndex];
-		System.out.println("Ïû·ÑÕßÏû·ÑÁËÔÚ  "+readIndex+" µÄ  "+readValue);
+		System.out.println("æ¶ˆè´¹è€…æ¶ˆè´¹äº†åœ¨  "+readIndex+" çš„  "+readValue);
 
 		readIndex++;
 		notifyAll();
@@ -42,11 +42,11 @@ public class synchronizedBuffer implements Buffer{
 	@Override
 	public synchronized void set(int value) throws InterruptedException {
 		while (writeIndex>=buffer.length) {
-			//System.out.println("¶ÓÁĞ»º³åÇøĞ´ÂúÁË");
+			//System.out.println("é˜Ÿåˆ—ç¼“å†²åŒºå†™æ»¡äº†");
 			wait();
 		}
 		buffer[writeIndex]=value;
-		System.out.println("Éú²úÕßÔÚ  "+writeIndex+" Ğ´Èë  "+value);
+		System.out.println("ç”Ÿäº§è€…åœ¨  "+writeIndex+" å†™å…¥  "+value);
 		writeIndex++;
 		notifyAll();
 	}

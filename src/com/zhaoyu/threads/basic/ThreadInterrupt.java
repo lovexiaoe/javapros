@@ -1,33 +1,33 @@
 package com.zhaoyu.threads.basic;
 
 /**
- * ÔÚÏß³ÌµÄrun·½·¨ÖĞÈç¹û³öÏÖÎ´²¶»ñµÄÒì³££¬»òÕßrun·½·¨Ö´ĞĞÍê±Ï£¬Ïß³Ì½«»áÖÕÖ¹¡£
- * ÔÚjavaµÄÔçÆÚ°æ±¾ÖĞ£¬Ìá¹©ÁËstop·½·¨ºÍsuspend·½·¨£¬
- * Ö±½ÓÖÕÖ¹Ïß³Ì£¬ÊÍ·ÅÏß³ÌËù»ñµÄ×ÊÔ´£¬µ«ÊÇÔÚÊÍ·Å¹ı³ÌÖĞ»áÔì³É¶ÔÏó×´Ì¬²»Ò»ÖÂ£¬´Ó¶øÊ¹³ÌĞò½øÈëÎ´ÖªµÄ¾³µØ£¬ÒÑ±»ÆúÓÃ¡£
+ * åœ¨çº¿ç¨‹çš„runæ–¹æ³•ä¸­å¦‚æœå‡ºç°æœªæ•è·çš„å¼‚å¸¸ï¼Œæˆ–è€…runæ–¹æ³•æ‰§è¡Œå®Œæ¯•ï¼Œçº¿ç¨‹å°†ä¼šç»ˆæ­¢ã€‚
+ * åœ¨javaçš„æ—©æœŸç‰ˆæœ¬ä¸­ï¼Œæä¾›äº†stopæ–¹æ³•å’Œsuspendæ–¹æ³•ï¼Œ
+ * ç›´æ¥ç»ˆæ­¢çº¿ç¨‹ï¼Œé‡Šæ”¾çº¿ç¨‹æ‰€è·çš„èµ„æºï¼Œä½†æ˜¯åœ¨é‡Šæ”¾è¿‡ç¨‹ä¸­ä¼šé€ æˆå¯¹è±¡çŠ¶æ€ä¸ä¸€è‡´ï¼Œä»è€Œä½¿ç¨‹åºè¿›å…¥æœªçŸ¥çš„å¢ƒåœ°ï¼Œå·²è¢«å¼ƒç”¨ã€‚
  *
- * µ±Ò»¸öÏß³Ìµ÷ÓÃinterrupt·½·¨Ê±¡£Õâ¸ö·½·¨²»»áÖĞ¶ÏÏß³Ì£¬Ö»ÊÇ½«Ïß³ÌµÄÖĞ¶Ï×´Ì¬ÖÃÎ»£¬
- * ÖĞ¶Ï×´Ì¬Îªtrue£¬ÕâÊÇÃ¿Ò»¸öÏß³Ì¶¼¾ßÓĞµÄboolean±êÖ¾¡£
+ * å½“ä¸€ä¸ªçº¿ç¨‹è°ƒç”¨interruptæ–¹æ³•æ—¶ã€‚è¿™ä¸ªæ–¹æ³•ä¸ä¼šä¸­æ–­çº¿ç¨‹ï¼Œåªæ˜¯å°†çº¿ç¨‹çš„ä¸­æ–­çŠ¶æ€ç½®ä½ï¼Œ
+ * ä¸­æ–­çŠ¶æ€ä¸ºtrueï¼Œè¿™æ˜¯æ¯ä¸€ä¸ªçº¿ç¨‹éƒ½å…·æœ‰çš„booleanæ ‡å¿—ã€‚
  *
- * Ê×ÏÈÒªÅªÇå³şÖĞ¶Ï×´Ì¬ÊÇ·ñ±»ÖÃÎ»£¬Èç¹ûÏß³Ì±»×èÈû£¬¾ÍÎŞ·¨¼ì²âÖĞ¶Ï×´Ì¬¡£
+ * é¦–å…ˆè¦å¼„æ¸…æ¥šä¸­æ–­çŠ¶æ€æ˜¯å¦è¢«ç½®ä½ï¼Œå¦‚æœçº¿ç¨‹è¢«é˜»å¡ï¼Œå°±æ— æ³•æ£€æµ‹ä¸­æ–­çŠ¶æ€ã€‚
  *
- * µ±Ò»¸ö±»×èÈûµÄÏß³Ì£¨µ÷ÓÃsleep»òwait£©µ÷ÓÃinterrupt·½·¨Ê±£¬×èÈû½«»á±»InterruptedExceptionÒì³£ÖĞ¶Ï¡£
- * µ±Ò»¸öÎ´×èÈûµÄÏß³Ìµ÷ÓÃinterrupt·½·¨Ê±£¬Ö»ÊÇ±ê¼ÇÁËÖĞ¶Ï×´Ì¬, Ïß³ÌµÄÖ´ĞĞ²¢²»»áÊÜµ½Ó°Ïì£¬±»ÉèÖÃÖĞ¶Ï×´Ì¬µÄÏß³Ì¿ÉÒÔ¾ö¶¨ÈçºÎÏìÓ¦ÖĞ¶Ï¡£
- * Ä³Ğ©Ïß³ÌÊÇÈç´ËÖØÒª£¬ÒÑÖÁÓÚ´¦ÀíÍêInterruptedExceptionºó¼ÌĞøÖ´ĞĞ¡£
+ * å½“ä¸€ä¸ªè¢«é˜»å¡çš„çº¿ç¨‹ï¼ˆè°ƒç”¨sleepæˆ–waitï¼‰è°ƒç”¨interruptæ–¹æ³•æ—¶ï¼Œé˜»å¡å°†ä¼šè¢«InterruptedExceptionå¼‚å¸¸ä¸­æ–­ã€‚
+ * å½“ä¸€ä¸ªæœªé˜»å¡çš„çº¿ç¨‹è°ƒç”¨interruptæ–¹æ³•æ—¶ï¼Œåªæ˜¯æ ‡è®°äº†ä¸­æ–­çŠ¶æ€, çº¿ç¨‹çš„æ‰§è¡Œå¹¶ä¸ä¼šå—åˆ°å½±å“ï¼Œè¢«è®¾ç½®ä¸­æ–­çŠ¶æ€çš„çº¿ç¨‹å¯ä»¥å†³å®šå¦‚ä½•å“åº”ä¸­æ–­ã€‚
+ * æŸäº›çº¿ç¨‹æ˜¯å¦‚æ­¤é‡è¦ï¼Œå·²è‡³äºå¤„ç†å®ŒInterruptedExceptionåç»§ç»­æ‰§è¡Œã€‚
  *
- * void interrupt·½·¨£¬Èç¹ûÄ¿Ç°Ïß³Ì±»Ò»¸ösleepµ÷ÓÃ×èÈû£¬Å×³öInterruptedExceptionÒì³£¡£
- * ·ñÔò£¬½«ÖĞ¶Ï×´Ì¬ÉèÖÃÎªtrue¡£
+ * void interruptæ–¹æ³•ï¼Œå¦‚æœç›®å‰çº¿ç¨‹è¢«ä¸€ä¸ªsleepè°ƒç”¨é˜»å¡ï¼ŒæŠ›å‡ºInterruptedExceptionå¼‚å¸¸ã€‚
+ * å¦åˆ™ï¼Œå°†ä¸­æ–­çŠ¶æ€è®¾ç½®ä¸ºtrueã€‚
  *
- * isInterruptedÖ»ÊÇ·µ»ØÖĞ¶Ï×´Ì¬£¬²»»á¸Ä±ä×´Ì¬ ¡£
+ * isInterruptedåªæ˜¯è¿”å›ä¸­æ–­çŠ¶æ€ï¼Œä¸ä¼šæ”¹å˜çŠ¶æ€ ã€‚
  *
  * static boolean interrupted
- * ²âÊÔµ±Ç°Ïß³ÌÊÇ·ñ±»ÖĞ¶Ï£¬ÕâÒ»µ÷ÓÃ»á²úÉú¸±×÷ÓÃ£¬Ëü½«µ±Ç°Ïß³ÌµÄÖĞ¶Ï×´Ì¬ÉèÖÃÎªfalse¡£
+ * æµ‹è¯•å½“å‰çº¿ç¨‹æ˜¯å¦è¢«ä¸­æ–­ï¼Œè¿™ä¸€è°ƒç”¨ä¼šäº§ç”Ÿå‰¯ä½œç”¨ï¼Œå®ƒå°†å½“å‰çº¿ç¨‹çš„ä¸­æ–­çŠ¶æ€è®¾ç½®ä¸ºfalseã€‚
  *
  * @author xiaoE
  *
  */
 public class ThreadInterrupt {
 	public static void main(String[] args) {
-		// Ïß³ÌÖĞ¶Ï×´Ì¬²âÊÔ
+		// çº¿ç¨‹ä¸­æ–­çŠ¶æ€æµ‹è¯•
 		interruptTest();
 
 		ThreadRunTest r1 = new ThreadRunTest();
@@ -40,10 +40,10 @@ public class ThreadInterrupt {
 			e.printStackTrace();
 		}
 		// false
-		System.out.println("Ö÷Ïß³ÌµÄ´ò¶Ï×´Ì¬£º" + Thread.currentThread().isInterrupted());
+		System.out.println("ä¸»çº¿ç¨‹çš„æ‰“æ–­çŠ¶æ€ï¼š" + Thread.currentThread().isInterrupted());
 		System.out.println(Thread.interrupted());
-		// ÔÚ×èÈû×´Ì¬ÏÂ¼ì²é´ò¶Ï×´Ì¬»á·µ»Øfalse¡£
-		System.out.println("t1ÔËĞĞ´ò¶ÏÇ°µÄ×´Ì¬£º" + t1.isInterrupted());
+		// åœ¨é˜»å¡çŠ¶æ€ä¸‹æ£€æŸ¥æ‰“æ–­çŠ¶æ€ä¼šè¿”å›falseã€‚
+		System.out.println("t1è¿è¡Œæ‰“æ–­å‰çš„çŠ¶æ€ï¼š" + t1.isInterrupted());
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
@@ -55,21 +55,21 @@ public class ThreadInterrupt {
 		 */
 		t1.interrupt();
 		// false
-		System.out.println("t1ÔËĞĞ´ò¶ÏºóµÄ×´Ì¬£º" + t1.isInterrupted());
+		System.out.println("t1è¿è¡Œæ‰“æ–­åçš„çŠ¶æ€ï¼š" + t1.isInterrupted());
 	}
 
 	public static void interruptTest() {
 		while (!Thread.currentThread().isInterrupted()) {
-			System.out.println("ÔÚÏß³ÌÖĞĞèÒª²»Ê±µØ¼ì²âinterrupt±êÖ¾¡£¾ö¶ÏÏß³ÌÊÇ·ñ±»ÖĞ¶Ï¡£");
+			System.out.println("åœ¨çº¿ç¨‹ä¸­éœ€è¦ä¸æ—¶åœ°æ£€æµ‹interruptæ ‡å¿—ã€‚å†³æ–­çº¿ç¨‹æ˜¯å¦è¢«ä¸­æ–­ã€‚");
 			return;
 		}
 	}
 
 	/**
-	 * Èç¹ûÃ¿´ÎÑ­»·¶¼µ÷ÓÃsleep·½·¨»òÕßÆäËü¿ÉÖĞ¶Ï·½·¨£¨wait£©,isInterrupted¼ì²âÃ»ÓĞ±ØÒª¡£
-	 * ÒòÎªÔÚÖĞ¶Ï×´Ì¬ÏÂ£¬µ÷ÓÃsleep£¬Ïß³Ì²»»áĞİÃß¡£²¢ÇÒËü»áÇå³ıÖĞ¶Ï×´Ì¬²¢Å×³öÒ»¸öInterruptException¡£
+	 * å¦‚æœæ¯æ¬¡å¾ªç¯éƒ½è°ƒç”¨sleepæ–¹æ³•æˆ–è€…å…¶å®ƒå¯ä¸­æ–­æ–¹æ³•ï¼ˆwaitï¼‰,isInterruptedæ£€æµ‹æ²¡æœ‰å¿…è¦ã€‚
+	 * å› ä¸ºåœ¨ä¸­æ–­çŠ¶æ€ä¸‹ï¼Œè°ƒç”¨sleepï¼Œçº¿ç¨‹ä¸ä¼šä¼‘çœ ã€‚å¹¶ä¸”å®ƒä¼šæ¸…é™¤ä¸­æ–­çŠ¶æ€å¹¶æŠ›å‡ºä¸€ä¸ªInterruptExceptionã€‚
 	 *
-	 * Òò´ËÈç¹ûÏß³ÌÖĞµ÷ÓÃÁËsleep»òÕßwait·½·¨£¬²»ĞèÒª½øĞĞisInterrupt¼ì²é£¬Ïà·´£¬ĞèÒª²¶»ñInterruptException¡£
+	 * å› æ­¤å¦‚æœçº¿ç¨‹ä¸­è°ƒç”¨äº†sleepæˆ–è€…waitæ–¹æ³•ï¼Œä¸éœ€è¦è¿›è¡ŒisInterruptæ£€æŸ¥ï¼Œç›¸åï¼Œéœ€è¦æ•è·InterruptExceptionã€‚
 	 */
 	public static void sleepInterrupt() {
 		try {
@@ -89,7 +89,7 @@ public class ThreadInterrupt {
 }
 
 /**
- * Ïß³Ì²âÊÔÀà
+ * çº¿ç¨‹æµ‹è¯•ç±»
  *
  * @author xiaoE
  *
@@ -100,12 +100,12 @@ class ThreadRunTest implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("²âÊÔÏß³Ì¿ªÊ¼");
+		System.out.println("æµ‹è¯•çº¿ç¨‹å¼€å§‹");
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 		}
-		System.out.println("²âÊÔÏß³ÌsleepÁË£º" + 5 + "Ãë");
+		System.out.println("æµ‹è¯•çº¿ç¨‹sleepäº†ï¼š" + 5 + "ç§’");
 	}
 
 	public int getI() {

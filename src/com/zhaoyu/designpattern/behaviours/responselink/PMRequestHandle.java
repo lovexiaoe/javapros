@@ -12,7 +12,7 @@ public class PMRequestHandle implements RequestHandler {
 
 	public void handlerRequest(Request request) {
 		if (request instanceof AddMoneyRequest) {
-			System.out.println("Òª¼ÓĞ½, ÏîÄ¿¾­ÀíÉóÅú!");
+			System.out.println("è¦åŠ è–ª, é¡¹ç›®ç»ç†å®¡æ‰¹!");
 		} else {
 			rh.handlerRequest(request);
 		}

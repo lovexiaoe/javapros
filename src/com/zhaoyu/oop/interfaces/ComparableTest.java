@@ -3,7 +3,7 @@ package com.zhaoyu.oop.interfaces;
 import java.util.Arrays;
 
 /**
- * Ò»¸öÀàÈç¹ûÒª½øĞĞÅÅĞò£¬Ôò±ØĞëÊµÏÖComparable½Ó¿Ú£¬²¢ÖØĞ´compareTo½Ó¿Ú¡£
+ * ä¸€ä¸ªç±»å¦‚æœè¦è¿›è¡Œæ’åºï¼Œåˆ™å¿…é¡»å®ç°Comparableæ¥å£ï¼Œå¹¶é‡å†™compareToæ¥å£ã€‚
  *
  * @author xiaoe
  *
@@ -12,13 +12,13 @@ public class ComparableTest {
 	public static void main(String[] args) {
 
 		Employee[] employees = new Employee[3];
-		Employee e1 = new Employee(11, "ºÃö¦");
-		Employee e2 = new Employee(32, "ºÃ¿¡");
-		Employee e3 = new Employee(28, "ÕæË§");
+		Employee e1 = new Employee(11, "å¥½é“");
+		Employee e2 = new Employee(32, "å¥½ä¿Š");
+		Employee e3 = new Employee(28, "çœŸå¸…");
 		employees[0] = e1;
 		employees[1] = e2;
 		employees[2] = e3;
-		// Èç¹ûEmployeeÃ»ÓĞÊµÏÖComparable½Ó¿Ú£¬Ôò»áÔÚÔËĞĞÊ±±¨ClassCastException´íÎó¡£
+		// å¦‚æœEmployeeæ²¡æœ‰å®ç°Comparableæ¥å£ï¼Œåˆ™ä¼šåœ¨è¿è¡Œæ—¶æŠ¥ClassCastExceptioné”™è¯¯ã€‚
 		// com.zhaoyu.oop.interfaces.Employee cannot be cast to java.lang.Comparable
 		Arrays.sort(employees);
 		for (int i = 0; i < employees.length; i++) {
@@ -55,10 +55,10 @@ class Employee implements Comparable<Employee> {
 	}
 
 	/*
-	 * ÓïÑÔ±ê×¼¹æ¶¨£¬¶ÔÓÚÈÎÒâµÄxºÍy£¬ÊµÏÖ±ØĞëÄÜ¹»±£Ö¤sgn(x.compareTo(y))=-sgn(y.compareTo(x))
-	 * x.compareTo(y)Å×³öÒì³££¬y.compareTo(x)Ò²Ó¦¸ÃÅ×³öÒ»¸öÒì³£¡£
+	 * è¯­è¨€æ ‡å‡†è§„å®šï¼Œå¯¹äºä»»æ„çš„xå’Œyï¼Œå®ç°å¿…é¡»èƒ½å¤Ÿä¿è¯sgn(x.compareTo(y))=-sgn(y.compareTo(x))
+	 * x.compareTo(y)æŠ›å‡ºå¼‚å¸¸ï¼Œy.compareTo(x)ä¹Ÿåº”è¯¥æŠ›å‡ºä¸€ä¸ªå¼‚å¸¸ã€‚
 	 * 
-	 * ×¢Òâ¿¼ÂÇ±È½ÏÁ½·½Îª¿ÕµÄÇé¿ö
+	 * æ³¨æ„è€ƒè™‘æ¯”è¾ƒä¸¤æ–¹ä¸ºç©ºçš„æƒ…å†µ
 	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */

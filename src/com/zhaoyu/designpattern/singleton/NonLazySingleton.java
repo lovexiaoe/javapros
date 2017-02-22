@@ -5,7 +5,7 @@ public class NonLazySingleton {
 		System.out.println("Singleton is create!");
 	}
 
-	// 非延迟加载，即在程序运行时实例就会创建，并打印出:Singleton is create!
+	// 闈炲欢杩熷姞杞斤紝鍗冲湪绋嬪簭杩愯鏃跺疄渚嬪氨浼氬垱寤猴紝骞舵墦鍗板嚭:Singleton is create!
 	private static NonLazySingleton string = new NonLazySingleton();
 
 	public static NonLazySingleton getInstance() {

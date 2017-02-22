@@ -6,9 +6,9 @@ public class HRRequestHandle implements RequestHandle {
 
 	public void handleRequest(HttpServletRequest request) {
 		if (request instanceof DimissionRequest) {
-			System.out.println("ÒªÀëÖ°, ÈËÊÂÉóÅú!");
+			System.out.println("è¦ç¦»èŒ, äººäº‹å®¡æ‰¹!");
 		}
 
-		System.out.println("ÇëÇóÍê*");
+		System.out.println("è¯·æ±‚å®Œ*");
 	}
 }
