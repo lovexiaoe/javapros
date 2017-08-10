@@ -23,7 +23,7 @@ public class LogHandler implements InvocationHandler {
 		}
 		Object ret = null;
 		try {
-			// 璋冪敤鐩爣鏂规硶
+			// 调用目标方法
 			ret = method.invoke(targetObject, args);
 			System.out.println("success---->>>>" + method.getName());
 		} catch (Exception e) {

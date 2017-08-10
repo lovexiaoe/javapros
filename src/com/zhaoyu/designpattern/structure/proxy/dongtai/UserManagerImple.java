@@ -3,15 +3,15 @@ package com.zhaoyu.designpattern.structure.proxy.dongtai;
 public class UserManagerImple implements UserManager {
 
 	public void addUser(String id, String name) {
-		System.out.println("è¿™æ˜¯è¢«ä»£ç†çš„æ·»åŠ ç¨‹åºï¼");
+		System.out.println("ÕâÊÇ±»´úÀíµÄÌí¼Ó³ÌĞò£¡");
 	}
 
 	public void delUser(String id) {
-		System.out.println("è¿™æ˜¯è¢«ä»£ç†çš„åˆ é™¤ç¨‹åº");
+		System.out.println("ÕâÊÇ±»´úÀíµÄÉ¾³ı³ÌĞò");
 	}
 
 	public String findUser(String id) {
-		System.out.println("è¿™æ˜¯è¢«ä»£ç†çš„æœ‰è¿”å›å€¼çš„ç¨‹åº");
-		return "å¼ ä¸‰";
+		System.out.println("ÕâÊÇ±»´úÀíµÄÓĞ·µ»ØÖµµÄ³ÌĞò");
+		return "ÕÅÈı";
 	}
 }

@@ -5,7 +5,7 @@ package com.zhaoyu.generic;
  * 如果代码使用了java泛型,就不能在5.0之前的虚拟机上运行。
  *
  * 类型擦除（erased）----由于jvm没有对应的泛型类型，
- * 针对第一种泛型类型，jvm都会提供一个相应的原始类型(raw type)。
+ * 针对每一种泛型类型，jvm都会提供一个相应的原始类型(raw type)。
  * 所以在编译时，jvm就会去掉类型变量，替换为对应的限定类型（如<? extends Comparable>的限定类型为ComParable），
  * 如果没有限定，则使用Object。
  *

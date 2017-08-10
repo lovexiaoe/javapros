@@ -5,15 +5,15 @@ public class ProxyObject implements Object {
 	Object obj;
 
 	public ProxyObject() {
-		System.out.println("è¿™æ˜¯ä»£ç†ç±»");
+		System.out.println("ÕâÊÇ´úÀíÀà");
 		obj = new ObjectImpl();
 	}
 
 	@Override
 	public void action() {
-		System.out.println("ä»£ç†å¼€å§‹");
+		System.out.println("´úÀí¿ªÊ¼");
 		obj.action();
-		System.out.println("ä»£ç†ç»“æŸ");
+		System.out.println("´úÀí½áÊø");
 	}
 
 }

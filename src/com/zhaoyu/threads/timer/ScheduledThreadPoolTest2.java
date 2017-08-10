@@ -16,8 +16,6 @@ public class ScheduledThreadPoolTest2 {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-
 	}};
 
 	public static void main(String[] args) {

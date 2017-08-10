@@ -41,15 +41,20 @@ public class DataStream {
 			out = new DataOutputStream(new FileOutputStream("employee1.dat"));
 			out.writeBoolean(false);
 			out.writeChar('a');
+			out.writeBoolean(true);
 
 			out.close();
 
 			in = new DataInputStream(new FileInputStream("employee1.dat"));
+			//这里读取的顺序是，必须和写入的顺序是一致的，不然会出现不可预期的情况。
+
 			// get boolean
 			Boolean b = in.readBoolean();
 			System.out.println(b);
+
 			// get char
-			System.out.println(in.readChar());
+			char c=in.readChar() ;
+			System.out.println(c);
 
 			in.close();
 

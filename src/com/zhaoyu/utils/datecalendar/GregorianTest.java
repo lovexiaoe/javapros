@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 
 public class GregorianTest {
 	public static void main(String[] args) {
-		GregorianCalendar calendar1 = new GregorianCalendar();
+		/*GregorianCalendar calendar1 = new GregorianCalendar();
 		// 注意这里的月份是从0开始的。
 		GregorianCalendar calendar2 = new GregorianCalendar(1992, 0, 1);
 		GregorianCalendar calendar3 = new GregorianCalendar(1993, Calendar.JANUARY, 31, 22, 59, 59);
@@ -28,7 +28,20 @@ public class GregorianTest {
 		System.out.println("===" + getExpireTime());
 		lastDayOfYearAddOneDay();
 		OneDayAdd24Hour();
-		SetCalendar();
+		SetCalendar();*/
+		compareTime();
+	}
+
+	static void compareTime(){
+		Calendar calendar= new GregorianCalendar();
+		calendar.setTime(new Date());
+		calendar.set(Calendar.HOUR_OF_DAY,21);
+		calendar.set(Calendar.MINUTE,0);
+		Date time=calendar.getTime();
+		System.out.println(time);
+		Date now=new Date();
+		System.out.println(now);
+		System.out.println(now.after(time));
 	}
 
 	// 计算到当天晚上0点的秒数
