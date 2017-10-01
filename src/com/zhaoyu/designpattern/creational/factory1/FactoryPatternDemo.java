@@ -23,7 +23,7 @@ public class FactoryPatternDemo {
 		shape3.draw();
 	}
 }
-// Êä³ö
+// è¾“å‡º
 /*
 Inside Circle::draw() method.
 Inside Rectangle::draw() method.

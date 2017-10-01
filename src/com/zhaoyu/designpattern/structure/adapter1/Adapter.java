@@ -1,9 +1,9 @@
 package com.zhaoyu.designpattern.structure.adapter1;
 
-//¶ÔÏóÊÊÅäÆ÷
+//å¯¹è±¡é€‚é…å™¨
 public class Adapter implements Target {
 
-	// ÒıÈë±»ÊÊÅäÕß
+	// å¼•å…¥è¢«é€‚é…è€…
 	private Adaptee adaptee;
 
 	public Adapter(Adaptee adaptee) {
@@ -17,6 +17,6 @@ public class Adapter implements Target {
 
 	@Override
 	public void adapterMethod() {
-		System.out.println("ÎÒÊÇÊÊÅäÕß");
+		System.out.println("æˆ‘æ˜¯é€‚é…è€…");
 	}
 }

@@ -3,7 +3,7 @@ package com.zhaoyu.designpattern.structure.Filter;
 import java.util.List;
 
 /**
- * 两个过滤器取and
+ * 涓や釜杩囨护鍣ㄥ彇and
  * 
  * @author xiaoE
  * 

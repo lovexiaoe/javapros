@@ -3,7 +3,7 @@ package com.zhaoyu.designpattern.structure.Filter;
 import java.util.List;
 
 /**
- * Á½¸ö¹ıÂËÆ÷È¡or
+ * ä¸¤ä¸ªè¿‡æ»¤å™¨å–or
  * 
  * @author xiaoE
  *
@@ -19,11 +19,11 @@ public class OrCriteria implements Criteria {
 
 	@Override
 	public List<Person> meetCriteria(List<Person> persons) {
-		// ÏÈÈ¡ºÏ¼¯
+		// å…ˆå–åˆé›†
 		List<Person> firstCriteriaItems = criteria.meetCriteria(persons);
 		List<Person> otherCriteriaItems = otherCriteria.meetCriteria(persons);
 
-		// ÔÙÓÃºÏ¼¯ºÍÆäÖĞÒ»¸ö¼¯ºÏÈ¡or¡£
+		// å†ç”¨åˆé›†å’Œå…¶ä¸­ä¸€ä¸ªé›†åˆå–orã€‚
 		for (Person person : otherCriteriaItems) {
 			if (!firstCriteriaItems.contains(person)) {
 				firstCriteriaItems.add(person);

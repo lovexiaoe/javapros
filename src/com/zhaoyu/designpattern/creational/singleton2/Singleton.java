@@ -17,12 +17,12 @@ public final class Singleton {
 	}
 
 	public static Singleton getSingleTon() {
-		// ˫��������ʽ����֤�̰߳�ȫ��ʼ��
-		// ���ģʽ��ͬ�������·���if�ڲ��������ִ�е�Ч�ʣ�����ÿ�λ�ȡ����ʱ������ͬ����ֻ�е�һ�β�ͬ�����������Ժ��û��Ҫ�ˡ�
+		// 双重锁的形式，保证线程安全初始。
+		// 这个模式将同步内容下方到if内部，提高了执行的效率，不必每次获取对象时都进行同步，只有第一次才同步，创建了以后就没必要了。
 		if (singleton == null) {
 			synchronized (Singleton.class) {
 				if (singleton == null) {
-					singleton = new Singleton("��ֻ��һ��ʵ��");
+					singleton = new Singleton("我只有一个实例");
 				}
 			}
 		}
