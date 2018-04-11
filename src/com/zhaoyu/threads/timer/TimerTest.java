@@ -13,7 +13,8 @@ import java.util.TimerTask;
  * 
  * 3、Timer执行周期任务时依赖系统时间,Timer执行周期任务时依赖系统时间，如果当前系统时间发生变化会出现一些执行上的变化，
  * ScheduledExecutorService基于时间的延迟，不会由于系统时间的改变发生执行变化。
- * 
+ *
+ * Timer实现定时任务，通过循环对比TaskQueen中的最小执行时间，如果大于当前时间，则线程wait （最小时间减去当前时间的时间差）
  * @author dmall223
  *
  */

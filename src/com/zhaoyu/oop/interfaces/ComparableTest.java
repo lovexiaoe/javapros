@@ -1,16 +1,17 @@
 package com.zhaoyu.oop.interfaces;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * 一个类如果要进行排序，则必须实现Comparable接口，并重写compareTo接口。
+ * Comparator接口是集合类实现元素排序时的工具接口，如SortableList中定义的sort(Comparator<T>),方法有（compare(o1,o2)）
  *
  * @author xiaoe
  *
  */
 public class ComparableTest {
 	public static void main(String[] args) {
-
 		Employee[] employees = new Employee[3];
 		Employee e1 = new Employee(11, "好靓");
 		Employee e2 = new Employee(32, "好俊");

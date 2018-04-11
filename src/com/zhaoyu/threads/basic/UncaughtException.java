@@ -3,45 +3,63 @@ package com.zhaoyu.threads.basic;
 /**
  * 线程的run方法不能抛出任何被检测的异常(如在run方法中抛出InterruptException会报错)，未检测的异常会导致线程终止。
  *
- * 不需要在任何catch子句中来处理可传播的异常。在线程死亡之前 ，异常被传递到一个用于未捕获异常的处理器中。
- * 处理器实现UncaughtExceptionHandler接口。这个接口只有一个方法。
- * void uncaughtException(Thread t,Throwable e);
+ * 不需要在任何catch子句中来传播异常。在线程死亡之前 ，异常被传递到一个用于未捕获异常的处理器中。
  *
  * 可以通过 setUncaughtExceptionHandler方法为任何线程设置一个处理器。也可以使用
  * Thread的静态方法setDefaultUncaughtExceptionHandler为所有线程安装一个默认处理器。
  *
- * ThreadGroup类实现了UncaughtExceptionHandler接口，如果没有给线程指定默认的处理器。那么此时的处理器
- * 就是该线程的ThreadGroup对象。
+ * 处理器实现UncaughtExceptionHandler接口。这个接口只有一个方法。
+ * void uncaughtException(Thread t,Throwable e);
+ *
+ * 如果线程不设置任何的处理器，jvm会在异常抛出后结束线程，打印堆信息给console
+ *
+ *
  *
  * @author xiaoE
  *
  */
 public class UncaughtException {
+	public static void main(String[] args) {
+		Task task=new Task();
+		Thread thread=new Thread(task);
+		//
+		thread.setUncaughtExceptionHandler(new ExceptionHandler());
+		thread.start();
+		System.out.println("主程序运行完成");
+	}
 
 }
 
 /**
- * 线程测试类
- *
- * @author xiaoE
- *
+ * run方法不能抛出一个异常
  */
-class ThreadRunTest1 implements Runnable {
+//class ThreadRunTest1 implements Runnable {
+//	@Override
+//	public void run() throws InterruptedException {
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			throw new InterruptedException();
+//		}
+//	}
+//
+//}
 
-	private int i = 0;
-
+class Task implements Runnable {
 	@Override
-	public void run() throws InterruptedException {
-		System.out.println("测试线程开始");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			throw new InterruptedException();
-		}
-		System.out.println("测试线程sleep了：" + 5 + "秒");
+	public void run() {
+		int numero=Integer.parseInt("TTT");
 	}
+}
 
-	public int getI() {
-		return i;
+class ExceptionHandler implements Thread.UncaughtExceptionHandler {
+	@Override
+	public void uncaughtException(Thread t, Throwable e) {
+		System.out.printf("An exception has been captured\n");
+		System.out.printf("Thread: %s\n",t.getId());
+		System.out.printf("Exception: %s: %s\n", e.getClass().getName(),e.getMessage());
+		System.out.printf("Stack Trace: \n");
+		e.printStackTrace(System.out);
+		System.out.printf("Thread status: %s\n",t.getState());
 	}
 }

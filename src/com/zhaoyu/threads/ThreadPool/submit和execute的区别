@@ -1,0 +1,3 @@
+execute是Executor接口的方法，接收Runnable参数，返回参数为void。
+submit是ExecutorService接口的方法，接收Callable或者Runnable参数，会返回Future<T>，可以感知任务执行的checked或者
+        unchecked exception，可以通过trycatch 捕获 Future.get 时产生的异常，对异常的任务进行处理。

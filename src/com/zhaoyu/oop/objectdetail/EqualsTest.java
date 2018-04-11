@@ -1,6 +1,11 @@
 package com.zhaoyu.oop.objectdetail;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
+ * 基础类型使用==比较的是两个值是否相等，引用类型存放的是对堆中地址的引用，==比较的是引用的地址是否一致。
+ *
  * java语言的equals方法具有以下特性：
  * 1，自反性，非空引用x,x.equals(x) 应该返回true。
  * 2，对称性，非空引用x和y,x.equals(y)返回true,则y.equals(x)也应当返回true.
@@ -27,6 +32,26 @@ package com.zhaoyu.oop.objectdetail;
  */
 public class EqualsTest {
 	public static void main(String[] args) {
+		int i=0,j=0;
+		double d=1.0;
+		boolean b=false;
+		System.out.println(i==j);                          //true
+		System.out.println(i==d);                          //false
+		//System.out.println(i==b);                        //编译错误,不能装换比较。
+
+		//集合中使用equals方法比较对象的相等性。
+		List<Integer> ints=new ArrayList<Integer>();
+		while(i++<3){
+			ints.add(new Integer(2));
+		}
+		ints.remove(new Integer(2));
+		System.out.println(ints.size());                  //新添3个元素，删除1个，还剩2个。
+
+		System.out.println((0.1*3==0.3)+" 0.1*0.3="+(0.1*3));                     //false，0.1*3=0.30000000000000004
+		System.out.println((0.1+0.3)==0.2);               //true
+		String s="asdf";
+		System.out.println(s=="asdf");                     //字符串常量池
+
 		System.out.println("equals是Object的方法。");
 	}
 }

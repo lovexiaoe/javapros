@@ -1,5 +1,5 @@
 Runnable可以想像成是一个没有参数和返回值的异步方法。
-Callable和Runnable类似。但是有返回值。Callable接口是一个参数化的类型。只有一个方法call。
+Callable和Runnable类似。但是有返回值，Callable可以转换为FutureTask通过get得到返回值。Callable接口是一个参数化的类型。只有一个方法call。
 	public interface Callable<V>{
 		V call() throws Exception;
 	}
@@ -18,7 +18,14 @@ Future接口具有下列方法：
 get方法阻塞调用，直到计算结果完成 。第二个get方法调用超时会抛出一个TimeoutException异常。如果运行的计算的线程被中断，两个方法都将
 抛出InterruptedException。
 
-	
+Runnable和Callable接口的区别。
+Runnable是在java.lang包下，可以作为Thread类的构造参数，没有返回值。
+Callable是在java.util.concurrent包下，不能作为Thread类的构造参数，并带有返回值，主要是提供给Executor调用的，结合Future使用。
+要将一个callable类转换为Runnable,可以借助java.util.concurrent.FutureTask,它同时实现了Runnable接口和Future接口。
+
+Future存放异步计算的结果，一般存放Executor.submit(Callable<T>) 的结果，或者将Callable转换为Runnable使用Executor.execute(FutureTask)
+
+
 
 	
 	

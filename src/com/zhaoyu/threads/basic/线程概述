@@ -6,7 +6,7 @@
 线程共有以下6种状态：
 new(新生)
 runnable(可运行)
-blocked(阻塞)
+blocked(阻塞) 线程在尝试获取一个锁的时候回陷入阻塞，获取完成后进入runnable状态。
 waited(等待) --wait() join() concurrent包中的lock或者condition
 time waiting(计时等待)
 terminated(被终止)
@@ -15,3 +15,11 @@ t.setDeamon(true);将一个线程设置为守护线程，唯一的用途是为�
 守护线程应该永远不去访问固有资源 ，如数据库，文件。
 
 线程的创建推荐使用Runnable接口方法，继承Thread类的方法已经不建议使用。
+
+
+wait - 是Object方法，每个对象都对应了一个Monitor,当前线程必须拥有该对象的Monitor,那么当前线程释放该Monitor的所有权。直到
+        其他拥有该对象Monitor的线程notify或者notifyAll,该线程继续获取对象的Monitor。这里的Monitor可以简单理解为对象锁，保证
+        对象在同一时间只有一个线程访问。
+        只能在同步代码块中使用。
+sleep - 是thread的方法，让正在执行的线程休眠特定的时间，不会释放任何Monitor的所有权。可以在任何线程中使用。
+park  - 是LockSupport的方法，调用Unsafe类。不需要获取对象的Monitor就可以让线程Blocking。通过unpark唤醒。

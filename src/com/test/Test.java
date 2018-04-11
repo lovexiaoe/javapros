@@ -5,9 +5,15 @@ import java.util.List;
 public class Test {
 	public static void main(String[] args) {
 		List<Integer> ints=new ArrayList<Integer>();
-				while(true){
-					ints.add(new Integer(2));
-				}
-
+		int i=0;
+		while(i++<3){
+			ints.add(new Integer(2));
+		}
+		ints.remove(new Integer(2));
+		System.out.println(ints.size());
+		System.out.println(0.1*3==0.3);
+		System.out.println((0.1+0.1)==0.2);
+		System.out.println((0.3)==0.3);
+		System.out.println("asdf"=="asdf");
 	}
 }

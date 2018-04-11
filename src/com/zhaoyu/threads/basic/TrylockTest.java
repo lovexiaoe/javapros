@@ -24,7 +24,7 @@ public class TrylockTest {
 }
 
 class ThreadRunTest2 implements Runnable {
-	TrylockClazz clazz;
+		TrylockClazz clazz;
 
 	public ThreadRunTest2(TrylockClazz clazz) {
 		this.clazz = clazz;
@@ -49,13 +49,12 @@ class TrylockClazz {
 			if (iLock.tryLock(100, TimeUnit.MILLISECONDS)) {
 				i++;
 				i = i * 2;
-			} else {
-				throw new UnsupportedOperationException();
+				//如果tryLock失败，unlock会报错，所以这里最好不要放在final中，并且之间的代码保证不出错。
+				iLock.unlock();
 			}
 
-		} catch (Exception e) {
-		} finally {
-			iLock.unlock();
+		} catch (InterruptedException e) {
+			//打断处理
 		}
 		return i;
 	}

@@ -1,6 +1,9 @@
 package com.zhaoyu.basic.primitivetype.floatdouble;
 
 /**
+ * 计算机由于采用二进制保存数据，是无法精确保存一些小数的，比如1/10,所以使用float和double进行计算的时候会出现超预期的结果，
+ * 如0.1*3得到的可能是0.30000000000004。所以使用浮点进行计算的情况，尽量使用BigDecimal。
+ *
  * 此类用于说明float和double类型的相关知识和使用。
  * flat类型的数值后有一个F(如：3.402F),没有后缀F的浮点数值默认为double类型。double类型也可以 在后面添加D(如3.402D)。
  *
@@ -21,7 +24,7 @@ package com.zhaoyu.basic.primitivetype.floatdouble;
 public class FloatAndDouble {
 	public static void main(String[] args) {
 		Float f1 = 1.2812312323E20F;
-		double f2 = 1281231232.3e29;
+		double f2 = -1281231232.3e29;
 		System.out.println(f1.toString());
 		System.out.println(String.valueOf(f2));
 		System.out.println(String.valueOf("max:" + f1.MAX_VALUE));
@@ -32,7 +35,7 @@ public class FloatAndDouble {
 /*
  * 输出结果。
  * 1.2812313E20
- * 1.2812312323E38
+ * -1.2812312323E38
  * max:3.4028235E38
  * min:1.4E-45
  */
