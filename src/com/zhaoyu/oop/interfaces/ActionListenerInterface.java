@@ -26,7 +26,7 @@ public class ActionListenerInterface {
 
 		/*
 		 * 这里定义了一个每10s显示时间的定时器任务。
-		 * awt.Timer是用于执行定时任务的，util.Timer是用于调度后台任务。
+		 * awt.Timer是用于执行定时任务的，consumers.Timer是用于调度后台任务。
 		 */
 		Timer t = new Timer(10000, listener);
 		t.start();

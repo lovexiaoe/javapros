@@ -1,5 +1,7 @@
 package com.zhaoyu.designpattern.creational.singleton1;
 
+
+//直接创建实例，如果这个类没有用到也会加载这个实例。
 public class SingleObject {
 	// create an object of SingleObject
 	private static SingleObject instance = new SingleObject();

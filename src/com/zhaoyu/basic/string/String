@@ -2,7 +2,8 @@ String的其它方法还有
 	replace,
 	toUpperCase,
 	toLowerCase,
-	concat(拼接字符串。),
+	concat(拼接字符串。),在字符串拼接的时候，如a+b+c,java会使用匿名的(new StringBuilder).append进行优化，
+	        所以在循环或者多语句情况下，最好创建一个StringBuilder进行优化，避免所赐生成匿名的StringBuilder。
 	trim,toCharArray,
 	split
 等。

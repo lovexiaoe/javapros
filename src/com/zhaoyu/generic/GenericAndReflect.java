@@ -42,7 +42,7 @@ public class GenericAndReflect {
 			name = args[0];
 		} else {
 			Scanner in = new Scanner(System.in);
-			System.out.println("输入类的名称，如java.util.Collections:");
+			System.out.println("输入类的名称，如java.consumers.Collections:");
 			name = in.next();
 		}
 

@@ -43,6 +43,28 @@ public class AQSTest {
     protected boolean tryAcquire(int arg) {
         throw new UnsupportedOperationException();
     }
+    //下面是公平锁的trAcquire实现。 hasQueuedPredecessors方法判断AQS队列不为空且在当前线程节点之前是有等待节点，不满足，则
+    //说明满足公平所的要求，进行下面的步骤，反之，非公平锁则不需要进这样的判断。
+    //简单来说，非公平锁可以随便enqueue,而公平所必须等待前面的执行完成，才轮到当前线程。
+    protected final boolean tryAcquire(int acquires) {
+        final Thread current = Thread.currentThread();
+        int c = getState();
+        if (c == 0) {
+            if (!hasQueuedPredecessors() &&
+                    compareAndSetState(0, acquires)) {
+                setExclusiveOwnerThread(current);
+                return true;
+            }
+        }
+        else if (current == getExclusiveOwnerThread()) {
+            int nextc = c + acquires;
+            if (nextc < 0)
+                throw new Error("Maximum lock count exceeded");
+            setState(nextc);
+            return true;
+        }
+        return false;
+    }
 
     /**
      * 在exclusive uninterruptible模式下为已经在队列中的线程获取锁。检查node.pred的状态，判断是否需要blocking，

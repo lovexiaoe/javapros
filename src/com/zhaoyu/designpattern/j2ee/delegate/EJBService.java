@@ -4,7 +4,7 @@ public class EJBService implements BusinessService {
 
 	@Override
 	public void doBusiness() {
-		System.out.println("µ÷ÓÃ EJB service ´¦ÀíÒµÎñÂß¼­¡£");
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ EJB service ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½");
 	}
 
 }

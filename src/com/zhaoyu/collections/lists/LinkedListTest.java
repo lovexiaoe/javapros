@@ -23,35 +23,35 @@ import java.util.ListIterator;
  *
  */
 public class LinkedListTest {
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		List<Integer> list = new LinkedList<Integer>();
-		list.add(2);
-		list.add(1);
-		System.out.println(list.get(0));
+        List<Integer> list = new LinkedList<Integer>();
+        list.add(2);
+        list.add(1);
+        System.out.println(list.get(0));
 
-		TestModificationException();
-	}
+        TestModificationException();
+    }
 
-	/**
-	 * iterator能检测到元素的修改，如果iterator发现它的集合被另一个iterator或者集合自身修改，就会抛出
-	 * ModificationException异常。
-	 *
-	 */
-	public static void TestModificationException() {
-		List<String> li = new ArrayList<String>();
-		li.add("1111");
-		li.add("2222");
-		li.add("3333");
-		li.add("4444");
-		// contains方法可以检测和某个值相等(equals)的对象是否出现在列表中。
-		System.out.println(li.contains("4444"));
-		li.add("4444");
-		System.out.println(li);
-		ListIterator<String> i1 = li.listIterator();
-		ListIterator<String> i2 = li.listIterator();
-		i1.next();
-		i1.remove();
-		i2.next(); // throws java.util.ConcurrentModificationException
-	}
+    /**
+     * iterator能检测到元素的修改，如果iterator发现它的集合被另一个iterator或者集合自身修改，就会抛出
+     * ModificationException异常。
+     *
+     */
+    public static void TestModificationException() {
+        List<String> li = new ArrayList<String>();
+        li.add("1111");
+        li.add("2222");
+        li.add("3333");
+        li.add("4444");
+        // contains方法可以检测和某个值相等(equals)的对象是否出现在列表中。
+        System.out.println(li.contains("4444"));
+        li.add("4444");
+        System.out.println(li);
+        ListIterator<String> i1 = li.listIterator();
+        ListIterator<String> i2 = li.listIterator();
+        i1.next();
+        i1.remove();
+        i2.next(); // throws java.util.ConcurrentModificationException
+    }
 }

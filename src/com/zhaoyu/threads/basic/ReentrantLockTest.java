@@ -13,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * ReentrantLock使用AbstractQueuedSynchronizer的state字段记录重入的次数，实现可重入性。
  *
- * ReentrantLock是一种自旋锁（spinLock）， spinLock会出现
+ * ReentrantLock是一种自旋锁（spinLock）， spinLock采用CAS实现，CAS会出现以下问题。
  * 1：ABA问题，通过添加版本号解决，如1A-2B-3C。
  * 2：指令会一直会尝试比较，直到超时为止（一般会设定一个尝试次数），所以会引入循环比较的开销。
  * 3：只能保证一个共享变量的原子操作，对于多个共享变量，CAS无法保证其原子性，对于引用变量，可以使用AtomaticReference

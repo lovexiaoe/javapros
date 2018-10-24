@@ -4,7 +4,7 @@ public class JMSService implements BusinessService {
 
 	@Override
 	public void doBusiness() {
-		System.out.println("调用 JMS service 处理业务逻辑。");
+		System.out.println(" JMS service design pattern");
 	}
 
 }

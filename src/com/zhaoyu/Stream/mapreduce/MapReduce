@@ -1,0 +1,22 @@
+MapReduce是在分布式环境中处理大数据集的一种编程模型，这种模型有下面两个操作：
+    1，Map:这个操作过滤和转换原始元素为更适于reduce操作的格式。
+    2，Reduce:这个操作从所有的元素中生成一个总体性的结果，如数值型数据的总和和平均值。
+
+在java生态中，hadoop提供了这个模型的实现。Stream类实现了两个reduce操作：
+    1，reduce()方法处理流中的元素得到一个值。
+    2，collect()方法处理流中的元素生成一个变化的数据结构，如Collection,或StringBuilder。
+
+reduce方法是stream的terminal操作。
+
+几个概念
+    1:BinaryOperator,一个BinaryOperator既可以是lambda表达式，也可以是继承了BinaryOperator 接口的java类。这种操作符接收
+    两个stream的元素并生产一个同样类型的新元素。BinaryOperator的实现必须有associative特性。也就是说如下的表达式成立。
+    (a op b) op c = a op (b op c)
+    那么op就是一个BinaryOperator
+
+    2:identity，identity的类型和返回类型相同，该值必须满足如下表达式：
+    identity op a = a op identity = a
+
+    3：accumulator，接收一个和返回类型相同的对象，和一个stream中的元素，生成一个新的和返回类型相同的对象，
+
+    4：combiner，接收两个和返回类型相同的对象，计算出一个新的和返回类型相同的对象。

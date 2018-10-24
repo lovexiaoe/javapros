@@ -1,0 +1,24 @@
+java5引入了Executor和ExecutorService接口和他们的实现类，解决一些并发问题。
+java7继续增加了ExecutorService的实现类fork/join框架，解决一类特定的问题。这个类使用分而治之的技巧解决可以被分解为更小的
+任务的问题。你可以认为ForkJoinPool是一种特殊的Executor。
+
+这类框架有基本的两个操作：
+1，fork操作，当需要将一个大任务分解成一些更小的任务时使用。
+2，join操作，当一个任务等待他创建的小任务结束时，用于合并这些任务的结果。
+
+fork/join和Executor最大的不同是workStealing 算法。和Executor框架不同，当一个任务等待它用fork创建的子任务结束时，执行
+该任务的线程（被称为工作线程）寻找其他还没有执行的任务并执行他们。通过这种方式，线程充分利用他们的运行时间，提高应用的性能。
+为了达到workStealing的目的，使用fork/join框架有以下限制：
+    1，任务只能使用fork/join作为同步机制，如果使用其他同步机制，工作线程在同步的时候不能执行其他任务。如sleep，在sleep的时候，
+    工作线程不能执行其他任务。
+    2，不能执行I/O操作，如读取一个文件中的数据。
+    3，不能抛出检测异常，
+
+fork/join的主要实现类有下面两个：
+    1，ForkJoinPool:实现了ExecutorService接口和work-stealing 算法。它管理工作线程并提供任务执行的信息。
+    2，ForkJoinTask:：在ForkJoinPool中运行的任务的基础类。提供执行fork和join的机制，并控制任务的状态。要运行一个fork/join
+    任务，你需要实现它的三个子类之一，1，RecursiveAction运行不需要返回的任务，RecursiveTask运行有一个返回结果的任务，
+    CountedCompleter用于当所有子任务完成时，需要执行一个动作的任务。
+
+大部分fork/join的特性在java7中提供，但是java8提供了一个ForkJoinPool的默认静态方法CommonPool(),创建一个和你计算机处理器
+数量相同的线程的pool，你可以通过java.util.concurrent.ForkJoinPool.common.parallelism属性改变。

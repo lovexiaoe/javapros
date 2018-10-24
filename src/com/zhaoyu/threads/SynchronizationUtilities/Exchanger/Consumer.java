@@ -10,7 +10,7 @@ public class Consumer implements Runnable{
     private List<String> buffer;
 
     /**
-     * Exchager to synchronize with the consumer
+     * Exchager to synchronize with the consumers
      */
     private final Exchanger<List<String>> exchanger;
 

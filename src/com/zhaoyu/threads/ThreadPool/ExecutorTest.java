@@ -19,12 +19,12 @@ import java.util.concurrent.ThreadPoolExecutor;
  * newCachedThreadPool 必要时创建新线程；空闲线程会被保留60秒。
  * newFixedThreadPool 该池包含固定数量的线程；空闲线程会一起保留。
  * newSingleThreadExecutor 只有一个线程的"池"。该线程顺序执行每一个提交的任务。
- * newScheduledThreadPool 用于预定执行而构建的固定线程池，替代java.util.Timer
+ * newScheduledThreadPool 用于预定执行而构建的固定线程池，替代java.consumers.Timer
  * newSingleThreadScheduledExecutor 用于预定执行面构建的单线程"池"。
  *
  * 前3个方法返回实现了ExecutorService接口的ThreadPoolExecutor类的对象。
  * ScheduledExecutorService接口具有为预定执行（scheduled execution）或重复执行任务而设计的类。
- * 它是一种允许使用线程池机制的java.util.Timer的泛化。Executor类的newScheduledThreadPool和
+ * 它是一种允许使用线程池机制的java.consumers.Timer的泛化。Executor类的newScheduledThreadPool和
  * newSingleThreadScheduledExecutor方法将返回实现了ScheduledExecutorService的对象。
  *
  * 可以使用下列方法将一个Runnable对象或者Callable对象提交给ExecutorService:

@@ -19,11 +19,11 @@ public class OrCriteria implements Criteria {
 
 	@Override
 	public List<Person> meetCriteria(List<Person> persons) {
-		// 先取合集
+
 		List<Person> firstCriteriaItems = criteria.meetCriteria(persons);
 		List<Person> otherCriteriaItems = otherCriteria.meetCriteria(persons);
-
-		// 再用合集和其中一个集合取or。
+		// 先取合集
+		// 再用合集和其中一个集合合并。
 		for (Person person : otherCriteriaItems) {
 			if (!firstCriteriaItems.contains(person)) {
 				firstCriteriaItems.add(person);

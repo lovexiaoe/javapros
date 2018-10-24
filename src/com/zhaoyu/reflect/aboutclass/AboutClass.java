@@ -19,7 +19,7 @@ public class AboutClass {
 		// 获取对象类的名称。
 		System.out.println(c1.getName());
 
-		String className = "java.util.Date";
+		String className = "java.consumers.Date";
 		Class c2 = null;
 		try {
 			// 使用forName获取对象的Class对象。

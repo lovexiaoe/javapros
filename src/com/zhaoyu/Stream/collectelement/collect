@@ -1,0 +1,32 @@
+一个stream有一个source和0或多个intermediate操作和和一个terminal操作，其中两个最重要的terminal操作是：
+    1，reduce,在处理stream元素后获得一个唯一的结果集，这个结果集通常是处理数据后的汇总，
+    2，collect,在处理stream元素后生产一个数据结构，这也被称为可变的reduce操作，因为结果是一个可以变化的数据结构。
+
+Collectors辅助类中定义了很多collector,调用collect方法时需要一个collector参数，当然也可以定义自己的collector，一个
+collector接口的结构如下：
+public interface Collector<T, A, R> {
+    Supplier<A> supplier(); //创建一个新的结果集容器
+    BiConsumer<A, T> accumulator(); //将一个值装进结果集容器中
+    BinaryOperator<A> combiner();  //在并行情况下，且结果集多于一个时会调用。
+    Function<A, R> finisher();    //在中间结果容器类型和最终结果类型不一致时，进行转换。
+
+    Set<Characteristics> characteristics(); //collect的特征，有3中枚举类型。
+}
+其中这里的泛型所表示的含义是：
+T：表示流中每个元素的类型。
+A：表示中间结果容器的类型。
+R：表示最终返回的结果类型。
+
+Collector中还定义了一个枚举类Characteristics，有三个枚举值，理解这三个值的含义对于我们自己编写正确的收集器也是至关重要的。
+
+    1，Characteristics.CONCURRENT：表示collector是并发的。结果集容器支持多线程并发调用accumulator方法，
+    2，Characteristics.UNORDERED：表示流中的元素无序。
+    3，Characteristics.IDENTITY_FINISH：表示中间结果容器类型与最终结果类型一致，此时finiser方法不会被调用。
+
+下面3个条件都成立时，我们才能执行一个并发的reduce操作：
+    1，Stream是parallel（使用parallelStream方法）
+    2，collector拥有CONCURRENT特性。
+    3，stream是unordered或者Collector拥有UNORDERED属性
+
+Collectors中的groupingByConcurrent()和toConcurrentMap()就拥有并发属性，而joining()和partitionBy()没有并发属性。
+另外自定义的collector也可以拥有并发属性。

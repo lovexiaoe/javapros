@@ -1,7 +1,7 @@
 package com.zhaoyu.designpattern.j2ee.delegate;
 
 /**
- * client只管调用执行任务，具体执行的任务类型，可以交给托管去处理。
+ * client只锟杰碉拷锟斤拷执锟斤拷锟斤拷锟今，撅拷锟斤拷执锟叫碉拷锟斤拷锟斤拷锟斤拷锟酵ｏ拷锟斤拷锟皆斤拷锟斤拷锟叫癸拷去锟斤拷锟斤拷
  *
  * @author xiaoE
  *

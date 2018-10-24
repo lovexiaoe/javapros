@@ -1,0 +1,20 @@
+java中的Stream是一系列元素，这些元素可以以顺序或者并行方式使用lambda表达式在一个声明式操作的管道中被处理（映射，过滤，转换，缩小和收集）。
+Stream有以下的一些主要特性：
+    1，一个stream是一系列数据，不是数据结构，数据的元素被stream处理，并且本身不会储存数据。
+    2，你可以从collection,file,String,或者提供stream元素的class中创建stream。
+    3，你可以访问stream的单个元素，可以以函数的方式定义操作，使用lambda表达式定义你想要执行的操作。
+    4，你只能处理stream，而不能修改stream的源。
+    5，stream定义了两种类型的操作：
+        1，Intermediate operations: 这类操作总是使用它们的结果产生一个新的stream。它们可以转换，过滤，排序stream的元素。
+        2，Terminal operations:这类操作使用stream的所有元素产生一个结果，执行后，该stream不再可用。
+    6，一个stream管道由0或多个intermediate操作和一个Terminal操作组成。
+    7，Intermediate操作可以分为如下：
+        1，stateLess:可以独立的处理一个元素，如根据条件过滤一个元素。
+        2，stateful：基于stream中的其他元素处理一个元素，如对stream中的元素排序。
+    8，laziness:intermediate操作是延迟的。在terminal操作开始之前它不会执行，java如果发现一个intermediate操作不会影响到
+    最终的结果，会避免执行对一个或多个元素的intermediate操作。
+    9，stream可以包含无限多个元素，如limit()或者findFirst这种操作可以在最后的计算中用来限制元素，因为intermediate操作是
+    延迟的，所以，一个无限的stream可能会一直执行下去。
+    10，stream只能被使用一次，当terminal操作执行后，stream被认为已经消费过了，它不能被再次使用，尝试再次使用会抛出异常。
+    11，你可以通过并行或者循序方式使用stream，并且多次指定stream的执行模式，但是只有最后一次指定起作用，在选择模式的时候
+    需要注意，stateful intermediate操作不能被用于并发。

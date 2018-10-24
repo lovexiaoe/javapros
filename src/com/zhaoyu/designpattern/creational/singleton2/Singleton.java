@@ -1,5 +1,6 @@
 package com.zhaoyu.designpattern.creational.singleton2;
 
+//懒加载模式，用到才会被加载。
 public final class Singleton {
 	private static Singleton singleton;
 	String s;
@@ -28,4 +29,14 @@ public final class Singleton {
 		}
 		return singleton;
 	}
+
+	//第二种模式，使用内部类实现单例模式,类加载机制保证了线程互斥性，并且类只有被用到的时候才会被加载，所以保证了延迟加载。
+	public static Singleton getSingleTon2(){
+		return SingletonInstance.instance;
+	}
+	private static class SingletonInstance{
+		private static final Singleton  instance=new Singleton("利用类加载创建的一单例");
+	}
 }
+
+
