@@ -1,4 +1,4 @@
-package com.zhaoyu.io.loggers;
+package com.zhaoyu.loggers;
 
 public class DebugTech {
 	public static void main(String[] args) {

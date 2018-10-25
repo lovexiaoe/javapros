@@ -1,4 +1,4 @@
-package com.zhaoyu.io.binaryinputoutput;
+package com.zhaoyu.io.binaryData;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -28,7 +28,8 @@ import java.io.IOException;
  * readUTF
  * 
  * DataInputStream实现了DataInput接口，DataOutputStream实现了DataOutput接口。
- * 
+ *
+ *
  *
  * @author xiaoE
  *
@@ -38,6 +39,7 @@ public class DataStream {
 		DataInputStream in = null;
 		DataOutputStream out = null;
 		try {
+			//如果有大量的数据写入，那么使用BufferedOutputStream代替FileOutputStream
 			out = new DataOutputStream(new FileOutputStream("employee1.dat"));
 			out.writeBoolean(false);
 			out.writeChar('a');
@@ -45,6 +47,7 @@ public class DataStream {
 
 			out.close();
 
+			// 如果有大量的数据读取，那么使用BufferedInputStream代替FileInputStream
 			in = new DataInputStream(new FileInputStream("employee1.dat"));
 			//这里读取的顺序是，必须和写入的顺序是一致的，不然会出现不可预期的情况。
 
@@ -55,6 +58,10 @@ public class DataStream {
 			// get char
 			char c=in.readChar() ;
 			System.out.println(c);
+
+			// get boolean
+			Boolean b2 = in.readBoolean();
+			System.out.println(b2);
 
 			in.close();
 

@@ -1,4 +1,4 @@
-package com.zhaoyu.io.loggers;
+package com.zhaoyu.loggers;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;

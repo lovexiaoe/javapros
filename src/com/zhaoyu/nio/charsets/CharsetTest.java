@@ -1,4 +1,4 @@
-package com.zhaoyu.io.charsets;
+package com.zhaoyu.nio.charsets;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;

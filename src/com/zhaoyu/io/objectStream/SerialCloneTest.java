@@ -1,4 +1,4 @@
-package com.zhaoyu.io;
+package com.zhaoyu.io.objectStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

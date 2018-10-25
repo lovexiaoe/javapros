@@ -1,4 +1,4 @@
-package com.zhaoyu.nio;
+package com.zhaoyu.nio.channelmap;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;

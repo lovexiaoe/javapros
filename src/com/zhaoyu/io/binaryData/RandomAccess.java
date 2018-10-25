@@ -1,4 +1,4 @@
-package com.zhaoyu.io.binaryinputoutput;
+package com.zhaoyu.io.binaryData;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -14,7 +14,7 @@ import java.util.GregorianCalendar;
  * RandomAccessFile类可以在文件中的任何位置查找或写入数据。磁盘文件都是随机访问的，但是从网络而来的数据流却不行。你可以打开一个
  * 随机访问文件，只用于读入或者同时用于读写，我们可以通过使用”r” 或”rw”作为构造器的参数指定这个选项。
  *
- * 使用RandomAccessFile对Employee数组进行文件读写。
+ * 该例使用DataOutputStream写入文件，然后使用RandomAccessFile对文件倒序读取。
  *
  * @author xiaoE
  */
@@ -132,7 +132,7 @@ class Employee {
 
 class DataIO {
 	/**
-	 * 固定长度读取，如果读取到字节0，则读取结束，否则读取size个字节，返回字符串。
+	 * 固定长度读取，如果读取到字节0，则读取结束，否则读取size个字节，返回字符串。用于读取文件中Employee的name,name的长度不确定。
 	 *
 	 * @param size
 	 * @param in
@@ -157,7 +157,7 @@ class DataIO {
 	}
 
 	/**
-	 * 写入固定长度个的字符，如果实际长度不足，以0字节补充。
+	 * 写入固定长度个的字符，如果实际长度不足，以0字节补充。，用于写入Employee的name,name的长度不确定。
 	 *
 	 * @param s
 	 * @param size

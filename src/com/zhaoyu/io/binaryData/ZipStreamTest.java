@@ -1,4 +1,4 @@
-package com.zhaoyu.io.binaryinputoutput;
+package com.zhaoyu.io.binaryData;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -22,6 +22,16 @@ import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
 /**
+ * 该程序说明了Zip流（ZipInputStream）的使用，界面的代码可以不考虑。
+ *
+ * 程序解析一个Zip格式的压缩文件，并对文本文件进行浏览，在文本框 中显示其内容。如果压缩文件中包含了其它非文本格式的文件，则会报错。
+ * word文件由于某种原因解析为乱码。txt中文解析正常。
+ *
+ * @author xiaoE
+ *
+ */
+
+/**
  * Zip文档
  * Zip通常以压缩格式存储一个或者多个文件，每个zip文件都包含了一个头信息，这个头信息包含了文件名称、使用的压缩方式等。在java中使用ZipInputStream来读取ZIP文档。
  * 文档中包含了多个单独的项，getNextEntry返回一个描述这些项的ZipEntry类型的对象。
@@ -35,15 +45,7 @@ import javax.swing.SwingWorker;
  * JAR文件是包含了清单项的Zip文件，你可以使用JarInputStream和JarOutputStream来读写清单项。
  */
 
-/**
- * 该程序说明了Zip流的使用。
- *
- * 程序解析一个Zip格式的压缩文件，并对文本文件进行浏览，在文本框 中显示其内容。如果压缩文件中包含了其它非文本格式的文件，则会报错。
- * word文件由于某种原因解析为乱码。txt中文解析正常。
- *
- * @author xiaoE
- *
- */
+
 public class ZipStreamTest {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
