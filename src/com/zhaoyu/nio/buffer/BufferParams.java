@@ -19,7 +19,7 @@ public class BufferParams {
         System.out.println("limit=" + b.limit() + " capacity=" + b.capacity()
                 + " position=" + b.position());
         //limit=15 capacity=15 position=10
-        b.flip(); // flip用于读写转换，重置position和limit为有效的数据的开始位置和结束位置。
+        b.flip(); // 重设此缓冲区，将limit设置为position，然后将position设置为0,并清除标志位mark,再读写转换时使用。
         System.out.println("limit=" + b.limit() + " capacity=" + b.capacity()
                 + " position=" + b.position());
         //limit=10 capacity=15 position=0

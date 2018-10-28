@@ -1,0 +1,2 @@
+selector是一个选择器，它可以选择某一个Channel，然后做些事情。
+一个线程可以对应一个selector，而一个selector可以轮询多个Channel，而每个Channel对应了一个Socket。

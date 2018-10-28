@@ -9,3 +9,5 @@ NIO是New I/O的简称，与旧式的基于流的I/O方法相对，从名字看�
 5，提供了基于Selector的异步网络I/O
 
 nio有3个主要的对象，channel,buffer,selector
+
+NIO 时同步非阻塞的。
