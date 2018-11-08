@@ -1,51 +1,17 @@
-import java.util.ArrayList;
-import java.util.List;
 
 //用于自己临时调试一些程序。
 public class Test {
-	public static void main(String[] args) {
-		//TestSwap();
-		System.out.println("TestSwitch:"+TestSwitch(2));
-	}
 
-	/**
-	 * java中的参数都是值传递，所以不能改变参数，但是可以改变应用参数的属性值，如数组中的元素。
-	 */
-	public static void TestSwap(){
-		int a=1,b=2;
-		System.out.println("int交换前，a="+a+",b="+b);
-		swapInt(a,b);
-		System.out.println("int交换后，a="+a+",b="+b);
-		Integer c=3,d=4;
-		System.out.println("Integer交换前，c="+c+",d="+d);
-		swapInteger(c,d);
-		System.out.println("Integer交换后，c="+c+",d="+d);
-	}
-
-	public  static void swapInt(int a,int b){
-		int c=b;
-		b=a;
-		a=c;
-	}
-	public  static void swapInteger(Integer a,Integer b){
-		Integer c=b;
-		b=a;
-		a=c;
-	}
-
-	/**
-	 * 当case没有break语句时，会执行匹配成功后的所有语句。,如下当输入2时会执行case2,case3，default
-	 * @param i
-	 * @return
-	 */
-	public static int TestSwitch(int i){
-		int result=0;
-		switch(i){
-			case 1: result=result+i;
-			case 2: result=result+i*2;
-			case 3:result=result+i*3;
-			default:result=result+1;
-		}
-		return result;
-	}
 }
+/*
+
+快速且单独失效（Fail Fast and Independently）
+在微服务体系架构中，我们希望服务可以快速、单独地失效。为了在服务层面隔离故障，我们可以使用隔板模式（bulkhead pattern）。可以在本文稍后看到相关介绍。
+
+我们也希望我们的组件能够快速失效（fail fast），因为我们不希望等到断开的实例直到超时。没有什么比挂起的请求和无响应的界面更令人失望。这不仅浪费资源，而且还会让用户体验变得更差。我们的服务是互相调用的，所以在这些延迟叠加前，应该特别注意防止那些超时的操作。
+
+你想到的第一个办法，可能是对每个服务的调用都定义超时的级别。这种做法的问题是，你不能真正知道到底什么是恰当的超时值，因为当网络故障和其他问题发生时，某些情况下只会影响一两次操作。在这种情况下，如果只有其中一些发生超时，你可能不想拒绝所有这些请求。
+
+我们可以说，通过使用超时（timeout）来实现微服务中的快速失败是一种反模式，这是应该避免的。可以使用基于操作的成功/失败统计次数的熔断模式，而不是使用超时。
+
+ */

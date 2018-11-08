@@ -16,7 +16,7 @@ package com.zhaoyu.collections;
  * void remove();
  * }
  *
- * Iterable接口返回一个Iterator对象，它只有一个方法。
+ * Iterable接口返回一个Iterator对象，它只有一个方法。返回一个Iterator
  * public interface Iterable<E>{
  * Iterator<E> iterator();
  * }
@@ -29,6 +29,11 @@ package com.zhaoyu.collections;
 /**
  * Collection接口的方法众多，如果想构造一个实现这个接口的工具类，那么将是一件烦人的事情 ，
  * java类库提供了一个类AbstractCollection,它将基本的size和iterator方法抽象化了，但是提供了其它例行方法。
+ *
+ */
+
+/**
+ * Collection 接口的contains(Object o)方法，当且仅当集合中包含一个至少满足(o==null?e==null:o.equals(e))的元素e时，返回true.
  *
  */
 public class CollectionTest {
