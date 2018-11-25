@@ -1,4 +1,4 @@
-package com.zhaoyu.threads.StampedLockTest;
+package com.zhaoyu.threads.lockcondition.StampedLockTest;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.StampedLock;

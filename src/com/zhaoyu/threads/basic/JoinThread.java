@@ -11,6 +11,9 @@ public class JoinThread {
         Thread thread2 = new Thread(ncLoader,"NetworkConnectionLoader");
         thread1.start();
         thread2.start();
+        //给执行计划器发出自己退让的信号，如果计划器是空闲的，那么忽略该信号。其他和该线程同优先级的线程会抢占执行。
+        // 在程序非常少用，一般用户调试，检测race condition等。
+        Thread.yield();
         try {
             //join方法等待该线程执行结束。
             thread1.join();

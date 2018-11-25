@@ -1,0 +1,37 @@
+
+这里使用一个解析维基百科上XML的例子，wikipedia的dump文件可以从网上下载，计算每个单词出现的次数。只分析10万页。
+1，使用线性的单线程解析，使用for循环嵌套，使用hashMap存储单词即计数，需要大概105秒。
+    private static final HashMap<String, Integer> counts =
+    new HashMap<String, Integer>();
+2，使用producer-consumer模式分两部分进行处理，使用ArrayBlockingQueue,ArrayBlockingQueue是producer-consumer模式理想的工具，
+    一边产生page，另一边消费page。这样去掉了嵌套的for循环。
+    方案大概花费95秒，比线性处理提高了10s。分别单独处理producer和consumer，解析page只要10秒，而计算单词需要95s。
+    可以看到瓶颈在计算单词上。
+3，将计算单词变为多线程，使用锁，锁定计算单词的过程，
+    如：private void countWord(String word) {
+          lock.lock();
+          try {
+              Integer currentCount = counts.get(word);
+              if (currentCount == null)
+                counts.put(word, 1);
+              else
+                counts.put(word, currentCount + 1);
+           } finally { lock.unlock(); }
+      }
+    结果发现多线程反而增加了单词计算的时间。原因在于锁竞争，大量的线程同时竞争单个资源。
+4，使用ConcurrentHashMap继续改进方案,将counts改为ConcurrentHashMap，ConcurrentHashMap提供了原子的读-改-写操作。
+    private void countWord(String word) {
+        while (true) {
+            Integer currentCount = counts.get(word);
+            //这里的if只是做预检查，实际操作使用putIfAbsent和replace，所以不需要使用synchronized
+            if (currentCount == null) {
+                if (counts.putIfAbsent(word, 1) == null)   //putIfAbsent是原子操作，
+                break;
+            } else if (counts.replace(word, currentCount, currentCount + 1)) { //replace也是原子操作。
+                break;
+            }
+        }
+    }
+    使用ConcurrentHashMap后，我们最大可以提速到63秒，但是电脑的cpu是4核的，依然不能达到接近4x的速度。
+5，继续优化，我们可以将计算结果先在线程本地生成，最后再合并。这样做后，速度接近了4x，最快有3.14x。
+

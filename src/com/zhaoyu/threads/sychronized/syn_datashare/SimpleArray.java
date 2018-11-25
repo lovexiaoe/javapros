@@ -1,4 +1,4 @@
-package com.zhaoyu.threads.syn_datashare;
+package com.zhaoyu.threads.sychronized.syn_datashare;
 
 import java.util.Arrays;
 import java.util.Random;

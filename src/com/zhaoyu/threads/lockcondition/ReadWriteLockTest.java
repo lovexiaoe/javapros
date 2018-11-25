@@ -1,4 +1,4 @@
-package com.zhaoyu.threads.basic;
+package com.zhaoyu.threads.lockcondition;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;

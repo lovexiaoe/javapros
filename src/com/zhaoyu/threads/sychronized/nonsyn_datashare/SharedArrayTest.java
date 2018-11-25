@@ -1,4 +1,4 @@
-package com.zhaoyu.threads.nonsyn_datashare;
+package com.zhaoyu.threads.sychronized.nonsyn_datashare;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

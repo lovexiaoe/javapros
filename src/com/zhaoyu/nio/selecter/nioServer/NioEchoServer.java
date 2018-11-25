@@ -19,6 +19,10 @@ import java.util.concurrent.Executors;
  * 当有数据被准备好时，调用完select()后，会返回一个SelectionKey，SelectionKey对应着一个数据准备好的Channel。
  * 然后我们选择并读取这个channel。
  * 这样NIO实现了一个线程来监控多个客户端。
+ *
+ * 以餐厅打饭为例，IO就是快餐店，服务员可以同时服务多个顾客，客户想（网络等待）的时间，服务员可以给其他客户打，
+ * 那么10个服务员可以同时服务100个顾客。channel就是餐盘，客户拿餐盘就是绑定channel，服务员就是selector。
+ * 
  */
 public class NioEchoServer {
     public static Map<Socket, Long> geym_time_stat = new HashMap<Socket, Long>();

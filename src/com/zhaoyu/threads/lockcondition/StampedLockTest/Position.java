@@ -1,4 +1,4 @@
-package com.zhaoyu.threads.StampedLockTest;
+package com.zhaoyu.threads.lockcondition.StampedLockTest;
 
 public class Position {
     private int x;

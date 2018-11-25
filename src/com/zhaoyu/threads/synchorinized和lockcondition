@@ -1,0 +1,29 @@
+Synchronized的使用的是内置锁，内置锁提供了一个锁和一个相关的条件，会在每个java对象中创建。
+一般被称为（mutex,monitor或者critical section）。
+1,获得类的monitor,加在类或者静态方法上。
+2,获得对象的monitor,Synchronized加在方法上，或者synchronize（this），Sychronized修饰的方法等同于synchronized(this)包围方法体。
+3,synchronize(obj),获得其他对象的monitor。
+
+时，
+，只锁定本地变量。
+
+锁和Sychronized有以下区别：
+1，锁可以自定义需要锁定的资源，比如一个类的某个属性 ，锁定粒度更小。
+2，锁可以中断尝试获得锁的线程。
+3，在获取锁的时候可以超时。
+4，锁可以拥有多个condition。
+
+重入锁（ReentrantLock） lock结合condition为java提供了细粒度的锁操作。可以使用一个lock和多个condition实现根据不同条件锁定的同步
+操作。灵活控制阻塞。
+锁是可重入的，允许线程重复地获得已持有的锁。锁保持一个“持有计数”来跟踪对lock方法的嵌套调用。线程每一次调用lock都要调用unlock
+来释放锁。由于这一特性，被一个锁保护的代码可以调用另一个使用相同锁的方法。
+
+Synchorinized只提供了一个锁和相关的一个条件，存在一些局限：
+   1，不能中断一个正在试图获得锁的线程。
+   2，试图获得锁不能设置超时，tryLock中可以设定锁定的时间。
+   3，每个锁仅有一个条件。
+   
+重入锁和Synchorinized的选择：
+	1，能避免使用同步就不要使用同步，建议使用java.util.concurrent包中提供的机制。
+	2，尽量使用synchorinized,减少代码量，减少出错几率。
+	3，特别需要lock/condition时，才使用。

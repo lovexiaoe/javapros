@@ -1,17 +1,17 @@
 package com.zhaoyu.collections.maps;
 
 /**
- * HashTable¼Ì³ĞDictionaryÀà¡£
- * DictionaryÒÑ¾­¹ıÊ±£¬ĞÂµÄÓ¦ÓÃÓ¦¸ÃÊµÏÖMap½Ó¿Ú¡£
+ * HashTableç»§æ‰¿Dictionaryç±»ã€‚
+ * Dictionaryå·²ç»è¿‡æ—¶ï¼Œæ–°çš„åº”ç”¨åº”è¯¥å®ç°Mapæ¥å£ã€‚
  *
- * HashTableÒ²ÊÇÒ»¸öhash±í£¬ÈÎºÎ·Çnull¶ÔÏó¶¼¿ÉÒÔ×÷Îªkey»òÕßvalue¡£×÷ÎªkeyµÄ¶ÔÏó±ØĞëÊµÏÖhashCode·½·¨ºÍequals·½·¨¡£
- * HashTableÓĞÁ½¸öÖØÒª²ÎÊıÓ°ÏìÆäĞÔÄÜ£º1£¬³õÊ¼ÈİÁ¿£¬2£¬¼ÓÔØÒò×Ó¡£ÈİÁ¿ÊÇhash±íÖĞÍ°µÄÊıÁ¿¡£
- * Ò»°ãµ±HashtableËùº¬×î´óÊıÄ¿´óÓÚÈİÁ¿³ËÒÔ¼ÓÔØÒò×Ó£¬¾Í»á·¢Éúrehash¡£
- * hashtableÊÇÍ¬²½µÄ£¬ËüÊ¹ÓÃsynchronized¶Ô·½·¨×öÍ¬²½´¦Àí¡£
+ * HashTableä¹Ÿæ˜¯ä¸€ä¸ªhashè¡¨ï¼Œä»»ä½•énullå¯¹è±¡éƒ½å¯ä»¥ä½œä¸ºkeyæˆ–è€…valueã€‚ä½œä¸ºkeyçš„å¯¹è±¡å¿…é¡»å®ç°hashCodeæ–¹æ³•å’Œequalsæ–¹æ³•ã€‚
+ * HashTableæœ‰ä¸¤ä¸ªé‡è¦å‚æ•°å½±å“å…¶æ€§èƒ½ï¼š1ï¼Œåˆå§‹å®¹é‡ï¼Œ2ï¼ŒåŠ è½½å› å­ã€‚å®¹é‡æ˜¯hashè¡¨ä¸­æ¡¶çš„æ•°é‡ã€‚
+ * ä¸€èˆ¬å½“Hashtableæ‰€å«æœ€å¤§æ•°ç›®å¤§äºå®¹é‡ä¹˜ä»¥åŠ è½½å› å­ï¼Œå°±ä¼šå‘ç”Ÿrehashã€‚
+ * hashtableæ˜¯åŒæ­¥çš„ï¼Œå®ƒä½¿ç”¨synchronizedå¯¹æ–¹æ³•åšåŒæ­¥å¤„ç†ã€‚
  *
- * ÓÉCollection½Ó¿ÚµÄiterator·½·¨·µ»ØµÄµü´úÆ÷¶¼ÊÇ¿ìËÙÊ§°ÜµÄ£¬Èç¹û¶Ôiterator×öĞŞ¸Ä£¬IteratorÁ¢Âí»áÅ×³öConcurrentModificationException
- * ¶øhashTableµÄkeyºÍvalue·µ»ØµÄEnumeration²»ÊÇ¿ìËÙÊ§°ÜµÄ¡£
- * ÆäÊµÏÖ·½·¨ºÍhashMapÀàËÆ£¬Ò²ÊÇÍ¨¹ıÁ´±íÊı×éÊµÏÖ¡£Ä¬ÈÏ³õÊ¼»¯µÄ³õÊ¼ÈİÁ¿ÊÇ11¡£
+ * ç”±Collectionæ¥å£çš„iteratoræ–¹æ³•è¿”å›çš„è¿­ä»£å™¨éƒ½æ˜¯å¿«é€Ÿå¤±è´¥çš„ï¼Œå¦‚æœå¯¹iteratoråšä¿®æ”¹ï¼ŒIteratorç«‹é©¬ä¼šæŠ›å‡ºConcurrentModificationException
+ * è€ŒhashTableçš„keyå’Œvalueè¿”å›çš„Enumerationä¸æ˜¯å¿«é€Ÿå¤±è´¥çš„ã€‚
+ * å…¶å®ç°æ–¹æ³•å’ŒhashMapç±»ä¼¼ï¼Œä¹Ÿæ˜¯é€šè¿‡é“¾è¡¨æ•°ç»„å®ç°ã€‚é»˜è®¤åˆå§‹åŒ–çš„åˆå§‹å®¹é‡æ˜¯11ã€‚
  */
 public class HashTableTest {
 

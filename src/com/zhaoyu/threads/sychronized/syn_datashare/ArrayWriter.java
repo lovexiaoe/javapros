@@ -1,4 +1,4 @@
-package com.zhaoyu.threads.syn_datashare;
+package com.zhaoyu.threads.sychronized.syn_datashare;
 
 public class ArrayWriter implements Runnable{
 	private final SimpleArray sharedSimpleArray;
