@@ -1,3 +1,6 @@
+int，double等数学计算超过他们的最大值，结果就会变得不可预期，这时候需要BigInteger和BigDecimal类。
+
+
 java.math包中的BigInteger和BigDecimal可以处理包含任意长度数字序列的数值。
 BigInteger类实现了任意精度的整数运算，BigDecimal实现了任意任意精度的浮点数运算。
 

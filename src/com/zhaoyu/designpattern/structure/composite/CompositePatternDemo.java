@@ -1,5 +1,10 @@
 package com.zhaoyu.designpattern.structure.composite;
 
+/**
+ *  @Description: 组合模式，该例子，类似一个部门的层级架构，金字塔。每个领导有下级。
+ *  @Author: zhaoyu
+ *  @Date: 2019/1/16
+ */
 public class CompositePatternDemo {
 	public static void main(String[] args) {
 		Employee CEO = new Employee("John", "CEO", 30000);

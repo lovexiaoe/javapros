@@ -41,7 +41,7 @@ public class Main {
 		System.out.printf("********************************************************\n");
 		System.out.printf("\n");
 
-		// Collectors.joining 这里将Person执行toString()后，使用都好链接。
+		// Collectors.joining 这里将Person执行toString()后，使用逗号链接。
 		System.out.printf("********************************************************\n");
 		System.out.printf("Joining\n");
 		System.out.printf("Concurrent: %b\n", Collectors.joining().characteristics().contains(Characteristics.CONCURRENT));
