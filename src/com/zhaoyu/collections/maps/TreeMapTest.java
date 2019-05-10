@@ -2,9 +2,9 @@ package com.zhaoyu.collections.maps;
 
 
 /**
- * TreeMap ÊµÏÖNavigableMap½Ó¿Ú£¬
- *  TreeMapÊÇ»ùÓÚºìºÚÊ÷£¨Red-Black tree£©µÄ NavigableMap ÊµÏÖ¡£¸ÃÓ³Éä¸ù¾İÆä¼üµÄ×ÔÈ»Ë³Ğò½øĞĞÅÅĞò£¬
- *  »òÕß¸ù¾İ´´½¨Ó³ÉäÊ±Ìá¹©µÄ Comparator ½øĞĞÅÅĞò£¬¾ßÌåÈ¡¾öÓÚÊ¹ÓÃµÄ¹¹Ôì·½·¨¡£
+ * TreeMap å®ç°NavigableMapæ¥å£ï¼Œ
+ *  TreeMapæ˜¯åŸºäºçº¢é»‘æ ‘ï¼ˆRed-Black treeï¼‰çš„ NavigableMap å®ç°ã€‚è¯¥æ˜ å°„æ ¹æ®å…¶é”®çš„è‡ªç„¶é¡ºåºè¿›è¡Œæ’åºï¼Œ
+ *  æˆ–è€…æ ¹æ®åˆ›å»ºæ˜ å°„æ—¶æä¾›çš„ Comparator è¿›è¡Œæ’åºï¼Œå…·ä½“å–å†³äºä½¿ç”¨çš„æ„é€ æ–¹æ³•ã€‚
  */
 public class TreeMapTest {
 }
