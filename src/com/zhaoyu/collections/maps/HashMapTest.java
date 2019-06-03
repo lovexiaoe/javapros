@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * hashMap可以使用null的key或者value。不同步，继承自AbstractMap，可以使用Collections.synchronizedMap方法包装一个hashMap。
  *
- * 在1.8以后对相同hashcode的链表做了查询优化，使用树结构存储，查找的时间复杂度降低。
+ * 在1.8以后对相同hashcode的链表做了查询优化，使用树结构(红黑树)存储，查找的时间复杂度降低。
  *
  * 此类的“collection 视图方法”所返回的迭代器都是快速失败 的
  *

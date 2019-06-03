@@ -8,7 +8,7 @@ package com.zhaoyu.oop.extend;
 public class ExtendTest {
     public static void main(String[] args) {
         //这里会首先初始化一个父类Father，包括所有成员，然后创建son这个子类，拥有一个指向父类的指针。
-        // 这里son是拥有附列的私有成员i的，但是不能直接访问。所以调用print方法时，会打印出2.
+        // 这里son是拥有父类的私有成员i的，但是不能直接访问。所以调用print方法时，会打印出2.
         Son son=new Son();
         son.print();
     }

@@ -24,3 +24,6 @@ wait - 是Object方法，每个对象都对应了一个Monitor,当前线程必�
         只能在同步代码块中使用。
 sleep - 是thread的方法，让正在执行的线程休眠特定的时间，不会释放任何Monitor的所有权。可以在任何线程中使用。
 park  - 是LockSupport的方法，调用Unsafe类。不需要获取对象的Monitor就可以让线程Blocking。通过unpark唤醒。
+
+notify 和notifyAll都是唤醒线程的方法，是Object类的方法，notify是唤醒其中任意的一个线程，notifyAll
+是唤醒所有的线程，竞争这个对象的锁。

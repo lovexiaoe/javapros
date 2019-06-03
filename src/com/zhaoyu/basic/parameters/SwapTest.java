@@ -2,7 +2,7 @@ package com.zhaoyu.basic.parameters;
 
 public class SwapTest {
     public static void main(String[] args) {
-        //TestSwap();
+        TestSwap();
     }
 
     /**

@@ -7,7 +7,7 @@ Stream有以下的一些主要特性：
     5，stream定义了两种类型的操作：
         1，Intermediate operations: 这类操作总是使用它们的结果产生一个新的stream。它们可以转换，过滤，排序stream的元素。
         2，Terminal operations:这类操作使用stream的所有元素产生一个结果，执行后，该stream不再可用。
-    6，一个stream管道由0或多个intermediate操作和一个Terminal操作组成。
+    6，一个stream管道由0或多个intermediate操作和一个Terminal操作组成,必须有一个Terminal操作，不然前面定义的Intermediate操作也不会执行。
     7，Intermediate操作可以分为如下：
         1，stateLess:可以独立的处理一个元素，如根据条件过滤一个元素。
         2，stateful：基于stream中的其他元素处理一个元素，如对stream中的元素排序。

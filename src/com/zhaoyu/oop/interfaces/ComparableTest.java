@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- * 一个类如果要进行排序，则必须实现Comparable接口，并重写compareTo接口。
+ * 一个类如果要进行排序，则必须实现Comparable接口，并重写compareTo方法。
  * Comparator接口是集合类实现元素排序时的工具接口，如SortableList中定义的sort(Comparator<T>),方法有（compare(o1,o2)）
  *
  * @author xiaoe

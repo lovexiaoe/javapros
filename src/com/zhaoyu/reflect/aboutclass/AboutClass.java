@@ -3,7 +3,7 @@ package com.zhaoyu.reflect.aboutclass;
 import java.util.Date;
 
 /**
- * 在运行时期间，java保存了第个对象所属类的信息，这个类是Class,
+ * 在运行时期间，java保存了每个对象所属类的信息，这个类是Class,
  *
  * 在程序启动时，含main方法的类会被加载，接着，程序会根据依赖关系依次加载很多类，
  * 对于大型的程序来说，每次启动需要花费很多时间，
