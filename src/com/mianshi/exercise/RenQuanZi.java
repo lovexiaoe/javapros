@@ -35,21 +35,25 @@ public class RenQuanZi {
 				System.out.println("原排在第" + (i + 1) + "位的人留下了。");
 			}
 		}
+		System.out.println(josephus1(13,3));
 	}
 
 	/**
-	 * 数学方法解决约瑟夫环的问题，N为总人数，M为报数数字。
-	 * 归纳法：推导关键：先不考虑数组的下标，那么每次出列的必是当前队列的M个元素，出列后，原队列的M+1变为开头，所有元素
-	 * 整体向前移动M个位置，如原来为index=5的元素，M=3移动index=3的位置后，在新的循环队列中
-	 * index=2了。即有F(N）=F(N-1)+M。对于最后剩余的元素来说，永远不会移除，所以每次都是位置的变化。
-	 * 加入数组的下标，考虑到数组越界，对数组长度取模，得到f(N)=[f(N-1)+M]%N
+	 * 归纳法解决约瑟夫环的问题。
+	 * 推到关键：每次出列的人必定是当前队列的第m位。下次队列的第一位便是前面队列的第M+1位。最后剩余的人一直在队列中。
+	 * 假设剩余的人在当前队列的位置为f(n)。已知f(1)=0（剩余最后一个，那么序列为0）,那么f(n)=f(n-1)+m
+	 * 考虑数组越界，对数组长度取模，得到 f(n)=[f(n-1)+m]%N。求f(n)则得到最后一个人的下标。
 	 *
 	 * f(1)=0
 	 * f(N)=[f(N-1)+M]%N
 	 * 推到过程参考 https://blog.csdn.net/qq_25973267/article/details/50405616
+	 * @param n 队列长度，即环的总人数。
+	 * @param m m为第几人出列
+	 * @return
 	 */
-	public static int josephus(int n,int m){
+	public static int josephus1(int n,int m){
 		int s=0;
+		//将i颠倒
 		for (int i=2;i<=n;i++){
 			s=(s+m)%i;
 		}
