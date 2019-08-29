@@ -81,7 +81,7 @@ public class Main {
 		System.out.printf("Collect, first example\n");
 		List<Person> highSalaryPeople = persons.parallelStream().collect(
 				ArrayList::new,
-				(list, person) -> {
+					(list, person) -> {
 					if (person.getSalary() > 50000) {
 						list.add(person);
 					}
@@ -97,12 +97,12 @@ public class Main {
 		System.out.printf("Collect, second example\n");
 		ConcurrentHashMap<String, Counter> peopleNames = persons.parallelStream().collect(
 				ConcurrentHashMap::new,
-				(hash, person) -> {
-					hash.computeIfPresent(person.getFirstName(), (name, counter) -> {
+				(map, person) -> {
+					map.computeIfPresent(person.getFirstName(), (name, counter) -> {
 						counter.increment();
 						return counter;
 					});
-					hash.computeIfAbsent(person.getFirstName(), name -> {
+					map.computeIfAbsent(person.getFirstName(), name -> {
 						Counter c=new Counter();
 						c.setValue(name);
 						return c;

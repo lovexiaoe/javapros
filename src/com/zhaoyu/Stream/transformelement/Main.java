@@ -50,7 +50,7 @@ public class Main {
         System.out.printf("********************************************************\n");
         System.out.printf("\n");
 
-        // Flap Map
+        // Flap Map - 一个元素分解或者产生多个元素，和reduce相反。
         System.out.printf("********************************************************\n");
         List<String> file = FileGenerator.generateFile(100);
         Map<String, Long> wordCount = file.parallelStream().flatMap(line -> Stream.of(line.split("[ ,.]")))
