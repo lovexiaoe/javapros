@@ -1,7 +1,7 @@
 package com.zhaoyu.oop.classdetail;
 
 /**
- * 下例例子用于说明，java方法调用中使用的都值调用 ，不会改变任何参数变量的内容 。
+ * 下例例子用于说明，java方法调用中使用的都是值调用 ，不会改变任何参数变量的内容 。
  *
  * @author xiaoe
  *

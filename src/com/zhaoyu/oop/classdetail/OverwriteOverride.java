@@ -20,18 +20,19 @@ class Son2 extends Father {
 		return a + 1;
 	}
 
-	// 重写时，必须要和父类的方法有相同的返回类型。
-	@Override
+	// 重写时，返回类型必须相同，下面方法会报错。
+	/*@Override
 	double add(int a, int b) {
-
-	}
+		return a + b;
+	}*/
 
 	double add(int a, int b, int c) {
 		return a + b + c;
 	}
 
+	// 重载时，不考虑返回类型，只考虑方法名和参数，
 	// 方法名相同时，参数也相同 ，说明方法是一个方法，会报错。
-	int add(int a, int b, int c) {
+	/*int add(int a, int b, int c) {
 		return a + b + c;
-	}
+	}*/
 }
