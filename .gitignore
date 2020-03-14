@@ -1,8 +1,23 @@
-target/
-out/
-bin/
+!**/src/main/**
+!**/src/test/**
+
+*.class
+.classpath
 .project
 .settings
-.classpath
-.idea/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+# 忽略所有target 文件夹 #
+target
+
+# IntelliJ IDEA #
+.idea
+*.iws
 *.iml
+*.ipr
+
+# 忽略日志文件 #
+logs
