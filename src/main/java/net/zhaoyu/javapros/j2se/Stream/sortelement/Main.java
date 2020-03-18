@@ -1,9 +1,11 @@
 package net.zhaoyu.javapros.j2se.Stream.sortelement;
 
-import com.zhaoyu.Stream.sortelement.util.Person;
-import com.zhaoyu.Stream.sortelement.util.PersonGenerator;
+
+import net.zhaoyu.javapros.j2se.Stream.sortelement.util.Person;
+import net.zhaoyu.javapros.j2se.Stream.sortelement.util.PersonGenerator;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -21,6 +23,7 @@ public class Main {
         Arrays.stream(numbers).parallel().sorted().forEachOrdered(n -> {
             System.out.printf("%d\n", n);
         });
+
         System.out.printf("********************************************************\n");
         System.out.printf("\n");
 
@@ -30,6 +33,8 @@ public class Main {
         persons.parallelStream().sorted().forEachOrdered(p -> {
             System.out.printf("%s, %s\n",p.getLastName(),p.getFirstName());
         });
+        persons.parallelStream().sorted(Comparator.comparing(Person::getId,(x, y)->{return x-y;}))
+        .forEachOrdered(p -> { System.out.printf("%s, %s\n", p.getLastName(), p.getFirstName()); });
         System.out.printf("********************************************************\n");
         System.out.printf("\n");
 
