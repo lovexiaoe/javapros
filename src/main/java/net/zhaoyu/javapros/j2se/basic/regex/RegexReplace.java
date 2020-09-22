@@ -21,4 +21,9 @@ public class RegexReplace {
 		System.out.println(msg.replaceFirst(",'pageSize':[^,]*,", ","));
 
 	}
+
+	//将手机号中间4位替换为****
+	public static void replace(String s){
+		System.out.println(s.replaceAll("^(\\d+)\\d{4}(\\d{4})$","$1****$2"));
+	}
 }
