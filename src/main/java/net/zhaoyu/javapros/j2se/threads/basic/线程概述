@@ -3,20 +3,6 @@
 进程和线程的区别 。
 本质上每个进程拥有自己的一整套变量，而线程则共享数据。所以线程之间的通信比进程之间更高效，同时，也带来了一些风险。
 
-线程共有以下6种状态：
-new(新生)
-runnable(可运行)
-blocked(阻塞) 线程在尝试获取一个锁的时候回陷入阻塞，获取完成后进入runnable状态。
-waited(等待) --wait() join() concurrent包中的lock或者condition，等待被通知被唤醒。
-time waiting(计时等待)
-terminated(被终止)
-
-t.setDeamon(true);将一个线程设置为守护线程，唯一的用途是为其它线程提供服务，如时钟。
-守护线程应该永远不去访问固有资源 ，如数据库，文件。
-
-有两种方式创建新线程：1，实现Runnable接口。2，继承Thread类，重写run方法。
-线程的创建推荐使用Runnable接口方法，继承Thread类的方法已经不建议使用。
-
 
 wait - 是Object方法，每个对象都对应了一个Monitor,当前线程必须拥有该对象的Monitor,那么当前线程释放该Monitor的所有权。直到
         其他拥有该对象Monitor的线程notify或者notifyAll,该线程继续获取对象的Monitor。这里的Monitor可以简单理解为对象锁，保证

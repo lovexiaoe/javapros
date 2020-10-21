@@ -15,7 +15,7 @@ public class JoinThread {
         // 在程序非常少用，一般用户调试，检测race condition等。
         Thread.yield();
         try {
-            //join方法等待该线程执行结束。
+            //join方法让当前线程等待该线程执行结束，如下，主线程会分别等待thread1和thread2执行完成后继续。
             thread1.join();
             thread2.join();
         } catch (InterruptedException e) {

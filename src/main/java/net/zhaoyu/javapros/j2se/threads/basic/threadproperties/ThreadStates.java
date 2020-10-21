@@ -1,16 +1,20 @@
-package net.zhaoyu.javapros.test;
+package net.zhaoyu.javapros.j2se.threads.basic.threadproperties;
 
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
-import java.util.stream.Collectors;
 
-//用于自己临时调试一些程序。
-public class Test {
-
-
+/**
+ * 该例打印线程在运行时的状态变化。
+ * NEW:线程被创建，但是还没有调用start前。
+ * RUNNABLE：线程被JVM执行。在OS层级可能没有运行，如在等待cpu资源。
+ * BLOCKED：线程被阻塞，等待一个monitor（synchronized），即线程还没有获得锁。
+ * WAITING：线程已经获得了锁，但是需要等待其他线程进行某些操作，调用wait,join,park方法后进入waiting状态。
+ * TIMED_WAITING：和WAITING类似，调用了有时限的wait,join,park方法后进入该状态。
+ * TERMINATED：线程完成执行。
+ */
+public class ThreadStates {
     public static void main(String[] args) {
         Thread threads[];
         Thread.State status[];
