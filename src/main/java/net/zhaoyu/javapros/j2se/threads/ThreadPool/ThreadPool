@@ -1,9 +1,11 @@
 线程池的参数有coreSize：核心线程数，一般和cpu的核数接近。
                maximumPoolSize：最大线程数，
-               keepAliveTime，链接存活时间，
+               keepAliveTime，链接存活时间，有多出coreSize数量的连接时，该参数开始起作用
                workQueue，工作队列。
                Handler：拒绝策略处理器。
 
-线程执行的顺序为 coreSize,workQueue,maximumPoolSize,handler（丢弃或者异常）。
+线程执行的顺序为 coreSize,workQueue,maximumPoolSize,handler。
+ThreadPoolExecutor中定义了几种处理器，CallerRunsPolicy：在线程池关闭前，直接调用run方法执行。AbortPolicy：中断执行，直接抛出拒绝异常。
+DiscardPolicy：静默丢弃。DiscardOldestPolicy：丢弃队列中一个最老的线程，然后重试。
 
 使用线程池要注意的问题：1，合理连接数的设置，2，线程之间逻辑正确性，避免出现并发问题。3，避免链接泄露（不能释放等）。
