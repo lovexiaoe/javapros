@@ -10,7 +10,7 @@ package net.zhaoyu.javapros.j2se.threads.basic;
  * @author xiaoE
  *
  */
-public class ThreadProperty {
+public class ThreadPriority {
 	public static void main(String[] args) {
 		ThreadRunTest r1 = new ThreadRunTest();
 		Thread t1 = new Thread(r1);

@@ -5,12 +5,9 @@ import java.util.concurrent.CyclicBarrier;
 /**
  *
  *
- * cyclicBarrier和countDownLatch类似，但是可以通过reset重置，重置后cyclicBarrier回到初始化的状态，但是如果有线程在等待
- * barrier，则会抛出BrokenBarrierException。一般不通过重置重新使用，推荐新建。
- *
- * 通过一个ReentrantLock和ReentrantLock.newCondition 实现，和CountDownLatch相比，CountDownLatch是一组线程等待一组动作结束，
- * 动作之间不会等待，而cyclicBarrier的线程是互相等待，先到Barrier的会等待其他没到的，
- * 直到所有任务线程达到一个点（Barrier）后,再继续执行。并且还会额外地触发一个达到标准后执行的响应线程。
+ * cyclicBarrier和countDownLatch类似，通过一个ReentrantLock和ReentrantLock.newCondition 实现，和CountDownLatch相比，
+ * CountDownLatch是一组线程等待一组动作结束，动作之间不会等待，而cyclicBarrier强调互相等待，在定义一定数量的等待线程后，
+ * 在调用await()后，线程会等待其他线程到达await，当所有线程都到达后，线程继续执行。
  *
  * cyclicBarrier会出现一个特殊状态，Broken状态，当await中的一个线程interrupted的时候，得到InterruptedException，那么其他
  * 的线程会得到BrokenBarrierException，这时cyclicBarrier的状态为broken状态。

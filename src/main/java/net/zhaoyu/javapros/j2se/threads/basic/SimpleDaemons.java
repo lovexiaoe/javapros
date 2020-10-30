@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
  * 通过setDaemon方法可以将用户线程设置成守护线程。守护线程服务于用户线程。
  * 主线程结束后，用户线程继续运行。
  * 如果没有用户线程，只有守护线程，那么JVM结束。垃圾回收就是典型的守护线程。
+ *
+ * 守护线程应该永远不要去访问固有资源 ，如数据库，文件。
  */
 public class SimpleDaemons implements Runnable{
     @Override
