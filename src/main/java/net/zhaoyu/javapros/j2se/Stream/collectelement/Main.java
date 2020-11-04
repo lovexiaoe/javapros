@@ -1,8 +1,8 @@
 package net.zhaoyu.javapros.j2se.Stream.collectelement;
 
-import com.zhaoyu.Stream.collectelement.util.Counter;
-import com.zhaoyu.Stream.collectelement.util.Person;
-import com.zhaoyu.Stream.collectelement.util.PersonGenerator;
+import net.zhaoyu.javapros.j2se.Stream.collectelement.util.Counter;
+import net.zhaoyu.javapros.j2se.Stream.collectelement.util.Person;
+import net.zhaoyu.javapros.j2se.Stream.collectelement.util.PersonGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

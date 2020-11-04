@@ -1,6 +1,6 @@
 package net.zhaoyu.javapros.j2se.Stream.mapreduce;
 
-import com.zhaoyu.Stream.mapreduce.util.*;
+import net.zhaoyu.javapros.j2se.Stream.mapreduce.util.*;
 
 import java.util.List;
 import java.util.Optional;

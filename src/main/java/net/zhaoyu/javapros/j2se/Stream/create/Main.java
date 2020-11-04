@@ -1,8 +1,10 @@
 package net.zhaoyu.javapros.j2se.Stream.create;
 
-import com.zhaoyu.Stream.create.util.MySupplier;
-import com.zhaoyu.Stream.create.util.Person;
-import com.zhaoyu.Stream.create.util.PersonGenerator;
+
+
+import net.zhaoyu.javapros.j2se.Stream.create.util.MySupplier;
+import net.zhaoyu.javapros.j2se.Stream.create.util.Person;
+import net.zhaoyu.javapros.j2se.Stream.create.util.PersonGenerator;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

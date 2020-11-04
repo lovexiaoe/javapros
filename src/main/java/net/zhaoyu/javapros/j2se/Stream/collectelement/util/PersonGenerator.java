@@ -1,7 +1,5 @@
 package net.zhaoyu.javapros.j2se.Stream.collectelement.util;
 
-import com.zhaoyu.Stream.collectelement.util.Person;
-
 import java.util.*;
 
 public class PersonGenerator {
