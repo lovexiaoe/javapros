@@ -43,6 +43,13 @@ public class HashMapTest {
 		staff.put("003", new Employee("张五"));
 		staff.put("004", new Employee("张六"));
 
+		//java8初始化
+		Map<String, Integer> map = new HashMap<String,Integer>(){{
+			put("A", 10);
+			put("B", 11);
+			put("C", 12);
+		}};
+
 		System.out.println(staff);
 
 		// 删除元素

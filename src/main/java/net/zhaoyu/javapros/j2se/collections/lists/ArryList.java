@@ -1,6 +1,10 @@
 package net.zhaoyu.javapros.j2se.collections.lists;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 虽然数组也可以在运行时确定数组的大小，但是在数组初始化后，想改变就不太容易了，
@@ -20,6 +24,10 @@ public class ArryList {
 		list.add(8);
 		// size()方法返回结果为3
 		System.out.println(list.size());
+
+		//初始化
+		List<Integer> list1 = Arrays.asList(1, 2, 3);
+		List<Integer> list2 =  Stream.of(1, 2, 3).collect(Collectors.toList());
 
 		// 如果确定数组列表的大小不再发生变化，可以调用trimToSize方法，让列表未占用的空间回收。
 		// 但是如果想再修改列表，就需要花费较多资源。
