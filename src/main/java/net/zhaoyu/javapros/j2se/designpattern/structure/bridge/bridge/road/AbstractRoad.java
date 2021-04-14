@@ -1,6 +1,7 @@
 package net.zhaoyu.javapros.j2se.designpattern.structure.bridge.bridge.road;
 
-import com.zhaoyu.designpattern.structure.bridge.bridge.person.AbstractPerson;
+
+import net.zhaoyu.javapros.j2se.designpattern.structure.bridge.bridge.person.AbstractPerson;
 
 public abstract class AbstractRoad {
     protected AbstractPerson abstractPerson;

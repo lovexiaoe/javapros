@@ -1,11 +1,12 @@
 package net.zhaoyu.javapros.j2se.designpattern.structure.bridge.bridge;
 
-import com.zhaoyu.designpattern.structure.bridge.bridge.car.AbstractCar;
-import com.zhaoyu.designpattern.structure.bridge.bridge.car.Bus;
-import com.zhaoyu.designpattern.structure.bridge.bridge.person.AbstractPerson;
-import com.zhaoyu.designpattern.structure.bridge.bridge.person.OldDriver;
-import com.zhaoyu.designpattern.structure.bridge.bridge.road.AbstractRoad;
-import com.zhaoyu.designpattern.structure.bridge.bridge.road.HighWay;
+
+import net.zhaoyu.javapros.j2se.designpattern.structure.bridge.bridge.car.AbstractCar;
+import net.zhaoyu.javapros.j2se.designpattern.structure.bridge.bridge.car.Bus;
+import net.zhaoyu.javapros.j2se.designpattern.structure.bridge.bridge.person.AbstractPerson;
+import net.zhaoyu.javapros.j2se.designpattern.structure.bridge.bridge.person.OldDriver;
+import net.zhaoyu.javapros.j2se.designpattern.structure.bridge.bridge.road.AbstractRoad;
+import net.zhaoyu.javapros.j2se.designpattern.structure.bridge.bridge.road.HighWay;
 
 public class Client {
     public static void main(String[] args) {
