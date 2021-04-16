@@ -1,6 +1,6 @@
 package net.zhaoyu.javapros.j2se.designpattern.structure.proxy.jintai;
 
-public class ObjectImpl implements java.lang.Object {
+public class ObjectImpl implements Object {
 	@Override
 	public void action() {
 		System.out.println("========");

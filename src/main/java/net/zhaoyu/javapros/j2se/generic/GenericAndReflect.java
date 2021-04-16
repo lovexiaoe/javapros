@@ -16,12 +16,7 @@ import java.util.Scanner;
  * public static <T extends Comparable<? super T>> T min(T[] a)
  * 泛型擦除后如下：
  * public static Comparable min(Comparable[] a)
- * 但是类型擦除仍然保留一些泛型的记忆。 可以使用javase5提供的反射API来确定：
- * 1，这个方法有一个T的参数类型
- * 2，这个T的类型参数有一个子类型限定，其自身又是一个泛型类型。
- * 3，这个限定类型有一个通配符参数。
- * 4，这个通配符参数有一个超类型限定。
- * 5，这个泛型方法有一个泛型数组参数。
+ * 但是类型擦除仍然保留一些泛型的记忆。 可以使用javase5提供的反射API来确定泛型：<T extends Comparable<? super T>>
  *
  * 为了表达泛型类型的声明，javaSE5在reflect包中提供了一个新的接口Type。这个接口包含下列子类型：
  * 1，Class类，描述具体类型。

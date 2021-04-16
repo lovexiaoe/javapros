@@ -1,8 +1,8 @@
 package net.zhaoyu.javapros.j2se.designpattern.structure.proxy.jintai;
 
-public class ProxyObject implements java.lang.Object {
+public class ProxyObject implements Object {
 
-	java.lang.Object obj;
+	Object obj;
 
 	public ProxyObject() {
 		System.out.println("这是代理类");

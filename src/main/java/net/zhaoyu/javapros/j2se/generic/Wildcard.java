@@ -40,7 +40,7 @@ class Manager extends Employee {
 
 /**
  * Comparable接口本身就是一个泛型类型，
- * 可以把数组中取得最小 值 的方法声明 为
+ * 可以把数组中取得最小值的方法声明 为
  * public static <T extends Comparable<T>> T min(T[] a)
  *
  * <T extends Comparable<? super T>>的解释。

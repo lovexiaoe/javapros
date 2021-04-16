@@ -2,7 +2,7 @@ package net.zhaoyu.javapros.j2se.basic.primitivetype.floatdouble;
 
 /**
  * 计算机由于采用二进制保存数据，是无法精确保存一些小数的，比如1/10,所以使用float和double进行计算的时候会出现超预期的结果，
- * 如0.1*3得到的可能是0.30000000000004。所以使用浮点进行计算的情况，尽量使用BigDecimal。
+ * 如0.1*3得到的可能是0.30000000000004。所以浮点数之间的等值判断，不能用==或者equals来比较，尽量使用BigDecimal。
  *
  * 此类用于说明float和double类型的相关知识和使用。
  * flat类型的数值后有一个F(如：3.402F),没有后缀F的浮点数值默认为double类型。double类型也可以 在后面添加D(如3.402D)。
@@ -29,6 +29,7 @@ public class FloatAndDouble {
 		System.out.println(String.valueOf(f2));
 		System.out.println(String.valueOf("max:" + f1.MAX_VALUE));
 		System.out.println(String.valueOf("min:" + f1.MIN_VALUE));
+		System.out.println((0.1*3==0.3)+" 0.1*0.3="+(0.1*3)); //false,由于精度问题，不能使用浮点数直接进行运算，需要使用BigDecimal
 	}
 }
 

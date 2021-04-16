@@ -63,8 +63,17 @@ public class BigDecimalTest {
         System.out.println(mul(0.12332,0.23234));
         System.out.println(divide(23.12332,0.13234,10));
         MathContext mc=MathContext.DECIMAL32; //精度为7
-        BigDecimal bd=new BigDecimal(0.1232322223,mc);
+        BigDecimal bd=new BigDecimal("0.1232322223",mc);
         System.out.println(bd);                           //0.1232322
+
+        //禁止使用BigDecimal(double)方法创建对象，存在精度丢失风险。
+        BigDecimal bd2 = new BigDecimal(0.1f); //实际的存储值可能为0.10000000149
+
+        //设置精度
+        BigDecimal m = new BigDecimal("1.255433");
+        System.out.println( m.setScale(3,BigDecimal.ROUND_HALF_DOWN));// 1.255
+
+        //指定精度计算
         BigDecimal one = new BigDecimal("1");
         System.out.println(bd.divide(one, 5, RoundingMode.HALF_UP).doubleValue()); //0.12323
     }

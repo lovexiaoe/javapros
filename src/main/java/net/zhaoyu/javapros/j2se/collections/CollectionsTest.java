@@ -19,14 +19,7 @@ import java.util.Map;
 public class CollectionsTest {
 	public static void main(String[] args) {
 
-		String[] str2 = new String[12];
-		// Arrays.asList并没有复制一个数组，而是返回了str2的一个视图，如下对li2的改变会同步到str2。
-		List<String> li2 = Arrays.asList(str2);
-		li2.set(0, "element 0");
-		System.out.println(str2[0]);
-
-		// 直接使用asList
-		List<String> li3 = Arrays.asList("obj1", "obj2", "obj3");
+		asListTest();
 
 		// 使用Collections.nCopies,返回一个100个字符串“Default”的列表。
 		List<String> settings = Collections.nCopies(100, "Default");
@@ -99,4 +92,33 @@ public class CollectionsTest {
 		int i = Collections.binarySearch(staff, "staff4");
 		int i1 = Collections.binarySearch(staff, "staff4", Collections.reverseOrder());
 	}
+
+	private static void asListTest() {
+		String[] str2 = new String[12];
+		// Arrays.asList并没有复制一个数组，而是返回了str2的一个视图，如下对li2的改变会同步到str2。
+		List<String> li2 = Arrays.asList(str2);
+		li2.set(0, "element 0");
+		System.out.println(str2[0]);
+
+		//Arrays.asList()是泛型方法，传入的对象必须是对象数组。当传入一个原生数据类型数组时，Arrays.asList() 的真正得到的参数就不是数组中
+		//的元素，而是数组对象本身！此时List 的唯一元素就是这个数组，
+		int[] myArray = {1, 2, 3};
+		List myList = Arrays.asList(myArray);
+		System.out.println(myList.size());//1
+		System.out.println(myList.get(0));//数组地址值
+		System.out.println(myList.get(1));//报错：ArrayIndexOutOfBoundsException
+		int[] array = (int[]) myList.get(0);
+		System.out.println(array[1]);//2
+
+		//asList不能使用修改集合的add/remove/clear方法，会抛出UnsupportedOperationException
+		li2.add("additional element");
+
+		//asList返回的是Arrays.ArrayList,不是常用的java.util.ArrayList。如果想使用修改方法，则需要重新构造，推荐如下：
+		List list = new ArrayList<>(Arrays.asList("a", "b", "c"));
+
+		// 直接使用asList
+		List<String> li3 = Arrays.asList("obj1", "obj2", "obj3");
+	}
+
+
 }
