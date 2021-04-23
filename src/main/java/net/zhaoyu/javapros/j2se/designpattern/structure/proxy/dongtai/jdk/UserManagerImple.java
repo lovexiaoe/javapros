@@ -1,4 +1,4 @@
-package net.zhaoyu.javapros.j2se.designpattern.structure.proxy.dongtai;
+package net.zhaoyu.javapros.j2se.designpattern.structure.proxy.dongtai.jdk;
 
 public class UserManagerImple implements UserManager {
 

@@ -1,7 +1,5 @@
 package net.zhaoyu.javapros.j2se.basic.oop.innerclass;
 
-import com.zhaoyu.oop.innerclass.TalkingClock.TimePrinter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
