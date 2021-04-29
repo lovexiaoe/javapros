@@ -1,10 +1,10 @@
 package net.zhaoyu.javapros.j2se.Stream.reactivestream;
 
 
-import com.zhaoyu.Stream.reactivestream.consumers.Consumer1;
-import com.zhaoyu.Stream.reactivestream.consumers.Consumer2;
-import com.zhaoyu.Stream.reactivestream.consumers.Consumer3;
-import com.zhaoyu.Stream.reactivestream.items.Item;
+import net.zhaoyu.javapros.j2se.Stream.reactivestream.consumers.Consumer1;
+import net.zhaoyu.javapros.j2se.Stream.reactivestream.consumers.Consumer2;
+import net.zhaoyu.javapros.j2se.Stream.reactivestream.consumers.Consumer3;
+import net.zhaoyu.javapros.j2se.Stream.reactivestream.items.Item;
 
 /**
  * reactive programming 需要java 9才能运行，

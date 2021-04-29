@@ -35,14 +35,14 @@ public class LoggingImageViewer {
         if (System.getProperty("java.util.logging.config.class") == null
                 && System.getProperty("java.util.logging.config.file") == null) {
             try {
-                Logger.getLogger("com.zhaoyu.corejava").setLevel(Level.ALL);
+                Logger.getLogger("net.zhaoyu.javapros.j2se.corejava").setLevel(Level.ALL);
                 final int LOG_ROTATION_COUNT = 10;
                 // 设置文件处理器为循环文件处理器。%h/LoggingImageViewer.log，%h为用户主目录，
                 Handler handler = new FileHandler("%h/LoggingImageViewer.log", 0, LOG_ROTATION_COUNT);
                 // 为日志添加文件处理器。
-                Logger.getLogger("com.zhaoyu.corejava").addHandler(handler);
+                Logger.getLogger("net.zhaoyu.javapros.j2se.corejava").addHandler(handler);
             } catch (Exception e) {
-                Logger.getLogger("com.zhaoyu.corejava").log(Level.SEVERE, "Can't create log file handler", e);
+                Logger.getLogger("net.zhaoyu.javapros.j2se.corejava").log(Level.SEVERE, "Can't create log file handler", e);
             }
         }
 
@@ -54,12 +54,12 @@ public class LoggingImageViewer {
                 Handler windowHandler = new WindowHandler();
                 windowHandler.setLevel(Level.ALL);
                 // 为日志添加窗口处理器。
-                Logger.getLogger("com.zhaoyu.corejava").addHandler(windowHandler);
+                Logger.getLogger("net.zhaoyu.javapros.j2se.corejava").addHandler(windowHandler);
 
                 JFrame frame = new ImageViewerFrame();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-                Logger.getLogger("com.zhaoyu.corejava").fine("Showing frame");
+                Logger.getLogger("net.zhaoyu.javapros.j2se.corejava").fine("Showing frame");
                 frame.setVisible(true);
             }
         });
@@ -76,7 +76,7 @@ public class LoggingImageViewer {
 class ImageViewerFrame extends JFrame {
 
     private JLabel label;
-    private static Logger logger = Logger.getLogger("com.zhaoyu.corejava");
+    private static Logger logger = Logger.getLogger("net.zhaoyu.javapros.j2se.corejava");
     private static final int DEFAULT_WIDTH = 300;
     private static final int DEFAULT_HEIGHT = 400;
 

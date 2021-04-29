@@ -1,6 +1,6 @@
 package net.zhaoyu.javapros.j2se.Stream.reactivestream.consumers;
 
-import com.zhaoyu.Stream.reactivestream.items.Item;
+import net.zhaoyu.javapros.j2se.Stream.reactivestream.items.Item;
 
 import java.util.concurrent.Flow;
 

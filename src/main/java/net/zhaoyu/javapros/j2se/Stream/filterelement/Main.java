@@ -1,7 +1,7 @@
 package net.zhaoyu.javapros.j2se.Stream.filterelement;
 
-import com.zhaoyu.Stream.filterelement.util.Person;
-import com.zhaoyu.Stream.filterelement.util.PersonGenerator;
+import net.zhaoyu.javapros.j2se.Stream.filterelement.util.Person;
+import net.zhaoyu.javapros.j2se.Stream.filterelement.util.PersonGenerator;
 
 import java.util.Arrays;
 import java.util.List;

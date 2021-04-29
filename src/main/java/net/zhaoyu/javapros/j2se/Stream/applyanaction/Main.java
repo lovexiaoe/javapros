@@ -1,8 +1,8 @@
 package net.zhaoyu.javapros.j2se.Stream.applyanaction;
 
-import com.zhaoyu.Stream.applyanaction.util.Person;
-import com.zhaoyu.Stream.applyanaction.util.PersonGenerator;
-import com.zhaoyu.Stream.applyanaction.util.DoubleGenerator;
+import net.zhaoyu.javapros.j2se.Stream.applyanaction.util.Person;
+import net.zhaoyu.javapros.j2se.Stream.applyanaction.util.PersonGenerator;
+import net.zhaoyu.javapros.j2se.Stream.applyanaction.util.DoubleGenerator;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package net.zhaoyu.javapros.j2se.Stream.verifyCondition;
 
-import com.zhaoyu.Stream.verifyCondition.util.Person;
-import com.zhaoyu.Stream.verifyCondition.util.PersonGenerator;
+import net.zhaoyu.javapros.j2se.Stream.verifyCondition.util.Person;
+import net.zhaoyu.javapros.j2se.Stream.verifyCondition.util.PersonGenerator;
 
 import java.util.List;
 

@@ -19,7 +19,7 @@ public class ComparableTest {
 		employees[1] = e2;
 		employees[2] = e3;
 		// 如果Employee没有实现Comparable接口，则会在运行时报ClassCastException错误。
-		// com.zhaoyu.oop.interfaces.Employee cannot be cast to java.lang.Comparable
+		// net.zhaoyu.javapros.j2se.oop.interfaces.Employee cannot be cast to java.lang.Comparable
 		Arrays.sort(employees);
 		for (int i = 0; i < employees.length; i++) {
 			System.out.print(employees[i].getAge() + ", ");

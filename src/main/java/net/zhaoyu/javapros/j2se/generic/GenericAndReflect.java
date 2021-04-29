@@ -11,45 +11,47 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * 虚拟机中的泛型类型信息
- * 对于下列代码：
- * public static <T extends Comparable<? super T>> T min(T[] a)
- * 泛型擦除后如下：
- * public static Comparable min(Comparable[] a)
- * 但是类型擦除仍然保留一些泛型的记忆。 可以使用javase5提供的反射API来确定泛型：<T extends Comparable<? super T>>
  *
  * 为了表达泛型类型的声明，javaSE5在reflect包中提供了一个新的接口Type。这个接口包含下列子类型：
  * 1，Class类，描述具体类型。
- * 2，TypeVariable接口，描述类型变量（如 T extends Comparable<? super T>,E）。
+ * 2，TypeVariable接口，描述类型变量，即泛型（如 T extends Comparable<? super T>,E）。
  * 3，WildcardType接口，描述通配符（如? super T,?）。
- * 4，ParameterizedType接口，描述泛型类或接口类型（如Comparable<? super T>,Collection<E>等）。
+ * 4，ParameterizedType接口，描述泛型类或泛型接口（如Comparable<? super T>,Collection<E>等）。
  * 5，GenericArrayType接口，描述泛型数组（如T[]）。
  *
- * 此类利用泛型反射API打印出类的定义和方法。
- *
  * @author xiaoE
- *
  */
 public class GenericAndReflect {
+	/**
+	 * 运行main方法，输入本包下Test类全名，test有如下，两个方法
+	 * 方法：public static <T extends Comparable<T>> void mySort1(List<T> list)
+	 * 1，TypeVariable，表示类型变量，即泛型，上面方法中出现的T就是类型变量，共出现两次，getTypeParameters方法会返回方法或者类的类型变量，
+	 * 2，WildcardType，描述通配符，？的表达式，上述方法中没有通配符。
+	 * 3，ParameterizedType，描述泛型类或者泛型接口 ，上面的Comparable<T>,List<T>表达式。
+	 * 4，GenericArrayType接口，描述泛型数组（如T[]），上述方法中没有。
+	 *
+	 * 方法：public static <T extends Comparable<? super T>> void mySort2(List<T> list)
+	 * 1，TypeVariable，表示类型变量，即泛型，上面方法中出现的T就是类型变量，共出现两次，getTypeParameters方法会返回方法或者类的类型变量，
+	 * 2，WildcardType，描述通配符，如? super T，问号存在的表达式。
+	 * 3，ParameterizedType，描述泛型类或者泛型接口 ，上面的Comparable<? super T>,List<T>表达式。
+	 * 4，GenericArrayType接口，描述泛型数组（如T[]），上述方法中没有。
+	 */
 	public static void main(String[] args) {
-		String name;
-		if (args.length > 0) {
-			name = args[0];
-		} else {
-			Scanner in = new Scanner(System.in);
-			System.out.println("输入类的名称，如java.consumers.Collections:");
+		String name = "";
+		Scanner in = new Scanner(System.in);
+		System.out.println("输入类的名称，如java.util.Comparator");
+		do {
 			name = in.next();
-		}
-
-		try {
-			Class c1 = Class.forName(name);
-			printClass(c1);
-			for (Method m : c1.getDeclaredMethods()) {
-				printMethod(m);
+			try {
+				Class c1 = Class.forName(name);
+				printClass(c1);
+				for (Method m : c1.getDeclaredMethods()) {
+					printMethod(m);
+				}
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		} while (!name.equals("exit"));
 	}
 
 	/**
@@ -59,13 +61,15 @@ public class GenericAndReflect {
 	 */
 	public static void printClass(Class c1) {
 		System.out.print(c1);
-		// 打印这个类的类型变量。如List<E>中的<E>。
+		// Class.getTypeParameters()获取类型变量。即申明的泛型，如List<E>中的E，Map<K,V>中的K,V。
 		printTypes(c1.getTypeParameters(), "<", ", ", ">", true);
+		//getGenericSuperclass获取父类
 		Type sc = c1.getGenericSuperclass();
 		if (sc != null) {
 			System.out.print(" extends ");
 			printType(sc, false);
 		}
+		//getGenericInterfaces获取实现的接口。
 		printTypes(c1.getGenericInterfaces(), " implements ", ", ", "", false);
 		System.out.println();
 	}
@@ -75,12 +79,18 @@ public class GenericAndReflect {
 		String name = m.getName();
 		System.out.print(Modifier.toString(m.getModifiers()));
 		System.out.print(" ");
+
+		//获取泛型,Method.getTypeParameters()获取类型变量，即定义的泛型，如<T extends Comparable<T>>，<T>
 		printTypes(m.getTypeParameters(), "<", ",", ">", true);
 
+
+		//获取返回值
 		printType(m.getGenericReturnType(), false);
 		System.out.print(" ");
 		System.out.print(name);
 		System.out.print("(");
+
+		//获取参数
 		printTypes(m.getGenericParameterTypes(), "", ", ", "", false);
 		System.out.println(")");
 	}
@@ -129,6 +139,7 @@ public class GenericAndReflect {
 			TypeVariable t = (TypeVariable) type;
 			System.out.print(t.getName());
 			if (isDefinition) {
+				//获取泛型类型的边界，如extends Number，或者extends Comparable<T>
 				printTypes(t.getBounds(), " extends ", " & ", "", false);
 			}
 		} else if (type instanceof WildcardType) {
@@ -146,7 +157,9 @@ public class GenericAndReflect {
 				printType(owner, false);
 				System.out.print(".");
 			}
+			//getRawType获取实际的原始类型，如Comparable<T>返回java.lang.Comparable。
 			printType(t.getRawType(), false);
+			//Type.getActualTypeArguments()获取泛型类的实际参数类型，如Comparable<T>中的T。或者Comparable<? super T>中的? super T
 			printTypes(t.getActualTypeArguments(), "<", ", ", ">", false);
 		} else if (type instanceof GenericArrayType) {
 			// 泛型数组类型的打印，如T[]

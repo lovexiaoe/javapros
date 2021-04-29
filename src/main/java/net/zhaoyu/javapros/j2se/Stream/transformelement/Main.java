@@ -1,9 +1,9 @@
 package net.zhaoyu.javapros.j2se.Stream.transformelement;
 
-import com.zhaoyu.Stream.transformelement.util.BasicPerson;
-import com.zhaoyu.Stream.transformelement.util.FileGenerator;
-import com.zhaoyu.Stream.transformelement.util.Person;
-import com.zhaoyu.Stream.transformelement.util.PersonGenerator;
+import net.zhaoyu.javapros.j2se.Stream.transformelement.util.BasicPerson;
+import net.zhaoyu.javapros.j2se.Stream.transformelement.util.FileGenerator;
+import net.zhaoyu.javapros.j2se.Stream.transformelement.util.Person;
+import net.zhaoyu.javapros.j2se.Stream.transformelement.util.PersonGenerator;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
