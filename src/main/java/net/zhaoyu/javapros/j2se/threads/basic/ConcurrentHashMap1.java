@@ -17,10 +17,15 @@ public class ConcurrentHashMap1<K,V> extends AbstractMap<K,V> implements Concurr
 
     /* ---------- 字段 ---------- */
 
-    
+
+    /**
+     * 最大容量。
+     */
     private static final int MAXIMUM_CAPACITY = 1 << 30;
 
 
+
+    private static final int DEFAULT_CAPACITY = 16;
 
     /* ---------- 构造方法 ---------- */
     public ConcurrentHashMap1() {
