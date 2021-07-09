@@ -10,7 +10,7 @@ package net.zhaoyu.javapros.j2se.collections.maps;
  *
  *
  * 其实现方法和hashMap类似，也是通过链表数组实现。hashtable是同步的，它使用synchronized对方法做同步处理。简单粗暴地锁定整个
- * table，所以效率很低。
+ * table，当一个线程在读或写的时候，另外的线程则不能进行读或写。所以效率很低。
  *
  * 由Collection接口的iterator方法返回的迭代器都是快速失败的，如果对iterator做修改，Iterator立马会抛出ConcurrentModificationException
  * 而hashTable的key和value返回的Enumeration不是快速失败的。

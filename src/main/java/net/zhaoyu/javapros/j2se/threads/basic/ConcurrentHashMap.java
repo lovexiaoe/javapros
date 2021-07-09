@@ -5,9 +5,7 @@ import java.io.ObjectStreamField;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.AbstractMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
@@ -36,6 +34,8 @@ import java.util.function.Function;
  * 这需要按顺序锁定所有段，操作完毕后，又按顺序释放所有段的锁。
  */
 public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements ConcurrentMap<K,V>, Serializable {
+
+    /* ---------- 常亮 ---------- */
 
     /**
      * 最大容量
@@ -73,7 +73,9 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     static final int UNTREEIFY_THRESHOLD = 6;
 
     /**
-     * 红黑树的最小容量。该值至少是4 * TREEIFY_THRESHOLD，避免resizing和树阈值的冲突。
+     * 表的容量最小为多少时， 增加元素时桶转换为树结构，小于最小容量，增加元素超过TREEIFY_THRESHOLD，表进行resize操作。即默认table大于64时，
+     * 才会有树结构生成。
+     * 该值至少是4 * TREEIFY_THRESHOLD，避免resizing和树阈值的冲突。
      */
     static final int MIN_TREEIFY_CAPACITY = 64;
 
@@ -86,23 +88,25 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     public static final int RESIZE_STAMP_SHIFT = 32 - RESIZE_STAMP_BITS;
 
     //用于hash算法的变量
-    static final int MOVED     = -1; // hash for forwarding nodes
-    static final int TREEBIN   = -2; // hash for roots of trees
-    static final int RESERVED  = -3; // hash for transient reservations
+    static final int MOVED     = -1; // forwarding 节点的hash值，代表容器正在扩容，当前节点的数据已经被移动到扩容后的数组中。
+    static final int TREEBIN   = -2; // 树的根节点的hash值，代表当前槽位上的节点采用红黑树结构存储。
+    static final int RESERVED  = -3; // hash for transient reservations，代表该节点正在进行函数式运算，节点值还未最终确定。
     static final int HASH_BITS = 0x7fffffff; // 最高为为0，其他位为1。
 
     //cpu数量
     static final int NCPU = Runtime.getRuntime().availableProcessors();
 
-    /** 兼容序列化 */
+    /** 兼容老版本序列化 */
     private static final ObjectStreamField[] serialPersistentFields = {
             new ObjectStreamField("segments", java.util.concurrent.ConcurrentHashMap.Segment[].class),
             new ObjectStreamField("segmentMask", Integer.TYPE),
             new ObjectStreamField("segmentShift", Integer.TYPE)
     };
 
+    /* ---------- Node ---------- */
+
     /**
-     * 节点对象
+     * 链表节点对象，hash为负数的节点是特殊节点。
      * @param <K>
      * @param <V>
      */
@@ -137,7 +141,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         }
 
         /**
-         * 对 map.get() 提供支撑.
+         * 对 map.get() 提供支撑，链表情况下用不到，当前桶位变成 treebin  fwd节点会用到
          */
         Node<K,V> find(int h, Object k) {
             Node<K,V> e = this;
@@ -231,8 +235,8 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     private transient volatile long baseCount;
 
     /**
-     * 表初始化和resizing的控制，为负数时，表被初始化或者resize中。 -1 表示初始化, -(1 + 激活的resizing线程数量). 0为默认，
-     * 当表为空时，为创建时的初始化表大小 . 初始化后, 为resize 后table元素的计数.
+     * 表初始化和resizing的控制， 0为默认，为负数时，表被初始化或者resize中。 初始化为-1, resize为-(1 + 激活的resizing线程数量).
+     * 其他情况：当表为未初始化，表示创建时表需要初始化的大小 . 初始化完成, 表示下一次resize需要的初始化大小.
      */
     private transient volatile int sizeCtl;
 
@@ -257,6 +261,386 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     private transient ValuesView<K,V> values;
     private transient EntrySetView<K,V> entrySet;
 
+    /* ---------- 公共操作 ---------- */
+
+    public ConcurrentHashMap() {
+    }
+
+
+    /**
+     * 创建有初始化容量为initialCapacity的map,容量预估为至少两倍的initialCapacity
+     */
+    public ConcurrentHashMap(int initialCapacity) {
+        if (initialCapacity < 0)
+            throw new IllegalArgumentException();
+        int cap = ((initialCapacity >= (MAXIMUM_CAPACITY >>> 1)) ?
+                MAXIMUM_CAPACITY :
+                tableSizeFor(initialCapacity + (initialCapacity >>> 1) + 1));
+        this.sizeCtl = cap;
+    }
+
+    public ConcurrentHashMap(Map<? extends K, ? extends V> m) {
+        this.sizeCtl = DEFAULT_CAPACITY;
+        putAll(m);
+    }
+
+    public ConcurrentHashMap(int initialCapacity, float loadFactor) {
+        this(initialCapacity, loadFactor, 1);
+    }
+
+    /**
+     * concurrencyLevel 用来计算 sizeCtl 的大小。 影响map的bin长度，bin长度决定了并发级别。
+     */
+    public ConcurrentHashMap(int initialCapacity,
+                             float loadFactor, int concurrencyLevel) {
+        if (!(loadFactor > 0.0f) || initialCapacity < 0 || concurrencyLevel <= 0)
+            throw new IllegalArgumentException();
+        if (initialCapacity < concurrencyLevel)   // Use at least as many bins
+            initialCapacity = concurrencyLevel;   // as estimated threads
+        long size = (long)(1.0 + (long)initialCapacity / loadFactor);
+        int cap = (size >= (long)MAXIMUM_CAPACITY) ?
+                MAXIMUM_CAPACITY : tableSizeFor((int)size);
+        this.sizeCtl = cap;
+    }
+
+    /* ---------- map的原有方法 ---------- */
+
+    public int size() {
+        long n = sumCount();
+        return ((n < 0L) ? 0 :
+                (n > (long)Integer.MAX_VALUE) ? Integer.MAX_VALUE :
+                        (int)n);
+    }
+
+    public boolean isEmpty() {
+        return sumCount() <= 0L;
+    }
+
+    public V get(Object key) {
+        Node<K,V>[] tab; Node<K,V> e, p; int n, eh; K ek;
+        int h = spread(key.hashCode());
+        if ((tab = table) != null && (n = tab.length) > 0 &&
+                (e = tabAt(tab, (n - 1) & h)) != null) {
+            //如果在table中找到，直接返回。
+            if ((eh = e.hash) == h) {
+                if ((ek = e.key) == key || (ek != null && key.equals(ek)))
+                    return e.val;
+            }
+            //eh小于0，说明是特殊节点，即树节点。
+            else if (eh < 0)
+                return (p = e.find(h, key)) != null ? p.val : null;
+            //从链表中查找
+            while ((e = e.next) != null) {
+                if (e.hash == h &&
+                        ((ek = e.key) == key || (ek != null && key.equals(ek))))
+                    return e.val;
+            }
+        }
+        return null;
+    }
+
+    public boolean containsKey(Object key) {
+        return get(key) != null;
+    }
+
+    public boolean containsValue(Object value) {
+        if (value == null)
+            throw new NullPointerException();
+        Node<K,V>[] t;
+        if ((t = table) != null) {
+            Traverser<K,V> it = new Traverser<K,V>(t, t.length, 0, t.length);
+            for (Node<K,V> p; (p = it.advance()) != null; ) {
+                V v;
+                if ((v = p.val) == value || (v != null && value.equals(v)))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /* ---------- 特殊的Node ---------- */
+
+    /**
+     * 在transfer操作时，会在红黑树bin中插入一个ForwardingNode节点。
+     */
+    static final class ForwardingNode<K,V> extends Node<K,V> {
+        final Node<K,V>[] nextTable;
+        ForwardingNode(Node<K,V>[] tab) {
+            super(MOVED, null, null, null);
+            this.nextTable = tab;
+        }
+
+        Node<K,V> find(int h, Object k) {
+            // loop to avoid arbitrarily deep recursion on forwarding nodes
+            outer: for (Node<K,V>[] tab = nextTable;;) {
+                Node<K,V> e; int n;
+                if (k == null || tab == null || (n = tab.length) == 0 ||
+                        (e = tabAt(tab, (n - 1) & h)) == null)
+                    return null;
+                for (;;) {
+                    int eh; K ek;
+                    if ((eh = e.hash) == h &&
+                            ((ek = e.key) == k || (ek != null && k.equals(ek))))
+                        return e;
+                    if (eh < 0) {
+                        if (e instanceof ForwardingNode) {
+                            tab = ((ForwardingNode<K,V>)e).nextTable;
+                            continue outer;
+                        }
+                        else
+                            return e.find(h, k);
+                    }
+                    if ((e = e.next) == null)
+                        return null;
+                }
+            }
+        }
+    }
+
+    /* ---------- table 遍历 ---------- */
+
+    /**
+     * 遍历的实现难度主要是在于遍历的过程中元素可能会新增或者删除，或者遇到扩容的情况。分情况分析：
+     *   1,遍历时容器没有变化
+     *   2,遍历时容器元素有新增或者删除
+     *   3,遍历时容器正在扩容
+     */
+
+    /**
+     * 用于为traverser记录当前tab,表的长度，和当前遍历的index。
+     * 在resizing时，traverser需要在处理当前tab之前处理一段forwarded tab的数据。
+     */
+    static final class TableStack<K,V> {
+        int length;
+        int index;
+        Node<K,V>[] tab;
+        TableStack<K,V> next;
+    }
+
+    /**
+     * iterators and spliterators 的基类。
+     * 通常情况下，traverser一个个bin地进行遍历。但是表已经resized。那么后续的步骤必须同时遍历当前index下的bin和（index+baseSize）的两个bin。
+     * 以此类推，以便进一步的resizings。
+     * 为了特意处理用户跨线程迭代器共享的可能性。如果对表读取的一系列检查失败，则终止迭代。
+     */
+    static class Traverser<K,V> {
+        Node<K,V>[] tab;        // 当前table,resized时会更行。
+        Node<K,V> next;         // 要使用的下一个entry节点。
+        TableStack<K,V> stack, spare; // 当碰到 ForwardingNode ，保存或者恢复
+        int index;              // 要使用的下一个桶
+        int baseIndex;          // table初始时的起始索引
+        int baseLimit;          // table初始时的终止索引。
+        final int baseSize;     // table初始时的大小
+
+        Traverser(Node<K,V>[] tab, int size, int index, int limit) {
+            this.tab = tab;
+            this.baseSize = size;
+            this.baseIndex = this.index = index;
+            this.baseLimit = limit;
+            this.next = null;
+        }
+
+        /**
+         * 如果有下一个可用节点，返回该节点，否则返回null。方法会访问自Iterator构建后可达的节点。可能会丢失一些在访问bin之后添加到bin的内容。
+         */
+        /* 这里如果遇到扩容，存储当前状态pushState(t, i, n)，等到扩容完成后，取出状态recoverState(n) */
+        final Node<K,V> advance() {
+            Node<K,V> e;
+            if ((e = next) != null) {
+                // 如果已经进入了一个非空的hash桶，直接尝试获取桶中的下一个节点。
+                e = e.next;
+            }
+            for (;;) {
+                Node<K,V>[] t; int i, n;  // must use locals in checks
+                //节点不为null，直接返回，更新next。
+                if (e != null)
+                    return next = e;
+                /* 初始索引 >= 终止索引 || tab数组为空 || tab数组长度 <= 下界 || index < 0，没有新桶，返回 null  */
+                if (baseIndex >= baseLimit || (t = tab) == null ||
+                    (n = t.length) <= (i = index) || i < 0)
+                    return next = null;
+                /* 桶存在且hash<0,若此时为链表节点，e已经复制完毕。*/
+                if ((e = tabAt(t, i)) != null && e.hash < 0) {
+                    //是否为forwarding节点，表示正在扩容。
+                    if (e instanceof ForwardingNode) {
+                        tab = ((ForwardingNode<K,V>)e).nextTable;
+                        e = null;
+                        pushState(t, i, n); //保存当前遍历状态
+                        continue;
+                    }
+                    //如果是树节点，返回树的首节点。
+                    else if (e instanceof TreeBin)
+                        e = ((TreeBin<K,V>)e).first;
+                    else
+                        e = null;
+                }
+                /* 弹出存储状态 */
+                if (stack != null)
+                    recoverState(n);
+                else if ((index = i + baseSize) >= n)
+                    index = ++baseIndex; // visit upper slots if present
+            }
+        }
+
+        /**
+         * 当碰到forwardingNode时，保存当前遍历状态到stack中，spare辅助，预先建立一个对象，用于减少new对象。
+         */
+        private void pushState(Node<K,V>[] t, int i, int n) {
+            TableStack<K,V> s = spare;  // spare用于复用，减少new对象。
+            if (s != null)
+                spare = s.next;
+            else
+                s = new TableStack<K,V>();
+            s.tab = t;
+            s.length = n;
+            s.index = i;
+            s.next = stack;
+            stack = s;
+        }
+
+        /**
+         * 恢复存储的遍历状态,从stack中取出状态到traverser中。
+         */
+        private void recoverState(int n) {
+            TableStack<K,V> s; int len;
+            while ((s = stack) != null && (index += (len = s.length)) >= n) {
+                n = len;
+                index = s.index;
+                tab = s.tab;
+                s.tab = null;
+                TableStack<K,V> next = s.next;
+                s.next = spare; // save for reuse
+                stack = next;
+                spare = s;
+            }
+            if (s == null && (index += baseSize) >= n)
+                index = ++baseIndex;
+        }
+    }
+
+    /**
+     * Base of key, value, and entry Iterators.为支持iterator.remove添加需要的字段。
+     */
+    static class BaseIterator<K,V> extends Traverser<K,V> {
+        final ConcurrentHashMap<K,V> map;
+        Node<K,V> lastReturned;
+        BaseIterator(Node<K,V>[] tab, int size, int index, int limit,
+                    ConcurrentHashMap<K,V> map) {
+            super(tab, size, index, limit);
+            this.map = map;
+            advance();
+        }
+
+        public final boolean hasNext() { return next != null; }
+        public final boolean hasMoreElements() { return next != null; }
+
+        public final void remove() {
+            Node<K,V> p;
+            if ((p = lastReturned) == null)
+                throw new IllegalStateException();
+            lastReturned = null;
+            map.replaceNode(p.key, null, null);
+        }
+    }
+
+    static final class KeyIterator<K,V> extends BaseIterator<K,V>
+        implements Iterator<K>, Enumeration<K> {
+        KeyIterator(Node<K,V>[] tab, int index, int size, int limit,
+                    ConcurrentHashMap<K,V> map) {
+            super(tab, index, size, limit, map);
+        }
+
+        public final K next() {
+            Node<K,V> p;
+            if ((p = next) == null)
+                throw new NoSuchElementException();
+            K k = p.key;
+            lastReturned = p;
+            advance();
+            return k;
+        }
+
+        public final K nextElement() { return next(); }
+    }
+
+    static final class ValueIterator<K,V> extends BaseIterator<K,V>
+        implements Iterator<V>, Enumeration<V> {
+        ValueIterator(Node<K,V>[] tab, int index, int size, int limit,
+                      ConcurrentHashMap<K,V> map) {
+            super(tab, index, size, limit, map);
+        }
+
+        public final V next() {
+            Node<K,V> p;
+            if ((p = next) == null)
+                throw new NoSuchElementException();
+            V v = p.val;
+            lastReturned = p;
+            advance();
+            return v;
+        }
+
+        public final V nextElement() { return next(); }
+    }
+
+    static final class EntryIterator<K,V> extends BaseIterator<K,V>
+        implements Iterator<Entry<K,V>> {
+        EntryIterator(Node<K,V>[] tab, int index, int size, int limit,
+                      ConcurrentHashMap<K,V> map) {
+            super(tab, index, size, limit, map);
+        }
+
+        public final Map.Entry<K,V> next() {
+            Node<K,V> p;
+            if ((p = next) == null)
+                throw new NoSuchElementException();
+            K k = p.key;
+            V v = p.val;
+            lastReturned = p;
+            advance();
+            return new MapEntry<K,V>(k, v, map);
+        }
+    }
+
+    static final class MapEntry<K,V> implements Map.Entry<K,V> {
+        final K key; // non-null
+        V val;       // non-null
+        final ConcurrentHashMap<K,V> map;
+        MapEntry(K key, V val, ConcurrentHashMap<K,V> map) {
+            this.key = key;
+            this.val = val;
+            this.map = map;
+        }
+        public K getKey()        { return key; }
+        public V getValue()      { return val; }
+        public int hashCode()    { return key.hashCode() ^ val.hashCode(); }
+        public String toString() { return key + "=" + val; }
+
+        public boolean equals(Object o) {
+            Object k, v; Map.Entry<?,?> e;
+            return ((o instanceof Map.Entry) &&
+                    (k = (e = (Map.Entry<?,?>)o).getKey()) != null &&
+                    (v = e.getValue()) != null &&
+                    (k == key || k.equals(key)) &&
+                    (v == val || v.equals(val)));
+        }
+
+        /**
+         * Sets our entry's value and writes through to the map. The
+         * value to return is somewhat arbitrary here. Since we do not
+         * necessarily track asynchronous changes, the most recent
+         * "previous" value could be different from what we return (or
+         * could even have been removed, in which case the put will
+         * re-establish). We do not and cannot guarantee more.
+         */
+        public V setValue(V value) {
+            if (value == null) throw new NullPointerException();
+            V v = val;
+            val = value;
+            map.put(key, value);
+            return v;
+        }
+    }
 
     /* ---------------- Counter support -------------- */
 
@@ -414,6 +798,8 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
         return null;
     }
+
+    /* ----------- 表元素访问 ---------- */
 
     /*
      * 以下方法为用于访问table中的元素或resizing过程中新table的元素，称为不稳定（Volatile）方法。用户需要对tab参数做null检查，检测tab的
