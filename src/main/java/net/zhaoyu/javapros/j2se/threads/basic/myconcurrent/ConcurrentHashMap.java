@@ -1,4 +1,4 @@
-package net.zhaoyu.javapros.j2se.threads.basic;
+package net.zhaoyu.javapros.j2se.threads.basic.myconcurrent;
 
 
 import java.io.ObjectStreamField;
@@ -7,7 +7,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -35,7 +34,7 @@ import java.util.function.Function;
  */
 public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements ConcurrentMap<K,V>, Serializable {
 
-    /* ---------- 常亮 ---------- */
+    /* ---------- 常量 ---------- */
 
     /**
      * 最大容量
@@ -43,7 +42,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     private static final int MAXIMUM_CAPACITY = 1 << 30;
 
     /**
-     * 默认容量
+     * 默认容量，最小是1，数值必须是2的幂次方
      */
     private static final int DEFAULT_CAPACITY=16;
 
@@ -98,7 +97,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
 
     /** 兼容老版本序列化 */
     private static final ObjectStreamField[] serialPersistentFields = {
-            new ObjectStreamField("segments", java.util.concurrent.ConcurrentHashMap.Segment[].class),
+            new ObjectStreamField("segments", Segment[].class),
             new ObjectStreamField("segmentMask", Integer.TYPE),
             new ObjectStreamField("segmentShift", Integer.TYPE)
     };
@@ -141,7 +140,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         }
 
         /**
-         * 对 map.get() 提供支撑，链表情况下用不到，当前桶位变成 treebin  fwd节点会用到
+         * 在链表中查找
          */
         Node<K,V> find(int h, Object k) {
             Node<K,V> e = this;
