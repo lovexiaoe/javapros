@@ -7,6 +7,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.locks.LockSupport;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -95,6 +97,52 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     //cpu数量
     static final int NCPU = Runtime.getRuntime().availableProcessors();
 
+    /* ---------- 字段 -------------*/
+    /**
+     * 节点数组，首次插入时，延迟加载，size永远是2的幂次方。通过iterator直接访问。
+     */
+    transient volatile Node<K,V>[] table;
+
+    /**
+     * 用于扩展的新table; 当 resizing时不为null。
+     */
+    private transient volatile Node<K,V>[] nextTable;
+
+    /**
+     * 基准计数值, 主要在没有竞争时使用，但是也作为表初始化竞争时的后备。 使用 CAS 进行更新.
+     */
+    private transient volatile long baseCount;
+
+    /**
+     * 表初始化和resizing的控制， 0为默认，为负数时，表被初始化或者resize中。 初始化为-1, resize为-(1 + 激活的resizing线程数量).
+     * 其他情况：当表为未初始化，表示创建时表需要初始化的大小 . 初始化完成, 表示下一次resize需要的初始化大小.
+     */
+    private transient volatile int sizeCtl;
+
+    /**
+     * resizing时，移动和没有移动的分割标记。初始化为旧表的长度，随着表的转移较小到0。
+     */
+    private transient volatile int transferIndex;
+
+    /**
+     * 当resizing或者创建CounterCells时使用的自旋锁（用CAS锁定）
+     */
+    private transient volatile int cellsBusy;
+
+    /**
+     * CounterCell表，用于计算map中的元素个数，每个cell中都记录了一个值，map元素的个数就是每个cell中的值累加。
+     * 非空时，长度为2的幂次方。
+     */
+    private transient volatile CounterCell[] counterCells;
+
+    // views
+    private transient KeySetView<K,V> keySet;
+    private transient ValuesView<K,V> values;
+    private transient EntrySetView<K,V> entrySet;
+
+
+    /*---------- 兼容老版本 ----------*/
+
     /** 兼容老版本序列化 */
     private static final ObjectStreamField[] serialPersistentFields = {
             new ObjectStreamField("segments", Segment[].class),
@@ -102,7 +150,58 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
             new ObjectStreamField("segmentShift", Integer.TYPE)
     };
 
-    /* ---------- Node ---------- */
+    /**
+     * 兼容老版本序列化
+     */
+    static class Segment<K,V> extends ReentrantLock implements Serializable {
+        private static final long serialVersionUID = 2249069246763182397L;
+        final float loadFactor;
+        Segment(float lf) { this.loadFactor = lf; }
+    }
+
+    /* ---------- 构造方法 ---------- */
+
+    public ConcurrentHashMap() {
+    }
+
+
+    /**
+     * 创建有初始化容量为initialCapacity的map,容量预估为至少两倍的initialCapacity
+     */
+    public ConcurrentHashMap(int initialCapacity) {
+        if (initialCapacity < 0)
+            throw new IllegalArgumentException();
+        int cap = ((initialCapacity >= (MAXIMUM_CAPACITY >>> 1)) ?
+                MAXIMUM_CAPACITY :
+                tableSizeFor(initialCapacity + (initialCapacity >>> 1) + 1));
+        this.sizeCtl = cap;
+    }
+
+    public ConcurrentHashMap(Map<? extends K, ? extends V> m) {
+        this.sizeCtl = DEFAULT_CAPACITY;
+        putAll(m);
+    }
+
+    public ConcurrentHashMap(int initialCapacity, float loadFactor) {
+        this(initialCapacity, loadFactor, 1);
+    }
+
+    /**
+     * concurrencyLevel 用来计算 sizeCtl 的大小。 影响map的bin长度，bin长度决定了并发级别。
+     */
+    public ConcurrentHashMap(int initialCapacity,
+                             float loadFactor, int concurrencyLevel) {
+        if (!(loadFactor > 0.0f) || initialCapacity < 0 || concurrencyLevel <= 0)
+            throw new IllegalArgumentException();
+        if (initialCapacity < concurrencyLevel)   // Use at least as many bins
+            initialCapacity = concurrencyLevel;   // as estimated threads
+        long size = (long)(1.0 + (long)initialCapacity / loadFactor);
+        int cap = (size >= (long)MAXIMUM_CAPACITY) ?
+                MAXIMUM_CAPACITY : tableSizeFor((int)size);
+        this.sizeCtl = cap;
+    }
+
+    /* ---------- 相关支持类 ---------- */
 
     /**
      * 链表节点对象，hash为负数的节点是特殊节点。
@@ -152,6 +251,646 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
                         return e;
                 } while ((e = e.next) != null);
             }
+            return null;
+        }
+    }
+
+
+    /**
+     * 树中的红黑树节点，同时使用next和prev保持链表状态。即既是树结构也是链表结构。
+     */
+    static final class TreeNode<K,V> extends Node<K,V> {
+        TreeNode<K,V> parent;  // red-black tree links
+        TreeNode<K,V> left;
+        TreeNode<K,V> right;
+        TreeNode<K,V> prev;    // needed to unlink next upon deletion
+        boolean red;
+
+        TreeNode(int hash, K key, V val, Node<K,V> next,
+                 TreeNode<K,V> parent) {
+            super(hash, key, val, next);
+            this.parent = parent;
+        }
+
+        Node<K,V> find(int h, Object k) {
+            return findTreeNode(h, k, null);
+        }
+
+        /**
+         * 查找红黑树节点
+         * Returns the TreeNode (or null if not found) for the given key
+         * starting at given root.
+         */
+        final TreeNode<K,V> findTreeNode(int h, Object k, Class<?> kc) {
+            if (k != null) {
+                TreeNode<K,V> p = this;
+                do  {
+                    int ph, dir; K pk; TreeNode<K,V> q;
+                    TreeNode<K,V> pl = p.left, pr = p.right;
+                    if ((ph = p.hash) > h)
+                        p = pl;
+                    else if (ph < h)
+                        p = pr;
+                    else if ((pk = p.key) == k || (pk != null && k.equals(pk)))
+                        return p;
+                    else if (pl == null)
+                        p = pr;
+                    else if (pr == null)
+                        p = pl;
+                    else if ((kc != null ||
+                              (kc = comparableClassFor(k)) != null) &&
+                             (dir = compareComparables(kc, k, pk)) != 0)
+                        p = (dir < 0) ? pl : pr;
+                    else if ((q = pr.findTreeNode(h, k, kc)) != null)
+                        return q;
+                    else
+                        p = pl;
+                } while (p != null);
+            }
+            return null;
+        }
+    }
+
+
+    /**
+     * TreeBin 的作用：维护一个锁，在树的节点操作时，对锁进行管理；
+     * 用作树的头节点，只存储root和first节点，不存储节点的key、value值；
+     * 维护了一个读写锁，强制写入者等待读取者在树重组操作之前完成读取。
+     */
+    static final class TreeBin<K,V> extends Node<K,V> {
+        TreeNode<K,V> root; //红黑树的根节点。
+        volatile TreeNode<K,V> first; //指向treeNode链表。
+        volatile Thread waiter;
+        volatile int lockState;
+        // values for lockState，//位运算，通过位运算设置线程状态。
+        static final int WRITER = 1; // set while holding write lock
+        static final int WAITER = 2; // set when waiting for write lock
+        static final int READER = 4; // increment value for setting read lock
+
+        /**
+         * 工具方法。当hashCode相等或者没有比较器的时候判定插入顺序。
+         */
+        static int tieBreakOrder(Object a, Object b) {
+            int d;
+            if (a == null || b == null ||
+                (d = a.getClass().getName().
+                 compareTo(b.getClass().getName())) == 0)
+                d = (System.identityHashCode(a) <= System.identityHashCode(b) ?
+                     -1 : 1);
+            return d;
+        }
+
+        TreeBin(TreeNode<K,V> b) {
+            super(TREEBIN, null, null, null);
+            this.first = b; //first引用treeNode链表。
+            TreeNode<K,V> r = null; //申明根节点
+
+            //遍历链表,将链表转储为红黑树。
+            for (TreeNode<K,V> x = b, next; x != null; x = next) {
+                next = (TreeNode<K,V>)x.next;
+                x.left = x.right = null;
+                if (r == null) {     //无root，说明是新的红黑树，初始化root
+                    x.parent = null;
+                    x.red = false;
+                    r = x;
+                }
+                else {
+                    K k = x.key;
+                    int h = x.hash;
+                    Class<?> kc = null; //插入节点Key的class类。
+                    for (TreeNode<K,V> p = r;;) {
+                        int dir, ph;
+                        K pk = p.key;
+                        if ((ph = p.hash) > h)
+                            dir = -1;
+                        else if (ph < h)
+                            dir = 1;
+                        else if ((kc == null &&
+                                  (kc = comparableClassFor(k)) == null) ||
+                                 (dir = compareComparables(kc, k, pk)) == 0)
+                            dir = tieBreakOrder(k, pk);
+                            TreeNode<K,V> xp = p;  //p保存为父节点
+                        if ((p = (dir <= 0) ? p.left : p.right) == null) { //重新定义p,并设置父节点xp的left和right
+                            x.parent = xp;
+                            if (dir <= 0)
+                                xp.left = x;
+                            else
+                                xp.right = x;
+                            r = balanceInsertion(r, x); //平衡插入节点x。
+                            break;
+                        }
+                    }
+                }
+            }
+            this.root = r;
+            assert checkInvariants(root);
+        }
+
+        /**
+         * 树修改时获取写锁.
+         */
+        private final void lockRoot() {
+            if (!U.compareAndSwapInt(this, LOCKSTATE, 0, WRITER)) //尝试获取锁，否则竞争获取锁。
+                contendedLock(); // offload to separate method
+        }
+
+        /**
+         * 释放写锁
+         */
+        private final void unlockRoot() {
+            lockState = 0;
+        }
+
+        /**
+         * 竞争获取锁。可能会在等待锁时阻塞。
+         */
+        private final void contendedLock() {
+            boolean waiting = false;
+            for (int s;;) {
+                if (((s = lockState) & ~WAITER) == 0) { //没有读和写状态，即s=0或者s=2，尝试进入写状态。
+                    if (U.compareAndSwapInt(this, LOCKSTATE, s, WRITER)) {
+                        if (waiting)
+                            waiter = null;
+                        return;
+                    }
+                }
+                else if ((s & WAITER) == 0) { //等待状态位为0，没有线程排队等待，尝试将等待状态位设置锁为等待状态。
+                    if (U.compareAndSwapInt(this, LOCKSTATE, s, s | WAITER)) {
+                        waiting = true;
+                        waiter = Thread.currentThread(); //标记当前线程在等待。
+                    }
+                }
+                else if (waiting) //等待设置成功，则暂停。
+                    LockSupport.park(this);
+            }
+        }
+
+        /**
+         * 查找匹配的hash和value的节点。 首先尝试二叉搜索树查询，当有写锁或者等待时，进行线性查询。
+         */
+        final Node<K,V> find(int h, Object k) {
+            if (k != null) {
+                for (Node<K,V> e = first; e != null; ) {
+                    int s; K ek;
+                    if (((s = lockState) & (WAITER|WRITER)) != 0) {  //节点有等待状态或者写状态。执行线性查询。
+                        if (e.hash == h && ((ek = e.key) == k || (ek != null && k.equals(ek))))
+                            return e;
+                        e = e.next;
+                    }
+                    else if (U.compareAndSwapInt(this, LOCKSTATE, s, s + READER)) { //获取读锁成功。执行树查询。
+                        TreeNode<K,V> r, p;
+                        try {
+                            p = ((r = root) == null ? null :
+                                 r.findTreeNode(h, k, null)); //树状查询。
+                        } finally {
+                            Thread w;
+                            if (U.getAndAddInt(this, LOCKSTATE, -READER) == (READER|WAITER) && (w = waiter) != null)
+                                //释放读锁成功，且有等待线程，唤醒等待线程。
+                                LockSupport.unpark(w);
+                        }
+                        return p;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /**
+         * 查找节点，如果未找到，则插添加这个节点。
+         * @return null if added
+         */
+        final TreeNode<K,V> putTreeVal(int h, K k, V v) {
+            Class<?> kc = null;
+            boolean searched = false;
+            for (TreeNode<K,V> p = root;;) {
+                int dir, ph; K pk;
+                if (p == null) {  //空树，则创建节点并为root。
+                    first = root = new TreeNode<K,V>(h, k, v, null, null);
+                    break;
+                }
+                else if ((ph = p.hash) > h)
+                    dir = -1;
+                else if (ph < h)
+                    dir = 1;
+                else if ((pk = p.key) == k || (pk != null && k.equals(pk))) //hash相等，且key不为空且相等。则查找到目标并返回。
+                    return p;
+                else if ((kc == null && (kc = comparableClassFor(k)) == null) ||
+                         (dir = compareComparables(kc, k, pk)) == 0) { //hash相等，且（key为空或其他无法比较的情况）。
+                    if (!searched) { //未搜索到，则从子树中搜索。
+                        TreeNode<K,V> q, ch;
+                        searched = true;
+                        if (((ch = p.left) != null &&
+                             (q = ch.findTreeNode(h, k, kc)) != null) ||
+                            ((ch = p.right) != null &&
+                             (q = ch.findTreeNode(h, k, kc)) != null))
+                            return q;
+                    }
+                    dir = tieBreakOrder(k, pk);
+                }
+
+                TreeNode<K,V> xp = p;
+                if ((p = (dir <= 0) ? p.left : p.right) == null) { //未搜索到，并且指向的子树未null，则插入节点。
+                    //新建节点x,并做为链表的first节点。
+                    TreeNode<K,V> x, f = first;
+                    first = x = new TreeNode<K,V>(h, k, v, f, xp);
+                    if (f != null)
+                        f.prev = x;
+
+                    if (dir <= 0)
+                        xp.left = x;
+                    else
+                        xp.right = x;
+                    // 平衡红黑树。
+                    if (!xp.red)
+                        x.red = true;
+                    else {
+                        lockRoot(); //红黑树的操作需要加锁。
+                        try {
+                            root = balanceInsertion(root, x);
+                        } finally {
+                            unlockRoot();
+                        }
+                    }
+                    break;
+                }
+            }
+            assert checkInvariants(root);
+            return null;
+        }
+
+        /**
+         * 删除给定节点。调用时，必须有这个节点才能删除。
+         *
+         * @return true if now too small, so should be untreeified
+         */
+        final boolean removeTreeNode(TreeNode<K,V> p) {
+            TreeNode<K,V> next = (TreeNode<K,V>)p.next;
+            TreeNode<K,V> pred = p.prev;  // unlink traversal pointers
+            TreeNode<K,V> r, rl;
+            if (pred == null)
+                first = next;
+            else
+                pred.next = next;
+            if (next != null)
+                next.prev = pred;
+            if (first == null) {
+                root = null;
+                return true;
+            }
+            if ((r = root) == null || r.right == null || // too small
+                (rl = r.left) == null || rl.left == null)
+                return true;
+            lockRoot();
+            try {
+                TreeNode<K,V> replacement;
+                TreeNode<K,V> pl = p.left;
+                TreeNode<K,V> pr = p.right;
+                if (pl != null && pr != null) {
+                    TreeNode<K,V> s = pr, sl;
+                    while ((sl = s.left) != null) // find successor
+                        s = sl;
+                    boolean c = s.red; s.red = p.red; p.red = c; // swap colors
+                    TreeNode<K,V> sr = s.right;
+                    TreeNode<K,V> pp = p.parent;
+                    if (s == pr) { // p was s's direct parent
+                        p.parent = s;
+                        s.right = p;
+                    }
+                    else {
+                        TreeNode<K,V> sp = s.parent;
+                        if ((p.parent = sp) != null) {
+                            if (s == sp.left)
+                                sp.left = p;
+                            else
+                                sp.right = p;
+                        }
+                        if ((s.right = pr) != null)
+                            pr.parent = s;
+                    }
+                    p.left = null;
+                    if ((p.right = sr) != null)
+                        sr.parent = p;
+                    if ((s.left = pl) != null)
+                        pl.parent = s;
+                    if ((s.parent = pp) == null)
+                        r = s;
+                    else if (p == pp.left)
+                        pp.left = s;
+                    else
+                        pp.right = s;
+                    if (sr != null)
+                        replacement = sr;
+                    else
+                        replacement = p;
+                }
+                else if (pl != null)
+                    replacement = pl;
+                else if (pr != null)
+                    replacement = pr;
+                else
+                    replacement = p;
+                if (replacement != p) {
+                    TreeNode<K,V> pp = replacement.parent = p.parent;
+                    if (pp == null)
+                        r = replacement;
+                    else if (p == pp.left)
+                        pp.left = replacement;
+                    else
+                        pp.right = replacement;
+                    p.left = p.right = p.parent = null;
+                }
+
+                root = (p.red) ? r : balanceDeletion(r, replacement);
+
+                if (p == replacement) {  // detach pointers
+                    TreeNode<K,V> pp;
+                    if ((pp = p.parent) != null) {
+                        if (p == pp.left)
+                            pp.left = null;
+                        else if (p == pp.right)
+                            pp.right = null;
+                        p.parent = null;
+                    }
+                }
+            } finally {
+                unlockRoot();
+            }
+            assert checkInvariants(root);
+            return false;
+        }
+
+        /* ------------------------------------------------------------ */
+        // Red-black tree methods, all adapted from CLR
+
+        static <K,V> TreeNode<K,V> rotateLeft(TreeNode<K,V> root,
+                                              TreeNode<K,V> p) {
+            TreeNode<K,V> r, pp, rl;
+            if (p != null && (r = p.right) != null) {
+                if ((rl = p.right = r.left) != null)
+                    rl.parent = p;
+                if ((pp = r.parent = p.parent) == null)
+                    (root = r).red = false;
+                else if (pp.left == p)
+                    pp.left = r;
+                else
+                    pp.right = r;
+                r.left = p;
+                p.parent = r;
+            }
+            return root;
+        }
+
+        static <K,V> TreeNode<K,V> rotateRight(TreeNode<K,V> root,
+                                               TreeNode<K,V> p) {
+            TreeNode<K,V> l, pp, lr;
+            if (p != null && (l = p.left) != null) {
+                if ((lr = p.left = l.right) != null)
+                    lr.parent = p;
+                if ((pp = l.parent = p.parent) == null)
+                    (root = l).red = false;
+                else if (pp.right == p)
+                    pp.right = l;
+                else
+                    pp.left = l;
+                l.right = p;
+                p.parent = l;
+            }
+            return root;
+        }
+
+        static <K,V> TreeNode<K,V> balanceInsertion(TreeNode<K,V> root,
+                                                    TreeNode<K,V> x) {
+            x.red = true;
+            for (TreeNode<K,V> xp, xpp, xppl, xppr;;) {
+                if ((xp = x.parent) == null) {
+                    x.red = false;
+                    return x;
+                }
+                else if (!xp.red || (xpp = xp.parent) == null)
+                    return root;
+                if (xp == (xppl = xpp.left)) {
+                    if ((xppr = xpp.right) != null && xppr.red) {
+                        xppr.red = false;
+                        xp.red = false;
+                        xpp.red = true;
+                        x = xpp;
+                    }
+                    else {
+                        if (x == xp.right) {
+                            root = rotateLeft(root, x = xp);
+                            xpp = (xp = x.parent) == null ? null : xp.parent;
+                        }
+                        if (xp != null) {
+                            xp.red = false;
+                            if (xpp != null) {
+                                xpp.red = true;
+                                root = rotateRight(root, xpp);
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (xppl != null && xppl.red) {
+                        xppl.red = false;
+                        xp.red = false;
+                        xpp.red = true;
+                        x = xpp;
+                    }
+                    else {
+                        if (x == xp.left) {
+                            root = rotateRight(root, x = xp);
+                            xpp = (xp = x.parent) == null ? null : xp.parent;
+                        }
+                        if (xp != null) {
+                            xp.red = false;
+                            if (xpp != null) {
+                                xpp.red = true;
+                                root = rotateLeft(root, xpp);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        static <K,V> TreeNode<K,V> balanceDeletion(TreeNode<K,V> root,
+                                                   TreeNode<K,V> x) {
+            for (TreeNode<K,V> xp, xpl, xpr;;)  {
+                if (x == null || x == root)
+                    return root;
+                else if ((xp = x.parent) == null) {
+                    x.red = false;
+                    return x;
+                }
+                else if (x.red) {
+                    x.red = false;
+                    return root;
+                }
+                else if ((xpl = xp.left) == x) {
+                    if ((xpr = xp.right) != null && xpr.red) {
+                        xpr.red = false;
+                        xp.red = true;
+                        root = rotateLeft(root, xp);
+                        xpr = (xp = x.parent) == null ? null : xp.right;
+                    }
+                    if (xpr == null)
+                        x = xp;
+                    else {
+                        TreeNode<K,V> sl = xpr.left, sr = xpr.right;
+                        if ((sr == null || !sr.red) &&
+                            (sl == null || !sl.red)) {
+                            xpr.red = true;
+                            x = xp;
+                        }
+                        else {
+                            if (sr == null || !sr.red) {
+                                if (sl != null)
+                                    sl.red = false;
+                                xpr.red = true;
+                                root = rotateRight(root, xpr);
+                                xpr = (xp = x.parent) == null ?
+                                    null : xp.right;
+                            }
+                            if (xpr != null) {
+                                xpr.red = (xp == null) ? false : xp.red;
+                                if ((sr = xpr.right) != null)
+                                    sr.red = false;
+                            }
+                            if (xp != null) {
+                                xp.red = false;
+                                root = rotateLeft(root, xp);
+                            }
+                            x = root;
+                        }
+                    }
+                }
+                else { // symmetric
+                    if (xpl != null && xpl.red) {
+                        xpl.red = false;
+                        xp.red = true;
+                        root = rotateRight(root, xp);
+                        xpl = (xp = x.parent) == null ? null : xp.left;
+                    }
+                    if (xpl == null)
+                        x = xp;
+                    else {
+                        TreeNode<K,V> sl = xpl.left, sr = xpl.right;
+                        if ((sl == null || !sl.red) &&
+                            (sr == null || !sr.red)) {
+                            xpl.red = true;
+                            x = xp;
+                        }
+                        else {
+                            if (sl == null || !sl.red) {
+                                if (sr != null)
+                                    sr.red = false;
+                                xpl.red = true;
+                                root = rotateLeft(root, xpl);
+                                xpl = (xp = x.parent) == null ?
+                                    null : xp.left;
+                            }
+                            if (xpl != null) {
+                                xpl.red = (xp == null) ? false : xp.red;
+                                if ((sl = xpl.left) != null)
+                                    sl.red = false;
+                            }
+                            if (xp != null) {
+                                xp.red = false;
+                                root = rotateRight(root, xp);
+                            }
+                            x = root;
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * Recursive invariant check
+         */
+        static <K,V> boolean checkInvariants(TreeNode<K,V> t) {
+            TreeNode<K,V> tp = t.parent, tl = t.left, tr = t.right,
+                tb = t.prev, tn = (TreeNode<K,V>)t.next;
+            if (tb != null && tb.next != t)
+                return false;
+            if (tn != null && tn.prev != t)
+                return false;
+            if (tp != null && t != tp.left && t != tp.right)
+                return false;
+            if (tl != null && (tl.parent != t || tl.hash > t.hash))
+                return false;
+            if (tr != null && (tr.parent != t || tr.hash < t.hash))
+                return false;
+            if (t.red && tl != null && tl.red && tr != null && tr.red)
+                return false;
+            if (tl != null && !checkInvariants(tl))
+                return false;
+            if (tr != null && !checkInvariants(tr))
+                return false;
+            return true;
+        }
+
+        private static final sun.misc.Unsafe U;
+        private static final long LOCKSTATE;
+        static {
+            try {
+                U = sun.misc.Unsafe.getUnsafe();
+                Class<?> k = TreeBin.class;
+                LOCKSTATE = U.objectFieldOffset
+                    (k.getDeclaredField("lockState"));
+            } catch (Exception e) {
+                throw new Error(e);
+            }
+        }
+    }
+
+    /**
+     * 在transfer操作时，会在treebin的头部插入一个ForwardingNode节点。
+     */
+    static final class ForwardingNode<K,V> extends Node<K,V> {
+        final Node<K,V>[] nextTable;
+        ForwardingNode(Node<K,V>[] tab) {
+            super(MOVED, null, null, null);
+            this.nextTable = tab;
+        }
+
+        Node<K,V> find(int h, Object k) {
+            // loop to avoid arbitrarily deep recursion on forwarding nodes
+            outer: for (Node<K,V>[] tab = nextTable;;) {
+                Node<K,V> e; int n;
+                if (k == null || tab == null || (n = tab.length) == 0 ||
+                        (e = tabAt(tab, (n - 1) & h)) == null)
+                    return null;
+                for (;;) {
+                    int eh; K ek;
+                    if ((eh = e.hash) == h &&
+                            ((ek = e.key) == k || (ek != null && k.equals(ek))))
+                        return e;
+                    if (eh < 0) {
+                        if (e instanceof ForwardingNode) {
+                            tab = ((ForwardingNode<K,V>)e).nextTable;
+                            continue outer;
+                        }
+                        else
+                            return e.find(h, k);
+                    }
+                    if ((e = e.next) == null)
+                        return null;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 在computeIfAbsent 和 compute 中的占位符节点。
+     */
+    static final class ReservationNode<K,V> extends Node<K,V> {
+        ReservationNode() {
+            super(RESERVED, null, null, null);
+        }
+
+        Node<K,V> find(int h, Object k) {
             return null;
         }
     }
@@ -217,90 +956,6 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
                 ((Comparable)k).compareTo(x));
     }
 
-    /* ---------- 字段 -------------*/
-    /**
-     * 节点数组，首次插入时，延迟加载，size永远是2的幂次方。通过iterator直接访问。
-     */
-    transient volatile Node<K,V>[] table;
-
-    /**
-     * 用于扩展的新table; 当 resizing时不为null。
-     */
-    private transient volatile Node<K,V>[] nextTable;
-
-    /**
-     * 基准计数值, 主要在没有竞争时使用，但是也作为表初始化竞争时的后备。 使用 CAS 进行更新.
-     */
-    private transient volatile long baseCount;
-
-    /**
-     * 表初始化和resizing的控制， 0为默认，为负数时，表被初始化或者resize中。 初始化为-1, resize为-(1 + 激活的resizing线程数量).
-     * 其他情况：当表为未初始化，表示创建时表需要初始化的大小 . 初始化完成, 表示下一次resize需要的初始化大小.
-     */
-    private transient volatile int sizeCtl;
-
-    /**
-     * todo:注释
-     */
-    private transient volatile int transferIndex;
-
-    /**
-     * 当resizing或者创建CounterCells时使用的自旋锁（用CAS锁定）
-     */
-    private transient volatile int cellsBusy;
-
-    /**
-     * CounterCell表，用于计算map中的元素个数，每个cell中都记录了一个值，map元素的个数就是每个cell中的值累加。
-     * 非空时，长度为2的幂次方。
-     */
-    private transient volatile CounterCell[] counterCells;
-
-    // views
-    private transient KeySetView<K,V> keySet;
-    private transient ValuesView<K,V> values;
-    private transient EntrySetView<K,V> entrySet;
-
-    /* ---------- 公共操作 ---------- */
-
-    public ConcurrentHashMap() {
-    }
-
-
-    /**
-     * 创建有初始化容量为initialCapacity的map,容量预估为至少两倍的initialCapacity
-     */
-    public ConcurrentHashMap(int initialCapacity) {
-        if (initialCapacity < 0)
-            throw new IllegalArgumentException();
-        int cap = ((initialCapacity >= (MAXIMUM_CAPACITY >>> 1)) ?
-                MAXIMUM_CAPACITY :
-                tableSizeFor(initialCapacity + (initialCapacity >>> 1) + 1));
-        this.sizeCtl = cap;
-    }
-
-    public ConcurrentHashMap(Map<? extends K, ? extends V> m) {
-        this.sizeCtl = DEFAULT_CAPACITY;
-        putAll(m);
-    }
-
-    public ConcurrentHashMap(int initialCapacity, float loadFactor) {
-        this(initialCapacity, loadFactor, 1);
-    }
-
-    /**
-     * concurrencyLevel 用来计算 sizeCtl 的大小。 影响map的bin长度，bin长度决定了并发级别。
-     */
-    public ConcurrentHashMap(int initialCapacity,
-                             float loadFactor, int concurrencyLevel) {
-        if (!(loadFactor > 0.0f) || initialCapacity < 0 || concurrencyLevel <= 0)
-            throw new IllegalArgumentException();
-        if (initialCapacity < concurrencyLevel)   // Use at least as many bins
-            initialCapacity = concurrencyLevel;   // as estimated threads
-        long size = (long)(1.0 + (long)initialCapacity / loadFactor);
-        int cap = (size >= (long)MAXIMUM_CAPACITY) ?
-                MAXIMUM_CAPACITY : tableSizeFor((int)size);
-        this.sizeCtl = cap;
-    }
 
     /* ---------- map的原有方法 ---------- */
 
@@ -357,45 +1012,6 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         return false;
     }
 
-    /* ---------- 特殊的Node ---------- */
-
-    /**
-     * 在transfer操作时，会在红黑树bin中插入一个ForwardingNode节点。
-     */
-    static final class ForwardingNode<K,V> extends Node<K,V> {
-        final Node<K,V>[] nextTable;
-        ForwardingNode(Node<K,V>[] tab) {
-            super(MOVED, null, null, null);
-            this.nextTable = tab;
-        }
-
-        Node<K,V> find(int h, Object k) {
-            // loop to avoid arbitrarily deep recursion on forwarding nodes
-            outer: for (Node<K,V>[] tab = nextTable;;) {
-                Node<K,V> e; int n;
-                if (k == null || tab == null || (n = tab.length) == 0 ||
-                        (e = tabAt(tab, (n - 1) & h)) == null)
-                    return null;
-                for (;;) {
-                    int eh; K ek;
-                    if ((eh = e.hash) == h &&
-                            ((ek = e.key) == k || (ek != null && k.equals(ek))))
-                        return e;
-                    if (eh < 0) {
-                        if (e instanceof ForwardingNode) {
-                            tab = ((ForwardingNode<K,V>)e).nextTable;
-                            continue outer;
-                        }
-                        else
-                            return e.find(h, k);
-                    }
-                    if ((e = e.next) == null)
-                        return null;
-                }
-            }
-        }
-    }
-
     /* ---------- table 遍历 ---------- */
 
     /**
@@ -406,13 +1022,13 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
      */
 
     /**
-     * 用于为traverser记录当前tab,表的长度，和当前遍历的index。
-     * 在resizing时，traverser需要在处理当前tab之前处理一段forwarded tab的数据。
+     * 用于记录traverser在resizing中的遍历状态。
+     * 当resizing时，traverser将当前遍历状态存储到一个TableStack中，遍历完新的tab后再从stack中恢复。
      */
     static final class TableStack<K,V> {
         int length;
-        int index;
-        Node<K,V>[] tab;
+        int index; //记录Traverser中的index
+        Node<K,V>[] tab; //记录Traverser中的tab。
         TableStack<K,V> next;
     }
 
@@ -421,12 +1037,14 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
      * 通常情况下，traverser一个个bin地进行遍历。但是表已经resized。那么后续的步骤必须同时遍历当前index下的bin和（index+baseSize）的两个bin。
      * 以此类推，以便进一步的resizings。
      * 为了特意处理用户跨线程迭代器共享的可能性。如果对表读取的一系列检查失败，则终止迭代。
+     *
+     * base-开头的变量针对旧table,没有base-开头的则同时针对于旧表和新表。
      */
     static class Traverser<K,V> {
-        Node<K,V>[] tab;        // 当前table,resized时会更行。
-        Node<K,V> next;         // 要使用的下一个entry节点。
+        Node<K,V>[] tab;        // 当前table,如果在resized时会更新为新的。
+        Node<K,V> next;         // 下一个节点。
         TableStack<K,V> stack, spare; // 当碰到 ForwardingNode ，保存或者恢复
-        int index;              // 要使用的下一个桶
+        int index;              // 下一个要读取的桶的下标。
         int baseIndex;          // table初始时的起始索引
         int baseLimit;          // table初始时的终止索引。
         final int baseSize;     // table初始时的大小
@@ -440,7 +1058,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         }
 
         /**
-         * 如果有下一个可用节点，返回该节点，否则返回null。方法会访问自Iterator构建后可达的节点。可能会丢失一些在访问bin之后添加到bin的内容。
+         * 方法会访问自Iterator构建后可达的节点。可能会丢失一些在访问bin之后添加到bin的内容。
          */
         /* 这里如果遇到扩容，存储当前状态pushState(t, i, n)，等到扩容完成后，取出状态recoverState(n) */
         final Node<K,V> advance() {
@@ -772,6 +1390,242 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     public boolean replace(K key, V oldValue, V newValue) {
         return false;
     }
+
+    /**
+     * 公共方法replace/remove的实现，在匹配cv时，使用v替换节点。如果结果值为空，则删除节点。
+     * @param key
+     * @param value
+     * @param cv
+     * @return
+     */
+    final V replaceNode(Object key, V value, Object cv) {
+        int hash = spread(key.hashCode());
+        for (Node<K, V>[] tab = table; ; ) {
+            Node<K,V> f; int n,i,fh;
+            if (tab == null || (n = tab.length) == 0 || (f = tabAt(tab, i = (n - 1) & hash))== null) {
+                break; //未找到节点，则退出。
+            } else if ((fh=f.hash)==MOVED) {
+                tab == helpTransfer(tab,f);
+            }
+        }
+    }
+
+    /**
+     * Helps transfer if a resize is in progress.
+     */
+    final Node<K,V>[] helpTransfer(Node<K,V>[] tab, Node<K,V> f) {
+        Node<K,V>[] nextTab; int sc;
+        if (tab != null && (f instanceof ForwardingNode) &&
+            (nextTab = ((ForwardingNode<K,V>)f).nextTable) != null) {
+            int rs = resizeStamp(tab.length);
+            while (nextTab == nextTable && table == tab &&
+                   (sc = sizeCtl) < 0) {
+                if ((sc >>> RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 ||
+                    sc == rs + MAX_RESIZERS || transferIndex <= 0)
+                    break;
+                if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1)) {
+                    transfer(tab, nextTab);
+                    break;
+                }
+            }
+            return nextTab;
+        }
+        return table;
+    }
+
+
+    /**
+     * 从老表中移动或者复制一些节点到新表中。
+     */
+    private final void transfer(Node<K,V>[] tab, Node<K,V>[] nextTab) {
+        int n = tab.length, stride;
+        //stride决定了每个线程转移表的步长，即一个线程可以转移多少个桶。通过cpu计算一个步长。
+        if ((stride = (NCPU > 1) ? (n >>> 3) / NCPU : n) < MIN_TRANSFER_STRIDE)
+            stride = MIN_TRANSFER_STRIDE; // subdivide range
+        if (nextTab == null) {            // initiating
+            try {
+                @SuppressWarnings("unchecked")
+                Node<K,V>[] nt = (Node<K,V>[])new Node<?,?>[n << 1];
+                nextTab = nt;
+            } catch (Throwable ex) {      // try to cope with OOME
+                sizeCtl = Integer.MAX_VALUE;
+                return;
+            }
+            nextTable = nextTab;
+            transferIndex = n;
+        }
+        int nextn = nextTab.length;
+        ForwardingNode<K,V> fwd = new ForwardingNode<K,V>(nextTab);
+        boolean advance = true;
+        boolean finishing = false; // to ensure sweep before committing nextTab
+        for (int i = 0, bound = 0;;) { //i指向表当前处理的bin的下标。
+            Node<K,V> f; int fh;
+            //计算transferIndex的值并设置。旧表需要转移的区间为[nextBound,nextIndex]。
+            while (advance) {
+                int nextIndex, nextBound;
+                if (--i >= bound || finishing) //执行了--i
+                    advance = false;
+                else if ((nextIndex = transferIndex) <= 0) { //更新nextIndex为最新的transferIndex
+                    i = -1;
+                    advance = false;
+                }
+                else if (U.compareAndSwapInt(this, TRANSFERINDEX, nextIndex, //从nextIndex向前推移stride个元素。得到nextBound
+                        nextBound = (nextIndex > stride ? nextIndex - stride : 0))) {
+                    bound = nextBound;
+                    i = nextIndex - 1; //更新i
+                    advance = false;
+                }
+            }
+            //判断处理完成的逻辑
+            if (i < 0 || i >= n || i + n >= nextn) {
+                int sc;
+                if (finishing) {
+                    nextTable = null;
+                    table = nextTab;
+                    sizeCtl = (n << 1) - (n >>> 1); //sizeCtl控制并发线程的数量。表初始化完成后，设置sizeCtl=2n*0.75。
+                    return;
+                }
+                //对sizeCtl减一
+                if (U.compareAndSwapInt(this, SIZECTL, sc = sizeCtl, sc - 1)) {
+                    // sc - 2 是否等于标识符左移 16 位。如果他们相等了，说明没有线程在帮助他们扩容了。也就是说，扩容结束了。
+                    if ((sc - 2) != resizeStamp(n) << RESIZE_STAMP_SHIFT)
+                        return;
+                    finishing = advance = true;
+                    i = n; // 没有结束，继续检查
+                }
+            }
+            else if ((f = tabAt(tab, i)) == null) //位置i处为null，表示没有任何节点，初始化为fwd。
+                advance = casTabAt(tab, i, null, fwd);
+            else if ((fh = f.hash) == MOVED)  //该位置节点已经迁移。
+                advance = true; // already processed
+            else {
+                synchronized (f) {  //同步转移节点
+                    if (tabAt(tab, i) == f) {
+                        Node<K,V> ln, hn;
+                        if (fh >= 0) { //链表迁移
+                            int runBit = fh & n;
+                            Node<K,V> lastRun = f;
+                            for (Node<K,V> p = f.next; p != null; p = p.next) {
+                                int b = p.hash & n;
+                                if (b != runBit) {
+                                    runBit = b;
+                                    lastRun = p;
+                                }
+                            }
+                            if (runBit == 0) {
+                                ln = lastRun;
+                                hn = null;
+                            }
+                            else {
+                                hn = lastRun;
+                                ln = null;
+                            }
+                            //将所有元素按照ph & n==0条件划分为两部分，移动到新的table中。
+                            for (Node<K,V> p = f; p != lastRun; p = p.next) {
+                                int ph = p.hash; K pk = p.key; V pv = p.val;
+                                if ((ph & n) == 0) //n的长度为2的n次方，所以二进制只有一个是0，判断hash在该为上是0还是1
+                                    ln = new Node<K,V>(ph, pk, pv, ln);
+                                else
+                                    hn = new Node<K,V>(ph, pk, pv, hn);
+                            }
+                            setTabAt(nextTab, i, ln);
+                            setTabAt(nextTab, i + n, hn);
+                            setTabAt(tab, i, fwd);
+                            advance = true;
+                        }
+                        else if (f instanceof TreeBin) { //红黑树迁移。和链表类似
+                            TreeBin<K,V> t = (TreeBin<K,V>)f;
+                            TreeNode<K,V> lo = null, loTail = null;
+                            TreeNode<K,V> hi = null, hiTail = null;
+                            int lc = 0, hc = 0;
+                            for (Node<K,V> e = t.first; e != null; e = e.next) {
+                                int h = e.hash;
+                                TreeNode<K,V> p = new TreeNode<K,V>
+                                    (h, e.key, e.val, null, null);
+                                if ((h & n) == 0) {
+                                    if ((p.prev = loTail) == null)
+                                        lo = p;
+                                    else
+                                        loTail.next = p;
+                                    loTail = p;
+                                    ++lc;
+                                }
+                                else {
+                                    if ((p.prev = hiTail) == null)
+                                        hi = p;
+                                    else
+                                        hiTail.next = p;
+                                    hiTail = p;
+                                    ++hc;
+                                }
+                            }
+                            ln = (lc <= UNTREEIFY_THRESHOLD) ? untreeify(lo) :
+                                (hc != 0) ? new TreeBin<K,V>(lo) : t;
+                            hn = (hc <= UNTREEIFY_THRESHOLD) ? untreeify(hi) :
+                                (lc != 0) ? new TreeBin<K,V>(hi) : t;
+                            setTabAt(nextTab, i, ln);
+                            setTabAt(nextTab, i + n, hn);
+                            setTabAt(tab, i, fwd);
+                            advance = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 将一个树重新组装为一个链表。
+     */
+    static <K,V> Node<K,V> untreeify(Node<K,V> b) {
+        Node<K,V> hd = null, tl = null;
+        for (Node<K,V> q = b; q != null; q = q.next) {
+            Node<K,V> p = new Node<K,V>(q.hash, q.key, q.val, null);
+            if (tl == null)
+                hd = p;
+            else
+                tl.next = p;
+            tl = p;
+        }
+        return hd;
+    }
+
+
+    /**
+     * 使用sizeCtl初始化表，
+     */
+    private final Node<K,V>[] initTable() {
+        Node<K,V>[] tab; int sc;
+        while ((tab = table) == null || tab.length == 0) {
+            if ((sc = sizeCtl) < 0) //sizeCtrl<0表示其他线程在进行初始化，线程挂起。
+                Thread.yield(); // lost initialization race; just spin
+            else if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) {
+                try {
+                    if ((tab = table) == null || tab.length == 0) {
+                        int n = (sc > 0) ? sc : DEFAULT_CAPACITY;
+                        @SuppressWarnings("unchecked")
+                        Node<K,V>[] nt = (Node<K,V>[])new Node<?,?>[n];
+                        table = tab = nt;
+                        sc = n - (n >>> 2); //初始化完成，更新sizeCtl=n*0.75
+                    }
+                } finally {
+                    sizeCtl = sc;
+                }
+                break;
+            }
+        }
+        return tab;
+    }
+
+    /**
+     * RESIZE_STAMP_BITS=16
+     * n的左边0的长度和2的15次方做与运算。即2的15次方加n左边0的长度，返回结果范围为[2的15次方，2的15次方+32]
+     */
+    static final int resizeStamp(int n) {
+        return Integer.numberOfLeadingZeros(n) | (1 << (RESIZE_STAMP_BITS - 1));
+    }
+
 
     @Override
     public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
