@@ -11,6 +11,7 @@ import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -1012,6 +1013,64 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         return false;
     }
 
+
+    /**
+     * 返回值是预估的，可能因为并发插入和删除而不准确。
+     * @since 1.8
+     */
+    public long mappingCount() {
+        long n = sumCount();
+        return (n < 0L) ? 0L : n; // ignore transient negative values
+    }
+
+
+    /**
+     * Creates a new {@link Set} backed by a ConcurrentHashMap
+     * from the given type to {@code Boolean.TRUE}.
+     *
+     * @param <K> the element type of the returned set
+     * @return the new set
+     * @since 1.8
+     */
+    public static <K> KeySetView<K,Boolean> newKeySet() {
+        return new KeySetView<K,Boolean>
+            (new ConcurrentHashMap<K,Boolean>(), Boolean.TRUE);
+    }
+
+    /**
+     * Creates a new {@link Set} backed by a ConcurrentHashMap
+     * from the given type to {@code Boolean.TRUE}.
+     *
+     * @param initialCapacity The implementation performs internal
+     * sizing to accommodate this many elements.
+     * @param <K> the element type of the returned set
+     * @return the new set
+     * @throws IllegalArgumentException if the initial capacity of
+     * elements is negative
+     * @since 1.8
+     */
+    public static <K> KeySetView<K,Boolean> newKeySet(int initialCapacity) {
+        return new KeySetView<K,Boolean>
+            (new ConcurrentHashMap<K,Boolean>(initialCapacity), Boolean.TRUE);
+    }
+
+    /**
+     * Returns a {@link Set} view of the keys in this map, using the
+     * given common mapped value for any additions (i.e., {@link
+     * Collection#add} and {@link Collection#addAll(Collection)}).
+     * This is of course only appropriate if it is acceptable to use
+     * the same value for all additions from this view.
+     *
+     * @param mappedValue the mapped value to use for any additions
+     * @return the set view
+     * @throws NullPointerException if the mappedValue is null
+     */
+    public KeySetView<K,V> keySet(V mappedValue) {
+        if (mappedValue == null)
+            throw new NullPointerException();
+        return new KeySetView<K,V>(this, mappedValue);
+    }
+
     /* ---------- table 遍历 ---------- */
 
     /**
@@ -1259,6 +1318,521 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         }
     }
 
+
+    /*---------- 视图相关类 ----------*/
+
+    /**
+     * 视图基类
+     */
+    abstract static class CollectionView<K,V,E> implements Collection<E>, java.io.Serializable {
+        private static final long serialVersionUID = 7249069246763182397L;
+        final ConcurrentHashMap<K,V> map;
+        CollectionView(ConcurrentHashMap<K,V> map)  { this.map = map; }
+
+        public ConcurrentHashMap<K,V> getMap() { return map; }
+
+        public final void clear()      { map.clear(); }
+        public final int size()        { return map.size(); }
+        public final boolean isEmpty() { return map.isEmpty(); }
+
+        public abstract Iterator<E> iterator();
+        public abstract boolean contains(Object o);
+        public abstract boolean remove(Object o);
+
+        private static final String oomeMsg = "Required array size too large";
+
+        public final Object[] toArray() {
+            long sz = map.mappingCount();
+            if (sz > MAX_ARRAY_SIZE)
+                throw new OutOfMemoryError(oomeMsg);
+            int n = (int)sz;
+            Object[] r = new Object[n];
+            int i = 0;
+            for (E e : this) {
+                if (i == n) {
+                    if (n >= MAX_ARRAY_SIZE)
+                        throw new OutOfMemoryError(oomeMsg);
+                    if (n >= MAX_ARRAY_SIZE - (MAX_ARRAY_SIZE >>> 1) - 1)
+                        n = MAX_ARRAY_SIZE;
+                    else
+                        n += (n >>> 1) + 1;
+                    r = Arrays.copyOf(r, n);
+                }
+                r[i++] = e;
+            }
+            return (i == n) ? r : Arrays.copyOf(r, i);
+        }
+
+        @SuppressWarnings("unchecked")
+        public final <T> T[] toArray(T[] a) {
+            long sz = map.mappingCount();
+            if (sz > MAX_ARRAY_SIZE)
+                throw new OutOfMemoryError(oomeMsg);
+            int m = (int)sz;
+            T[] r = (a.length >= m) ? a :
+                (T[])java.lang.reflect.Array
+                .newInstance(a.getClass().getComponentType(), m);
+            int n = r.length;
+            int i = 0;
+            for (E e : this) {
+                if (i == n) {
+                    if (n >= MAX_ARRAY_SIZE)
+                        throw new OutOfMemoryError(oomeMsg);
+                    if (n >= MAX_ARRAY_SIZE - (MAX_ARRAY_SIZE >>> 1) - 1)
+                        n = MAX_ARRAY_SIZE;
+                    else
+                        n += (n >>> 1) + 1;
+                    r = Arrays.copyOf(r, n);
+                }
+                r[i++] = (T)e;
+            }
+            if (a == r && i < n) {
+                r[i] = null; // null-terminate
+                return r;
+            }
+            return (i == n) ? r : Arrays.copyOf(r, i);
+        }
+
+        public final String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append('[');
+            Iterator<E> it = iterator();
+            if (it.hasNext()) {
+                for (;;) {
+                    Object e = it.next();
+                    sb.append(e == this ? "(this Collection)" : e);
+                    if (!it.hasNext())
+                        break;
+                    sb.append(',').append(' ');
+                }
+            }
+            return sb.append(']').toString();
+        }
+
+        public final boolean containsAll(Collection<?> c) {
+            if (c != this) {
+                for (Object e : c) {
+                    if (e == null || !contains(e))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        public final boolean removeAll(Collection<?> c) {
+            if (c == null) throw new NullPointerException();
+            boolean modified = false;
+            for (Iterator<E> it = iterator(); it.hasNext();) {
+                if (c.contains(it.next())) {
+                    it.remove();
+                    modified = true;
+                }
+            }
+            return modified;
+        }
+
+        public final boolean retainAll(Collection<?> c) {
+            if (c == null) throw new NullPointerException();
+            boolean modified = false;
+            for (Iterator<E> it = iterator(); it.hasNext();) {
+                if (!c.contains(it.next())) {
+                    it.remove();
+                    modified = true;
+                }
+            }
+            return modified;
+        }
+
+    }
+
+
+    /**
+     * A view of a ConcurrentHashMap as a {@link Set} of keys, in
+     * which additions may optionally be enabled by mapping to a
+     * common value.  This class cannot be directly instantiated.
+     * See {@link #keySet() keySet()},
+     * {@link #keySet(Object) keySet(V)},
+     * {@link #newKeySet() newKeySet()},
+     * {@link #newKeySet(int) newKeySet(int)}.
+     *
+     * @since 1.8
+     */
+    public static class KeySetView<K,V> extends CollectionView<K,V,K>
+        implements Set<K>, java.io.Serializable {
+        private static final long serialVersionUID = 7249069246763182397L;
+        private final V value;
+        KeySetView(ConcurrentHashMap<K,V> map, V value) {  // non-public
+            super(map);
+            this.value = value;
+        }
+
+        /**
+         * Returns the default mapped value for additions,
+         * or {@code null} if additions are not supported.
+         *
+         * @return the default mapped value for additions, or {@code null}
+         * if not supported
+         */
+        public V getMappedValue() { return value; }
+
+        /**
+         * {@inheritDoc}
+         * @throws NullPointerException if the specified key is null
+         */
+        public boolean contains(Object o) { return map.containsKey(o); }
+
+        /**
+         * Removes the key from this map view, by removing the key (and its
+         * corresponding value) from the backing map.  This method does
+         * nothing if the key is not in the map.
+         *
+         * @param  o the key to be removed from the backing map
+         * @return {@code true} if the backing map contained the specified key
+         * @throws NullPointerException if the specified key is null
+         */
+        public boolean remove(Object o) { return map.remove(o) != null; }
+
+        /**
+         * @return an iterator over the keys of the backing map
+         */
+        public Iterator<K> iterator() {
+            Node<K,V>[] t;
+            ConcurrentHashMap<K,V> m = map;
+            int f = (t = m.table) == null ? 0 : t.length;
+            return new KeyIterator<K,V>(t, f, 0, f, m);
+        }
+
+        /**
+         * Adds the specified key to this set view by mapping the key to
+         * the default mapped value in the backing map, if defined.
+         *
+         * @param e key to be added
+         * @return {@code true} if this set changed as a result of the call
+         * @throws NullPointerException if the specified key is null
+         * @throws UnsupportedOperationException if no default mapped value
+         * for additions was provided
+         */
+        public boolean add(K e) {
+            V v;
+            if ((v = value) == null)
+                throw new UnsupportedOperationException();
+            return map.putVal(e, v, true) == null;
+        }
+
+        /**
+         * Adds all of the elements in the specified collection to this set,
+         * as if by calling {@link #add} on each one.
+         *
+         * @param c the elements to be inserted into this set
+         * @return {@code true} if this set changed as a result of the call
+         * @throws NullPointerException if the collection or any of its
+         * elements are {@code null}
+         * @throws UnsupportedOperationException if no default mapped value
+         * for additions was provided
+         */
+        public boolean addAll(Collection<? extends K> c) {
+            boolean added = false;
+            V v;
+            if ((v = value) == null)
+                throw new UnsupportedOperationException();
+            for (K e : c) {
+                if (map.putVal(e, v, true) == null)
+                    added = true;
+            }
+            return added;
+        }
+
+        public int hashCode() {
+            int h = 0;
+            for (K e : this)
+                h += e.hashCode();
+            return h;
+        }
+
+        public boolean equals(Object o) {
+            Set<?> c;
+            return ((o instanceof Set) &&
+                    ((c = (Set<?>)o) == this ||
+                     (containsAll(c) && c.containsAll(this))));
+        }
+
+        public Spliterator<K> spliterator() {
+            Node<K,V>[] t;
+            ConcurrentHashMap<K,V> m = map;
+            long n = m.sumCount();
+            int f = (t = m.table) == null ? 0 : t.length;
+            return new KeySpliterator<K,V>(t, f, 0, f, n < 0L ? 0L : n);
+        }
+
+        public void forEach(Consumer<? super K> action) {
+            if (action == null) throw new NullPointerException();
+            Node<K,V>[] t;
+            if ((t = map.table) != null) {
+                Traverser<K,V> it = new Traverser<K,V>(t, t.length, 0, t.length);
+                for (Node<K,V> p; (p = it.advance()) != null; )
+                    action.accept(p.key);
+            }
+        }
+    }
+
+    static final class ValuesView<K,V> extends CollectionView<K,V,V>
+        implements Collection<V>, java.io.Serializable {
+        private static final long serialVersionUID = 2249069246763182397L;
+        ValuesView(ConcurrentHashMap<K,V> map) { super(map); }
+        public final boolean contains(Object o) {
+            return map.containsValue(o);
+        }
+
+        public final boolean remove(Object o) {
+            if (o != null) {
+                for (Iterator<V> it = iterator(); it.hasNext();) {
+                    if (o.equals(it.next())) {
+                        it.remove();
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public final Iterator<V> iterator() {
+            ConcurrentHashMap<K,V> m = map;
+            Node<K,V>[] t;
+            int f = (t = m.table) == null ? 0 : t.length;
+            return new ValueIterator<K,V>(t, f, 0, f, m);
+        }
+
+        public final boolean add(V e) {
+            throw new UnsupportedOperationException();
+        }
+        public final boolean addAll(Collection<? extends V> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        public Spliterator<V> spliterator() {
+            Node<K,V>[] t;
+            ConcurrentHashMap<K,V> m = map;
+            long n = m.sumCount();
+            int f = (t = m.table) == null ? 0 : t.length;
+            return new ValueSpliterator<K,V>(t, f, 0, f, n < 0L ? 0L : n);
+        }
+
+        public void forEach(Consumer<? super V> action) {
+            if (action == null) throw new NullPointerException();
+            Node<K,V>[] t;
+            if ((t = map.table) != null) {
+                Traverser<K,V> it = new Traverser<K,V>(t, t.length, 0, t.length);
+                for (Node<K,V> p; (p = it.advance()) != null; )
+                    action.accept(p.val);
+            }
+        }
+    }
+
+    static final class EntrySetView<K,V> extends CollectionView<K,V,Map.Entry<K,V>>
+        implements Set<Map.Entry<K,V>>, java.io.Serializable {
+        private static final long serialVersionUID = 2249069246763182397L;
+        EntrySetView(ConcurrentHashMap<K,V> map) { super(map); }
+
+        public boolean contains(Object o) {
+            Object k, v, r; Map.Entry<?,?> e;
+            return ((o instanceof Map.Entry) &&
+                    (k = (e = (Map.Entry<?,?>)o).getKey()) != null &&
+                    (r = map.get(k)) != null &&
+                    (v = e.getValue()) != null &&
+                    (v == r || v.equals(r)));
+        }
+
+        public boolean remove(Object o) {
+            Object k, v; Map.Entry<?,?> e;
+            return ((o instanceof Map.Entry) &&
+                    (k = (e = (Map.Entry<?,?>)o).getKey()) != null &&
+                    (v = e.getValue()) != null &&
+                    map.remove(k, v));
+        }
+
+        /**
+         * @return an iterator over the entries of the backing map
+         */
+        public Iterator<Map.Entry<K,V>> iterator() {
+            ConcurrentHashMap<K,V> m = map;
+            Node<K,V>[] t;
+            int f = (t = m.table) == null ? 0 : t.length;
+            return new EntryIterator<K,V>(t, f, 0, f, m);
+        }
+
+        public boolean add(Entry<K,V> e) {
+            return map.putVal(e.getKey(), e.getValue(), false) == null;
+        }
+
+        public boolean addAll(Collection<? extends Entry<K,V>> c) {
+            boolean added = false;
+            for (Entry<K,V> e : c) {
+                if (add(e))
+                    added = true;
+            }
+            return added;
+        }
+
+        public final int hashCode() {
+            int h = 0;
+            Node<K,V>[] t;
+            if ((t = map.table) != null) {
+                Traverser<K,V> it = new Traverser<K,V>(t, t.length, 0, t.length);
+                for (Node<K,V> p; (p = it.advance()) != null; ) {
+                    h += p.hashCode();
+                }
+            }
+            return h;
+        }
+
+        public final boolean equals(Object o) {
+            Set<?> c;
+            return ((o instanceof Set) &&
+                    ((c = (Set<?>)o) == this ||
+                     (containsAll(c) && c.containsAll(this))));
+        }
+
+        public Spliterator<Map.Entry<K,V>> spliterator() {
+            Node<K,V>[] t;
+            ConcurrentHashMap<K,V> m = map;
+            long n = m.sumCount();
+            int f = (t = m.table) == null ? 0 : t.length;
+            return new EntrySpliterator<K,V>(t, f, 0, f, n < 0L ? 0L : n, m);
+        }
+
+        public void forEach(Consumer<? super Entry<K,V>> action) {
+            if (action == null) throw new NullPointerException();
+            Node<K,V>[] t;
+            if ((t = map.table) != null) {
+                Traverser<K,V> it = new Traverser<K,V>(t, t.length, 0, t.length);
+                for (Node<K,V> p; (p = it.advance()) != null; )
+                    action.accept(new MapEntry<K,V>(p.key, p.val, map));
+            }
+        }
+
+    }
+
+    /*---------- spliterator ----------*/
+
+     static final class KeySpliterator<K,V> extends Traverser<K,V> implements Spliterator<K> {
+        long est;               // size 估算值
+        KeySpliterator(Node<K,V>[] tab, int size, int index, int limit, long est) {
+            super(tab, size, index, limit);
+            this.est = est;
+        }
+
+        //按照分割算法，返回一个子遍历器。
+        public Spliterator<K> trySplit() {
+            int i, f, h;
+            //h=(baseIndex+baseLimit)/2
+            return (h = ((i = baseIndex) + (f = baseLimit)) >>> 1) <= i ? null :
+                new KeySpliterator<K,V>(tab, baseSize, baseLimit = h, f, est >>>= 1);
+        }
+
+        //对于剩余的元素执行。
+        public void forEachRemaining(Consumer<? super K> action) {
+            if (action == null) throw new NullPointerException();
+            for (Node<K,V> p; (p = advance()) != null;)
+                action.accept(p.key);
+        }
+
+        public boolean tryAdvance(Consumer<? super K> action) {
+            if (action == null) throw new NullPointerException();
+            Node<K,V> p;
+            if ((p = advance()) == null)
+                return false;
+            action.accept(p.key);
+            return true;
+        }
+
+        public long estimateSize() { return est; }
+
+        public int characteristics() {
+            return Spliterator.DISTINCT | Spliterator.CONCURRENT |
+                Spliterator.NONNULL;
+        }
+    }
+
+    static final class ValueSpliterator<K,V> extends Traverser<K,V>
+        implements Spliterator<V> {
+        long est;               // size estimate
+        ValueSpliterator(Node<K,V>[] tab, int size, int index, int limit,
+                         long est) {
+            super(tab, size, index, limit);
+            this.est = est;
+        }
+
+        public Spliterator<V> trySplit() {
+            int i, f, h;
+            return (h = ((i = baseIndex) + (f = baseLimit)) >>> 1) <= i ? null :
+                new ValueSpliterator<K,V>(tab, baseSize, baseLimit = h,
+                                          f, est >>>= 1);
+        }
+
+        public void forEachRemaining(Consumer<? super V> action) {
+            if (action == null) throw new NullPointerException();
+            for (Node<K,V> p; (p = advance()) != null;)
+                action.accept(p.val);
+        }
+
+        public boolean tryAdvance(Consumer<? super V> action) {
+            if (action == null) throw new NullPointerException();
+            Node<K,V> p;
+            if ((p = advance()) == null)
+                return false;
+            action.accept(p.val);
+            return true;
+        }
+
+        public long estimateSize() { return est; }
+
+        public int characteristics() {
+            return Spliterator.CONCURRENT | Spliterator.NONNULL;
+        }
+    }
+
+    static final class EntrySpliterator<K,V> extends Traverser<K,V>
+        implements Spliterator<Map.Entry<K,V>> {
+        final ConcurrentHashMap<K,V> map; // To export MapEntry
+        long est;               // size estimate
+        EntrySpliterator(Node<K,V>[] tab, int size, int index, int limit,
+                         long est, ConcurrentHashMap<K,V> map) {
+            super(tab, size, index, limit);
+            this.map = map;
+            this.est = est;
+        }
+
+        public Spliterator<Map.Entry<K,V>> trySplit() {
+            int i, f, h;
+            return (h = ((i = baseIndex) + (f = baseLimit)) >>> 1) <= i ? null :
+                new EntrySpliterator<K,V>(tab, baseSize, baseLimit = h,
+                                          f, est >>>= 1, map);
+        }
+
+        public void forEachRemaining(Consumer<? super Map.Entry<K,V>> action) {
+            if (action == null) throw new NullPointerException();
+            for (Node<K,V> p; (p = advance()) != null; )
+                action.accept(new MapEntry<K,V>(p.key, p.val, map));
+        }
+
+        public boolean tryAdvance(Consumer<? super Map.Entry<K,V>> action) {
+            if (action == null) throw new NullPointerException();
+            Node<K,V> p;
+            if ((p = advance()) == null)
+                return false;
+            action.accept(new MapEntry<K,V>(p.key, p.val, map));
+            return true;
+        }
+
+        public long estimateSize() { return est; }
+
+        public int characteristics() {
+            return Spliterator.DISTINCT | Spliterator.CONCURRENT |
+                Spliterator.NONNULL;
+        }
+    }
+
+
     /* ---------------- Counter support -------------- */
 
     /**
@@ -1381,6 +1955,74 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
 
     }
 
+    public V put(K key, V value) { return putVal(key, value, false); }
+
+    public void putAll(Map<? extends K, ? extends V> m) {
+        tryPresize(m.size());
+        for (Map.Entry<? extends K, ? extends V> e : m.entrySet())
+            putVal(e.getKey(), e.getValue(), false);
+    }
+
+    /**  put 和 putIfAbsent 的实现 */
+    final V putVal(K key, V value, boolean onlyIfAbsent) {
+        if (key == null || value == null) throw new NullPointerException();
+        int hash = spread(key.hashCode());
+        int binCount = 0; //桶元素计数
+        for (Node<K,V>[] tab = table;;) {
+            Node<K,V> f; int n, i, fh;
+            if (tab == null || (n = tab.length) == 0)
+                tab = initTable();
+            else if ((f = tabAt(tab, i = (n - 1) & hash)) == null) { //key处无节点
+                if (casTabAt(tab, i, null, new Node<K,V>(hash, key, value, null))) //创建新节点。
+                    break;                   // no lock when adding to empty bin
+            }
+            else if ((fh = f.hash) == MOVED) //帮助扩容
+                tab = helpTransfer(tab, f);
+            else {
+                V oldVal = null;
+                synchronized (f) {
+                    if (tabAt(tab, i) == f) {
+                        if (fh >= 0) { //链表处理
+                            binCount = 1;
+                            for (Node<K,V> e = f;; ++binCount) {
+                                K ek;
+                                if (e.hash == hash && ((ek = e.key) == key || (ek != null && key.equals(ek)))) {
+                                    oldVal = e.val;
+                                    if (!onlyIfAbsent)
+                                        e.val = value;
+                                    break;
+                                }
+                                Node<K,V> pred = e;
+                                if ((e = e.next) == null) { //未找到则插入新节点。
+                                    pred.next = new Node<K,V>(hash, key, value, null);
+                                    break;
+                                }
+                            }
+                        }
+                        else if (f instanceof TreeBin) {
+                            Node<K,V> p;
+                            binCount = 2;
+                            if ((p = ((TreeBin<K,V>)f).putTreeVal(hash, key, value)) != null) { //红黑树插入新节点
+                                oldVal = p.val;
+                                if (!onlyIfAbsent)
+                                    p.val = value;
+                            }
+                        }
+                    }
+                }
+                if (binCount != 0) {
+                    if (binCount >= TREEIFY_THRESHOLD)
+                        treeifyBin(tab, i);
+                    if (oldVal != null)
+                        return oldVal;
+                    break;
+                }
+            }
+        }
+        addCount(1L, binCount);
+        return null;
+    }
+
     @Override
     public boolean remove(Object key, Object value) {
         return false;
@@ -1392,7 +2034,8 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     }
 
     /**
-     * 公共方法replace/remove的实现，在匹配cv时，使用v替换节点。如果结果值为空，则删除节点。
+     * 公共方法replace/remove的实现，如果value为空，则删除，如果value不为空，则替换。
+     * cv不为空，则用条件匹配cv。
      * @param key
      * @param value
      * @param cv
@@ -1400,30 +2043,132 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
      */
     final V replaceNode(Object key, V value, Object cv) {
         int hash = spread(key.hashCode());
-        for (Node<K, V>[] tab = table; ; ) {
+        for (Node<K, V>[] tab = table; ; ) {  //自旋。在表未初始化，或者未找到时退出。
             Node<K,V> f; int n,i,fh;
-            if (tab == null || (n = tab.length) == 0 || (f = tabAt(tab, i = (n - 1) & hash))== null) {
-                break; //未找到节点，则退出。
-            } else if ((fh=f.hash)==MOVED) {
-                tab == helpTransfer(tab,f);
+            if (tab == null || (n = tab.length) == 0 || (f = tabAt(tab, i = (n - 1) & hash))== null) { //初始化f并检查。
+                //表未初始化或者未命中节点，则break。
+                break;
+            } else if ((fh = f.hash) == MOVED) {
+                //hash为MOVED表示为ForwardingNode，帮助转移节点。
+                tab = helpTransfer(tab, f);
+            } else {
+                V oldVal=null;
+                boolean validated=false;
+                synchronized (f) {
+                    if (tabAt(tab, i) == f) { //线程安全检查f是否初始时的状态。即是否有并发线程修改了f。
+                        if (fh >= 0) { //f为链表节点
+                            validated=true;
+                            for (Node<K,V> e = f, pred = null;;) {
+                                K ek;
+                                //找到key
+                                if (e.hash == hash && ((ek = e.key) == key || (ek != null && key.equals(ek)))) {
+                                    V ev = e.val;
+                                    //cv等于null或者cv等于ev。
+                                    if (cv == null || cv == ev || (ev != null && cv.equals(ev))) {
+                                        oldVal = ev;
+                                        if (value != null)
+                                            e.val = value; //value不为null,替换操作。
+                                        else if (pred != null) //前节点不为null，表示不是头节点。
+                                            pred.next = e.next; //前节点的next指向后节点。即删除了当前节点。
+                                        else //节点为头节点，直接从tab中删除。
+                                            setTabAt(tab, i, e.next);
+                                    }
+                                    break;
+                                }
+                                pred = e; // 保存前一个节点。
+                                if ((e = e.next) == null) break; //链表循环
+                            }
+
+                        }else if (f instanceof TreeBin) { //红黑树处理，逻辑和链表类似。
+                            validated = true;
+                            TreeBin<K,V> t = (TreeBin<K,V>)f;
+                            TreeNode<K,V> r, p;
+                            if ((r = t.root) != null &&
+                                (p = r.findTreeNode(hash, key, null)) != null) {
+                                V pv = p.val;
+                                if (cv == null || cv == pv ||
+                                    (pv != null && cv.equals(pv))) {
+                                    oldVal = pv;
+                                    if (value != null)
+                                        p.val = value;
+                                    else if (t.removeTreeNode(p))
+                                        setTabAt(tab, i, untreeify(t.first));
+                                }
+                            }
+                        }
+                    }
+                }
+                if (validated) { //找到节点，结束循环。
+                    if (oldVal != null) {
+                        if (value == null) //删除节点时，修改计数。
+                            addCount(-1L, -1);
+                        return oldVal;
+                    }
+                    break;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * 增加计数方法。
+     * 如果表太小需要扩容，则初始化转移并扩容。如果已经在扩容中，则帮助扩容。
+     *
+     * @param x 添加的计数
+     * @param check if <0, 不检查resize, if <= 1 只在非竞争条件下检查
+     */
+    private final void addCount(long x, int check) {
+        CounterCell[] as; long b, s;
+        //如果计数器不为空，或者增加基础计数失败。
+        if ((as = counterCells) != null || !U.compareAndSwapLong(this, BASECOUNT, b = baseCount, s = b + x)) {
+            CounterCell a; long v; int m;
+            boolean uncontended = true;
+            //计数器为空 || 计数器长度小于1 || 随机取余一个数组位置为空 || 修改随机取得的槽位失败。
+            if (as == null || (m = as.length - 1) < 0 || (a = as[ThreadLocalRandom.getProbe() & m]) == null ||
+                !(uncontended = U.compareAndSwapLong(a, CELLVALUE, v = a.value, v + x))) {
+                fullAddCount(x, uncontended);
+                return;
+            }
+            if (check <= 1)
+                return;
+            s = sumCount();
+        }
+        if (check >= 0) { //需要检查扩容
+            Node<K,V>[] tab, nt; int n, sc;
+            //map.size()大于sizeCtl(扩容阈值，非扩容时是size的0.75)
+            while (s >= (long)(sc = sizeCtl) && (tab = table) != null && (n = tab.length) < MAXIMUM_CAPACITY) {
+                int rs = resizeStamp(n);
+                if (sc < 0) { //有其他线程正在扩容。
+                    if ((sc >>> RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 || //扩容条件检查，参考helpTransfer方法。
+                        sc == rs + MAX_RESIZERS || (nt = nextTable) == null || transferIndex <= 0)
+                        break;
+                    if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1)) //可以扩容则进行扩容。
+                        transfer(tab, nt);
+                }
+                // 没有其他线程进行扩容，则设置一个扩容线程。然后进行扩容。
+                else if (U.compareAndSwapInt(this, SIZECTL, sc, (rs << RESIZE_STAMP_SHIFT) + 2))
+                    transfer(tab, null);
+                s = sumCount();
             }
         }
     }
 
     /**
-     * Helps transfer if a resize is in progress.
+     * 在resize过程中帮助转移。
      */
     final Node<K,V>[] helpTransfer(Node<K,V>[] tab, Node<K,V> f) {
         Node<K,V>[] nextTab; int sc;
-        if (tab != null && (f instanceof ForwardingNode) &&
-            (nextTab = ((ForwardingNode<K,V>)f).nextTable) != null) {
+        //f节点为ForwardingNode，且正在发生转移，则帮助转移
+        if (tab != null && (f instanceof ForwardingNode) && (nextTab = ((ForwardingNode<K,V>)f).nextTable) != null) {
             int rs = resizeStamp(tab.length);
-            while (nextTab == nextTable && table == tab &&
-                   (sc = sizeCtl) < 0) {
-                if ((sc >>> RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 ||
-                    sc == rs + MAX_RESIZERS || transferIndex <= 0)
+            while (nextTab == nextTable && table == tab && (sc = sizeCtl) < 0) { //正在转移的条件判断。
+                //判断不在resize过程中，结束。<(sc >>> RESIZE_STAMP_SHIFT) != rs> 表示长度发生了变化。
+                // <sc == rs + 1>和<sc == rs + MAX_RESIZERS>有bug，参考JDK-8214427，因为rs为正数，而sc在扩展时为负数。
+                if ((sc >>> RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 || sc == rs + MAX_RESIZERS || transferIndex <= 0)
                     break;
-                if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1)) {
+                if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1)) { // sizeCtl加1并执行转移。
                     transfer(tab, nextTab);
                     break;
                 }
@@ -1433,6 +2178,49 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         return table;
     }
 
+    /**
+     * 预扩容，已适应新添加的数量。
+     * @param size 元素的数量（不需要十分精确）
+     */
+    private final void tryPresize(int size) {
+        int c = (size >= (MAXIMUM_CAPACITY >>> 1)) ? MAXIMUM_CAPACITY :
+            tableSizeFor(size + (size >>> 1) + 1);
+        int sc;
+        while ((sc = sizeCtl) >= 0) {
+            Node<K,V>[] tab = table; int n;
+            if (tab == null || (n = tab.length) == 0) {
+                n = (sc > c) ? sc : c;
+                if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) {
+                    try {
+                        if (table == tab) {
+                            @SuppressWarnings("unchecked")
+                            Node<K,V>[] nt = (Node<K,V>[])new Node<?,?>[n];
+                            table = nt;
+                            sc = n - (n >>> 2);
+                        }
+                    } finally {
+                        sizeCtl = sc;
+                    }
+                }
+            }
+            else if (c <= sc || n >= MAXIMUM_CAPACITY)
+                break;
+            else if (tab == table) {
+                int rs = resizeStamp(n);
+                if (sc < 0) {
+                    Node<K,V>[] nt;
+                    if ((sc >>> RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 ||
+                        sc == rs + MAX_RESIZERS || (nt = nextTable) == null ||
+                        transferIndex <= 0)
+                        break;
+                    if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1))
+                        transfer(tab, nt);
+                }
+                else if (U.compareAndSwapInt(this, SIZECTL, sc, (rs << RESIZE_STAMP_SHIFT) + 2))
+                    transfer(tab, null);
+            }
+        }
+    }
 
     /**
      * 从老表中移动或者复制一些节点到新表中。
@@ -1469,7 +2257,8 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
                     i = -1;
                     advance = false;
                 }
-                else if (U.compareAndSwapInt(this, TRANSFERINDEX, nextIndex, //从nextIndex向前推移stride个元素。得到nextBound
+                //从nextIndex向前推移stride个元素。得到nextBound，竞争获取转移的区间。
+                else if (U.compareAndSwapInt(this, TRANSFERINDEX, nextIndex,
                         nextBound = (nextIndex > stride ? nextIndex - stride : 0))) {
                     bound = nextBound;
                     i = nextIndex - 1; //更新i
@@ -1487,7 +2276,8 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
                 }
                 //对sizeCtl减一
                 if (U.compareAndSwapInt(this, SIZECTL, sc = sizeCtl, sc - 1)) {
-                    // sc - 2 是否等于标识符左移 16 位。如果他们相等了，说明没有线程在帮助他们扩容了。也就是说，扩容结束了。
+                    // sizeCtl-2和rs右移16位相等，说明新表长度未变化,resize轮次一致，且该线程是最后一个转移线程。 相反，说明新表长度发生了
+                    // 变化，或者线程不是最后一个转移线程。 （因为sizeCtl初始化默认为-1，且上面if中sc-1,所以这里是sc-2）
                     if ((sc - 2) != resizeStamp(n) << RESIZE_STAMP_SHIFT)
                         return;
                     finishing = advance = true;
@@ -1576,6 +2366,33 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
 
 
     /**
+     * 使用红黑树替换链表
+     */
+    private final void treeifyBin(Node<K,V>[] tab, int index) {
+        Node<K,V> b; int n, sc;
+        if (tab != null) {
+            if ((n = tab.length) < MIN_TREEIFY_CAPACITY)
+                tryPresize(n << 1);
+            else if ((b = tabAt(tab, index)) != null && b.hash >= 0) {
+                synchronized (b) {
+                    if (tabAt(tab, index) == b) {
+                        TreeNode<K,V> hd = null, tl = null;
+                        for (Node<K,V> e = b; e != null; e = e.next) {
+                            TreeNode<K,V> p = new TreeNode<K,V>(e.hash, e.key, e.val, null, null);
+                            if ((p.prev = tl) == null)
+                                hd = p;
+                            else
+                                tl.next = p;
+                            tl = p;
+                        }
+                        setTabAt(tab, index, new TreeBin<K,V>(hd));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * 将一个树重新组装为一个链表。
      */
     static <K,V> Node<K,V> untreeify(Node<K,V> b) {
@@ -1600,7 +2417,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         while ((tab = table) == null || tab.length == 0) {
             if ((sc = sizeCtl) < 0) //sizeCtrl<0表示其他线程在进行初始化，线程挂起。
                 Thread.yield(); // lost initialization race; just spin
-            else if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) {
+            else if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) {  //初始化成功，将sizeCtl默认设置为-1。
                 try {
                     if ((tab = table) == null || tab.length == 0) {
                         int n = (sc > 0) ? sc : DEFAULT_CAPACITY;
@@ -1619,7 +2436,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     }
 
     /**
-     * RESIZE_STAMP_BITS=16
+     * 该方法将长度n进行运算，用于sizeCtl的设置。避免了并发ABA问题（无法区分不同长度下的transfer线程）。
      * n的左边0的长度和2的15次方做与运算。即2的15次方加n左边0的长度，返回结果范围为[2的15次方，2的15次方+32]
      */
     static final int resizeStamp(int n) {
