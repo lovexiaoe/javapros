@@ -15,25 +15,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * 它遵从所有HashTable的功能规范，并且所有操作都是线程安全的。获取操作不需要锁定，也不会锁定整个表来阻止任何访问。
- * 获取（get）操作不会阻塞，可能和更新(put/remove)操作重叠发生。对于聚合操作（putAll/clear）,当前get可能只反映部分元素的改变。
- * 类似的，迭代器，拆分器，枚举都反映某一时刻hash表的状态。
- *
- * iterators被设计为在某个时间内只有一个线程使用。聚合状态函数（size,isEmpty,containsValue）只有在其他线程没有并发更新时才有用。
- * 否则在其他情况下返回的即时状态不是精确的。
- *
- * ConcurrentHashMap采用分段锁思想。主干是一个segment数组，segment继承自ReentrantLock，是一种可
- * 重入锁。一个segment类似一个hashtable。一个segment里面维护了一个HashEntry数组。
- *
- * 获取时不需要枷锁，修改时，锁定修改所在的segment。
- *
- * 默认的并发等级ConcurrentLevel为16，理论上允许16个线程并发访问。
- *
- * Segment数组的大小一定是大于等于ConcurrentLevel的最小的2的幂次方。比如ConcurrentLevel是17，那么
- * Segment数组的大小为32。这是因为需要通过按“位与”的hash算法定位Segment的index。
- *
- * 有些方法需要跨段，比如size()和containsValue()，它们可能需要锁定整个表而而不仅仅是某个段，
- * 这需要按顺序锁定所有段，操作完毕后，又按顺序释放所有段的锁。
+ * ConcurrentHashMap源码分析，1.8以后的ConcurrentHashMap是通过节点数组来实现的，每个节点就是一个桶，桶使用默认使用链表数组来存储，
+ * 在元素大于等于8以后会转化为红黑树存储。map存储数据使用volatile和CAS方式实现。保证了线程的安全性，在针对每个节点进行操作的时候，使用
+ * synchronized关键字锁定这个桶进行操作。可以称为volatile和CAS操作的经典案例。
  */
 public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements ConcurrentMap<K,V>, Serializable {
 
@@ -994,6 +978,10 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         return null;
     }
 
+    public boolean contains(Object value) {
+        return containsValue(value);
+    }
+
     public boolean containsKey(Object key) {
         return get(key) != null;
     }
@@ -1013,6 +1001,17 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         return false;
     }
 
+    public Enumeration<K> keys() {
+        Node<K,V>[] t;
+        int f = (t = table) == null ? 0 : t.length;
+        return new KeyIterator<K,V>(t, f, 0, f, this);
+    }
+
+    public Enumeration<V> elements() {
+        Node<K,V>[] t;
+        int f = (t = table) == null ? 0 : t.length;
+        return new ValueIterator<K,V>(t, f, 0, f, this);
+    }
 
     /**
      * 返回值是预估的，可能因为并发插入和删除而不准确。
@@ -1023,48 +1022,27 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         return (n < 0L) ? 0L : n; // ignore transient negative values
     }
 
+    public KeySetView<K,V> keySet() {
+        KeySetView<K,V> ks;
+        return (ks = keySet) != null ? ks : (keySet = new KeySetView<K,V>(this, null));
+    }
 
-    /**
-     * Creates a new {@link Set} backed by a ConcurrentHashMap
-     * from the given type to {@code Boolean.TRUE}.
-     *
-     * @param <K> the element type of the returned set
-     * @return the new set
-     * @since 1.8
-     */
+    public Collection<V> values() {
+        ValuesView<K,V> vs;
+        return (vs = values) != null ? vs : (values = new ValuesView<K,V>(this));
+    }
+
     public static <K> KeySetView<K,Boolean> newKeySet() {
         return new KeySetView<K,Boolean>
             (new ConcurrentHashMap<K,Boolean>(), Boolean.TRUE);
     }
 
-    /**
-     * Creates a new {@link Set} backed by a ConcurrentHashMap
-     * from the given type to {@code Boolean.TRUE}.
-     *
-     * @param initialCapacity The implementation performs internal
-     * sizing to accommodate this many elements.
-     * @param <K> the element type of the returned set
-     * @return the new set
-     * @throws IllegalArgumentException if the initial capacity of
-     * elements is negative
-     * @since 1.8
-     */
+
     public static <K> KeySetView<K,Boolean> newKeySet(int initialCapacity) {
         return new KeySetView<K,Boolean>
             (new ConcurrentHashMap<K,Boolean>(initialCapacity), Boolean.TRUE);
     }
 
-    /**
-     * Returns a {@link Set} view of the keys in this map, using the
-     * given common mapped value for any additions (i.e., {@link
-     * Collection#add} and {@link Collection#addAll(Collection)}).
-     * This is of course only appropriate if it is acceptable to use
-     * the same value for all additions from this view.
-     *
-     * @param mappedValue the mapped value to use for any additions
-     * @return the set view
-     * @throws NullPointerException if the mappedValue is null
-     */
     public KeySetView<K,V> keySet(V mappedValue) {
         if (mappedValue == null)
             throw new NullPointerException();
@@ -1450,10 +1428,6 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
      * A view of a ConcurrentHashMap as a {@link Set} of keys, in
      * which additions may optionally be enabled by mapping to a
      * common value.  This class cannot be directly instantiated.
-     * See {@link #keySet() keySet()},
-     * {@link #keySet(Object) keySet(V)},
-     * {@link #newKeySet() newKeySet()},
-     * {@link #newKeySet(int) newKeySet(int)}.
      *
      * @since 1.8
      */
@@ -1945,9 +1919,69 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         return null;
     }
 
+    public int hashCode() {
+        int h = 0;
+        Node<K,V>[] t;
+        if ((t = table) != null) {
+            Traverser<K,V> it = new Traverser<K,V>(t, t.length, 0, t.length);
+            for (Node<K,V> p; (p = it.advance()) != null; )
+                h += p.key.hashCode() ^ p.val.hashCode();
+        }
+        return h;
+    }
+
+    public String toString() {
+        Node<K,V>[] t;
+        int f = (t = table) == null ? 0 : t.length;
+        Traverser<K,V> it = new Traverser<K,V>(t, f, 0, f);
+        StringBuilder sb = new StringBuilder();
+        sb.append('{');
+        Node<K,V> p;
+        if ((p = it.advance()) != null) {
+            for (;;) {
+                K k = p.key;
+                V v = p.val;
+                sb.append(k == this ? "(this Map)" : k);
+                sb.append('=');
+                sb.append(v == this ? "(this Map)" : v);
+                if ((p = it.advance()) == null)
+                    break;
+                sb.append(',').append(' ');
+            }
+        }
+        return sb.append('}').toString();
+    }
+
+    public boolean equals(Object o) {
+        if (o != this) {
+            if (!(o instanceof Map))
+                return false;
+            Map<?,?> m = (Map<?,?>) o;
+            Node<K,V>[] t;
+            int f = (t = table) == null ? 0 : t.length;
+            Traverser<K,V> it = new Traverser<K,V>(t, f, 0, f);
+            for (Node<K,V> p; (p = it.advance()) != null; ) {
+                V val = p.val;
+                Object v = m.get(p.key);
+                if (v == null || (v != val && !v.equals(val)))
+                    return false;
+            }
+            for (Map.Entry<?,?> e : m.entrySet()) {
+                Object mk, mv, v;
+                if ((mk = e.getKey()) == null ||
+                    (mv = e.getValue()) == null ||
+                    (v = get(mk)) == null ||
+                    (mv != v && !mv.equals(v)))
+                    return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public V getOrDefault(Object key, V defaultValue) {
-        return null;
+        V v;
+        return (v = get(key)) == null ? defaultValue : v;
     }
 
     @Override
@@ -2023,14 +2057,62 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
         return null;
     }
 
+
+    /**
+     * Removes all of the mappings from this map.
+     */
+    public void clear() {
+        long delta = 0L; // negative number of deletions
+        int i = 0;
+        Node<K,V>[] tab = table;
+        while (tab != null && i < tab.length) {
+            int fh;
+            Node<K,V> f = tabAt(tab, i);
+            if (f == null)
+                ++i;
+            else if ((fh = f.hash) == MOVED) {
+                tab = helpTransfer(tab, f);
+                i = 0; // restart
+            }
+            else {
+                synchronized (f) {
+                    if (tabAt(tab, i) == f) {
+                        Node<K,V> p = (fh >= 0 ? f : (f instanceof TreeBin) ? ((TreeBin<K,V>)f).first : null);
+                        while (p != null) {
+                            --delta;
+                            p = p.next;
+                        }
+                        setTabAt(tab, i++, null);
+                    }
+                }
+            }
+        }
+        if (delta != 0L)
+            addCount(delta, -1);
+    }
+
+    public V remove(Object key) {
+        return replaceNode(key, null, null);
+    }
+
     @Override
     public boolean remove(Object key, Object value) {
-        return false;
+        if (key == null)
+            throw new NullPointerException();
+        return value != null && replaceNode(key, null, value) != null;
+    }
+
+    public V replace(K key, V value) {
+        if (key == null || value == null)
+            throw new NullPointerException();
+        return replaceNode(key, value, null);
     }
 
     @Override
     public boolean replace(K key, V oldValue, V newValue) {
-        return false;
+        if (key == null || oldValue == null || newValue == null)
+            throw new NullPointerException();
+        return replaceNode(key, newValue, oldValue) != null;
     }
 
     /**
@@ -2444,11 +2526,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     }
 
 
-    @Override
-    public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
-
-    }
-
+    /*---------- 1.8接口方法，部分未实现 ----------*/
     @Override
     public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
         return null;
@@ -2468,6 +2546,18 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V> implements Concurre
     public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
         return null;
     }
+
+    @Override
+    public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
+
+    }
+
+    public V putIfAbsent(K key, V value) {
+        return putVal(key, value, true);
+    }
+
+
+    /*---------- 其他stream相关和task相关的类和方法参考源码。 ----------*/
 
     /* ----------- 表元素访问 ---------- */
 

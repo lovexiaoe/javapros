@@ -32,7 +32,9 @@ import java.util.concurrent.locks.Lock;
 
 public class CLHLock implements Lock{
     private final AtomicReference<Node> tail=new AtomicReference<Node>(new Node());
+    //前节点
     private final ThreadLocal<Node> pred;
+    //当前节点
     private final ThreadLocal<Node> node;
 
     public CLHLock() {
@@ -48,14 +50,14 @@ public class CLHLock implements Lock{
         };
     }
 
-    //入队列操作，在tail前添加节点，设置status为true。
+    //获取锁
     @Override
     public void lock() {
         final Node node=this.node.get();
-        node.locked=true;
-        Node pred=this.tail.getAndSet(node);  //getAndSet 设置新值node，返回原来的就值，这里产生竞争条件，所以使用同步。
-        this.pred.set(pred);
-        while(pred.locked);                   //自旋，如果pred释放锁，则跳出自旋获得锁。
+        node.locked=true; //当前节点设置为锁定状态。
+        Node pred=this.tail.getAndSet(node);  //tail指向当前节点，返回原来的旧值，这里产生竞争条件，所以使用同步。
+        this.pred.set(pred);                  //前节点设置为上一个获取锁的节点。
+        while(pred.locked);                   //如果前节点为锁定状态，进入自旋，如果pred释放锁，则跳出自旋获得锁。
     }
 
     @Override
@@ -73,11 +75,11 @@ public class CLHLock implements Lock{
         return false;
     }
 
-    //出队列操作，当前的node设置为pred,则后面的Node会指向pred,设置status为false。
+    //释放锁
     @Override
     public void unlock() {
         final Node node=this.node.get();
-        node.locked=false;
+        node.locked=false; //当前节点取消锁定状态。
         this.node.set(this.pred.get());
     }
 
