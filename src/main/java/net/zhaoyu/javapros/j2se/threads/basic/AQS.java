@@ -4,6 +4,8 @@ import sun.misc.Unsafe;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractOwnableSynchronizer;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.LockSupport;
@@ -76,8 +78,8 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         volatile Thread thread;
 
         /**
-         * 在条件等待时，连接到条件等待的下一个节点，或者SHARED。
-         * 因为条件等待队列只有在排他模式下，所以还可以表示共享模式。
+         * 在条件等待时表示下一个等待节点，连接到条件等待的下一个节点，或者SHARED。在同步队列中使用next和prev，在条件队列中使用nextWaiter。
+         * 所以条件队列是单链表，同步队列是双链表。
          */
         Node nextWaiter;
 
@@ -121,7 +123,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         /*---------- 私有方法 ----------*/
 
         /**
-         * 向条件队列中添加一个等待对象。
+         * 将当前线程加入到条件队列中。
          */
         private Node addConditionWaiter() {
             Node t = lastWaiter;
@@ -139,11 +141,11 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         }
 
         /**
-         * 清除和转移条件队列中first开头的第一个可以转移的节点。
+         * 将条件队列中的first删除，并转移到同步队列中
          */
         private void doSignal(Node first) {
             do {
-                if ( (firstWaiter = first.nextWaiter) == null) //最后一个时，清除lastWaiter
+                if ( (firstWaiter = first.nextWaiter) == null) //删除头结点。
                     lastWaiter = null;
                 first.nextWaiter = null; //清除指针
             } while (!transferForSignal(first) && (first = firstWaiter) != null);
@@ -151,7 +153,6 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
 
         /**
          * 删除和转移所有的条件队列中的节点
-         * @param first (non-null) the first node on condition queue
          */
         private void doSignalAll(Node first) {
             lastWaiter = firstWaiter = null;
@@ -214,23 +215,6 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
                 doSignalAll(first);
         }
 
-        /**
-         * 实现不打断（不会抛出打断异常）的条件等待。
-         */
-        public final void awaitUninterruptibly() {
-            Node node = addConditionWaiter();
-            int savedState = fullyRelease(node); //释放当前队列的资源
-            boolean interrupted = false;
-            while (!isOnSyncQueue(node)) { //不在同步队列中，进入阻塞。
-                LockSupport.park(this);
-                if (Thread.interrupted())
-                    interrupted = true;
-            }
-            //进入同步队列后
-            if (acquireQueued(node, savedState) || interrupted) //尝试获取资源成功 || 过程中有打断
-                selfInterrupt(); //继续打断，等待被signal
-        }
-
         /** 在等待状态退出的时候，切换为中断状态 */
         private static final int REINTERRUPT =  1;
         /** 在等待状态退出的时候，抛出InterruptedException */
@@ -261,15 +245,15 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         public final void await() throws InterruptedException {
             if (Thread.interrupted())
                 throw new InterruptedException();
-            Node node = addConditionWaiter();
-            int savedState = fullyRelease(node);
+            Node node = addConditionWaiter(); //在条件等待队列中添加新节点。
+            int savedState = fullyRelease(node); //该线程在等待的时候，释放占用资源。
             int interruptMode = 0;
-            while (!isOnSyncQueue(node)) { //不在同步队列中，进入阻塞。
+            while (!isOnSyncQueue(node)) { //不在同步队列中，进入阻塞。调用signal()后，节点会从等待队列转移到同步队列，然后退出循环
                 LockSupport.park(this);
                 if ((interruptMode = checkInterruptWhileWaiting(node)) != 0) //有打断情况，退出循环
                     break;
             }
-            if (acquireQueued(node, savedState) && interruptMode != THROW_IE) //入队列，
+            if (acquireQueued(node, savedState) && interruptMode != THROW_IE) //节点转移到同步队列后，自旋调用acquire获取资源。
                 interruptMode = REINTERRUPT;
             if (node.nextWaiter != null) // clean up if cancelled
                 unlinkCancelledWaiters();
@@ -278,17 +262,24 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         }
 
         /**
+         * 实现不打断（不会抛出打断异常）的条件等待。
+         */
+        public final void awaitUninterruptibly() {
+            Node node = addConditionWaiter();
+            int savedState = fullyRelease(node); //释放当前节点的资源
+            boolean interrupted = false;
+            while (!isOnSyncQueue(node)) { //不在同步队列中，进入阻塞。
+                LockSupport.park(this);
+                if (Thread.interrupted())
+                    interrupted = true;
+            }
+            //进入同步队列后
+            if (acquireQueued(node, savedState) || interrupted) //尝试获取资源成功 || 过程中有打断
+                selfInterrupt(); //继续打断，等待被signal
+        }
+
+        /**
          * Implements timed condition wait.
-         * <ol>
-         * <li> If current thread is interrupted, throw InterruptedException.
-         * <li> Save lock state returned by {@link #getState}.
-         * <li> Invoke {@link #release} with saved state as argument,
-         *      throwing IllegalMonitorStateException if it fails.
-         * <li> Block until signalled, interrupted, or timed out.
-         * <li> Reacquire by invoking specialized version of
-         *      {@link #acquire} with saved state as argument.
-         * <li> If interrupted while blocked in step 4, throw InterruptedException.
-         * </ol>
          */
         public final long awaitNanos(long nanosTimeout)
                 throws InterruptedException {
@@ -320,17 +311,6 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
 
         /**
          * Implements absolute timed condition wait.
-         * <ol>
-         * <li> If current thread is interrupted, throw InterruptedException.
-         * <li> Save lock state returned by {@link #getState}.
-         * <li> Invoke {@link #release} with saved state as argument,
-         *      throwing IllegalMonitorStateException if it fails.
-         * <li> Block until signalled, interrupted, or timed out.
-         * <li> Reacquire by invoking specialized version of
-         *      {@link #acquire} with saved state as argument.
-         * <li> If interrupted while blocked in step 4, throw InterruptedException.
-         * <li> If timed out while blocked in step 4, return false, else true.
-         * </ol>
          */
         public final boolean awaitUntil(Date deadline)
                 throws InterruptedException {
@@ -361,24 +341,13 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
 
         /**
          * Implements timed condition wait.
-         * <ol>
-         * <li> If current thread is interrupted, throw InterruptedException.
-         * <li> Save lock state returned by {@link #getState}.
-         * <li> Invoke {@link #release} with saved state as argument,
-         *      throwing IllegalMonitorStateException if it fails.
-         * <li> Block until signalled, interrupted, or timed out.
-         * <li> Reacquire by invoking specialized version of
-         *      {@link #acquire} with saved state as argument.
-         * <li> If interrupted while blocked in step 4, throw InterruptedException.
-         * <li> If timed out while blocked in step 4, return false, else true.
-         * </ol>
          */
         public final boolean await(long time, TimeUnit unit)
                 throws InterruptedException {
             long nanosTimeout = unit.toNanos(time);
             if (Thread.interrupted())
                 throw new InterruptedException();
-            Node node = addConditionWaiter();
+            Node node = addConditionWaiter(); //
             int savedState = fullyRelease(node);
             final long deadline = System.nanoTime() + nanosTimeout;
             boolean timedout = false;
@@ -403,25 +372,18 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
             return !timedout;
         }
 
-        //  support for instrumentation
+
+        /*---------- 条件队列支持方法 ----------*/
 
         /**
-         * Returns true if this condition was created by the given
-         * synchronization object.
-         *
-         * @return {@code true} if owned
+         * 如果condition对象是被本AQS创建，返回true。
          */
-        final boolean isOwnedBy(AbstractQueuedSynchronizer sync) {
-            return sync == AbstractQueuedSynchronizer.this;
+        final boolean isOwnedBy(AQS sync) {
+            return sync == AQS.this;
         }
 
         /**
-         * Queries whether any threads are waiting on this condition.
-         * Implements {@link AbstractQueuedSynchronizer#hasWaiters(ConditionObject)}.
-         *
-         * @return {@code true} if there are any waiting threads
-         * @throws IllegalMonitorStateException if {@link #isHeldExclusively}
-         *         returns {@code false}
+         * 查询是否还有线程在条件队列
          */
         protected final boolean hasWaiters() {
             if (!isHeldExclusively())
@@ -434,13 +396,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         }
 
         /**
-         * Returns an estimate of the number of threads waiting on
-         * this condition.
-         * Implements {@link AbstractQueuedSynchronizer#getWaitQueueLength(ConditionObject)}.
-         *
-         * @return the estimated number of waiting threads
-         * @throws IllegalMonitorStateException if {@link #isHeldExclusively}
-         *         returns {@code false}
+         * 返回等待队列的长度
          */
         protected final int getWaitQueueLength() {
             if (!isHeldExclusively())
@@ -454,13 +410,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         }
 
         /**
-         * Returns a collection containing those threads that may be
-         * waiting on this Condition.
-         * Implements {@link AbstractQueuedSynchronizer#getWaitingThreads(ConditionObject)}.
-         *
-         * @return the collection of threads
-         * @throws IllegalMonitorStateException if {@link #isHeldExclusively}
-         *         returns {@code false}
+         * 返回条件队列中还在等待的线程列表。
          */
         protected final Collection<Thread> getWaitingThreads() {
             if (!isHeldExclusively())
@@ -541,7 +491,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
 
         Node s = node.next;
         if (s == null || s.waitStatus > 0) {
-            //如果s为null或者CANCELED，从尾部倒查找waitSatatus不是CANCELED的和node最近的节点作为s。
+            //如果s为null或者CANCELED，查找node后第一个不是CANCELED的节点，其次如果tail不为null，得到tail。
             s = null;
             for (Node t = tail; t != null && t != node; t = t.prev)
                 if (t.waitStatus <= 0)
@@ -574,7 +524,9 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * 共享模式的方法，设置头节点，如果还有剩余资源，唤醒之后的线程。
+     * 共享模式的方法，设置头节点，
+     * 1，调用setHead方法，
+     * 2，因为是共享模式，所以在如果还有剩余资源，唤醒之后的线程。
      */
     private void setHeadAndPropagate(Node node, int propagate) {
         Node h = head; // 记录旧的head节点
@@ -588,17 +540,155 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         }
     }
 
+    /*---------- Queue 检查方法，从源码中复制 ----------*/
+
+    public final boolean hasQueuedThreads() {
+        return head != tail;
+    }
+
+    public final boolean hasContended() {
+        return head != null;
+    }
+
+    public final Thread getFirstQueuedThread() {
+        // handle only fast path, else relay
+        return (head == tail) ? null : fullGetFirstQueuedThread();
+    }
+
+    /**
+     * Version of getFirstQueuedThread called when fastpath fails
+     */
+    private Thread fullGetFirstQueuedThread() {
+        /*
+         * The first node is normally head.next. Try to get its
+         * thread field, ensuring consistent reads: If thread
+         * field is nulled out or s.prev is no longer head, then
+         * some other thread(s) concurrently performed setHead in
+         * between some of our reads. We try this twice before
+         * resorting to traversal.
+         */
+        Node h, s;
+        Thread st;
+        if (((h = head) != null && (s = h.next) != null &&
+             s.prev == head && (st = s.thread) != null) ||
+            ((h = head) != null && (s = h.next) != null &&
+             s.prev == head && (st = s.thread) != null))
+            return st;
+
+        /*
+         * Head's next field might not have been set yet, or may have
+         * been unset after setHead. So we must check to see if tail
+         * is actually first node. If not, we continue on, safely
+         * traversing from tail back to head to find first,
+         * guaranteeing termination.
+         */
+
+        Node t = tail;
+        Thread firstThread = null;
+        while (t != null && t != head) {
+            Thread tt = t.thread;
+            if (tt != null)
+                firstThread = tt;
+            t = t.prev;
+        }
+        return firstThread;
+    }
+
+    /**
+     * 当前线程是否在队列中
+     */
+    public final boolean isQueued(Thread thread) {
+        if (thread == null)
+            throw new NullPointerException();
+        for (Node p = tail; p != null; p = p.prev)
+            if (p.thread == thread)
+                return true;
+        return false;
+    }
+
+    /**
+     * 第一个线程是否为独占方式 只在 ReentrantReadWriteLock中使用.
+     */
+    final boolean apparentlyFirstQueuedIsExclusive() {
+        Node h, s;
+        return (h = head) != null &&
+            (s = h.next)  != null &&
+            !s.isShared()         &&
+            s.thread != null;
+    }
+
+    /**
+     * 查询是否有线程比当前线程等待获取锁的时间长。
+     */
+    public final boolean hasQueuedPredecessors() {
+        Node t = tail;
+        Node h = head;
+        Node s;
+        return h != t && ((s = h.next) == null || s.thread != Thread.currentThread());
+    }
+
+    /*---------- 仪表及检测方法 ----------*/
+    public final int getQueueLength() {
+        int n = 0;
+        for (Node p = tail; p != null; p = p.prev) {
+            if (p.thread != null)
+                ++n;
+        }
+        return n;
+    }
+
+    public final Collection<Thread> getQueuedThreads() {
+        ArrayList<Thread> list = new ArrayList<Thread>();
+        for (Node p = tail; p != null; p = p.prev) {
+            Thread t = p.thread;
+            if (t != null)
+                list.add(t);
+        }
+        return list;
+    }
+
+    public final Collection<Thread> getExclusiveQueuedThreads() {
+        ArrayList<Thread> list = new ArrayList<Thread>();
+        for (Node p = tail; p != null; p = p.prev) {
+            if (!p.isShared()) {
+                Thread t = p.thread;
+                if (t != null)
+                    list.add(t);
+            }
+        }
+        return list;
+    }
+
+    public final Collection<Thread> getSharedQueuedThreads() {
+        ArrayList<Thread> list = new ArrayList<Thread>();
+        for (Node p = tail; p != null; p = p.prev) {
+            if (p.isShared()) {
+                Thread t = p.thread;
+                if (t != null)
+                    list.add(t);
+            }
+        }
+        return list;
+    }
+
+    public String toString() {
+        int s = getState();
+        String q  = hasQueuedThreads() ? "non" : "";
+        return super.toString() +
+            "[State = " + s + ", " + q + "empty queue]";
+    }
+
     /*---------- Condition 支持方法 ----------*/
 
     /**
      * 将一个节点从条件队列转移到同步队列中。
      */
     final boolean transferForSignal(Node node) {
-        //尝试取消node的条件等待状态，如果失败，节点已经被修改
+        //尝试取消node的条件等待状态，如果失败，返回false
         if (!compareAndSetWaitStatus(node, Node.CONDITION, 0))
             return false;
 
-        Node p = enq(node); //向队列中插入node节点，并返回前驱节点。
+        Node p = enq(node); //向队列末尾插入node节点，并返回前驱节点。
         int ws = p.waitStatus;
         if (ws > 0 || !compareAndSetWaitStatus(p, ws, Node.SIGNAL)) //前驱节点取消 || 尝试设置为SIGNAL失败。
             LockSupport.unpark(node.thread); //唤醒node节点。
@@ -650,7 +740,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * 完全释放占有的资源，如果是被，将节点设置为取消状态。
+     * 完全释放占有的资源，如果失败，将节点设置为取消状态。
      * @return 释放的资源数。
      */
     final int fullyRelease(Node node) {
@@ -667,6 +757,34 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
             if (failed) //释放资源失败：取消节点。
                 node.waitStatus = Node.CANCELLED;
         }
+    }
+
+
+    /*---------- conditions 的仪表查看方法。 从源码复制 ----------*/
+
+    /**
+     * Queries whether the given ConditionObject
+     */
+    public final boolean owns(ConditionObject condition) {
+        return condition.isOwnedBy(this);
+    }
+
+    public final boolean hasWaiters(ConditionObject condition) {
+        if (!owns(condition))
+            throw new IllegalArgumentException("Not owner");
+        return condition.hasWaiters();
+    }
+
+    public final int getWaitQueueLength(ConditionObject condition) {
+        if (!owns(condition))
+            throw new IllegalArgumentException("Not owner");
+        return condition.getWaitQueueLength();
+    }
+
+    public final Collection<Thread> getWaitingThreads(ConditionObject condition) {
+        if (!owns(condition))
+            throw new IllegalArgumentException("Not owner");
+        return condition.getWaitingThreads();
     }
 
     /*---------- 各版本的acquire 方法 ----------*/
@@ -709,17 +827,14 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * 检查和更新acquire失败节点的状态。
-     *
-     * @param pred node的前驱节点
-     * @param node 当前节点
+     * 检查和更新acquire失败节点的状态。前驱不是SIGNAL，表示不能暂停休息。
      * @return 前驱为SIGNAL，返回true，表示node可以park。
      */
     private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
         int ws = pred.waitStatus;
         if (ws == Node.SIGNAL)
             /*
-             * 前驱已经为SIGNAL，说明节点已经准备接受signal，可以安全地park。
+             * 前驱已经为SIGNAL，说明前驱节点获取锁后会通知自己，可以安全地park。
              */
             return true;
         if (ws > 0) {
@@ -732,7 +847,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
             pred.next = node;
         } else {
             /*
-             * 0或者PROPAGATE，表示需要一个signal，但是还没有park。设置为SIGNAL。
+             * 0或者PROPAGATE，表示前驱正常。尝试将它设置为SIGNAL，标记为可靠的通知者。
              */
             compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
         }
@@ -755,7 +870,8 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * 为在同步队列中的线程执行排他模式的acquire。
+     * 为已在同步队列中的节点执行排他模式的acquire。
+     * 被{@link #acquire(int)}方法和{@link ConditionObject#await()}系列方法调用。
      * @return 如果在等待期间被打断过，则返回{@code true}
      */
     final boolean acquireQueued(final Node node, int arg) {
@@ -766,7 +882,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
             for (;;) {
                 final Node p = node.predecessor(); //node的前驱。
                 if (p == head && tryAcquire(arg)) { // 如果前驱是头节点，且tryAcquire成功，说明成功获取锁。
-                    setHead(node);                  // 将head设置为当前节点。
+                    setHead(node);                  // 将head设置为当前节点。删除旧的head节点。
                     p.next = null; // help GC
                     failed = false;
                     return interrupted;
@@ -782,11 +898,11 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * 排他型acquire，和acquireQueued类似，有打断，直接抛出打断异常。
+     * 对未在同步队列中的节点执行排他型acquire，和acquireQueued类似，有打断，直接抛出打断异常。
      */
     private void doAcquireInterruptibly(int arg)
         throws InterruptedException {
-        final Node node = addWaiter(Node.EXCLUSIVE);
+        final Node node = addWaiter(Node.EXCLUSIVE); //和acquireQueued相比，多出将节点放入队列中的步骤。
         boolean failed = true;
         try {
             for (;;) {
@@ -840,10 +956,10 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * Acquires in shared uninterruptible mode.
+     * 共享模式获取资源
      */
     private void doAcquireShared(int arg) {
-        final Node node = addWaiter(Node.SHARED);
+        final Node node = addWaiter(Node.SHARED); //添加新的共享类型节点到队列中，共享节点的nextWaiter为Node.SHARED。
         boolean failed = true;
         try {
             boolean interrupted = false;
@@ -958,6 +1074,21 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         throw new UnsupportedOperationException();
     }
 
+    public final boolean tryAcquireSharedNanos(int arg, long nanosTimeout)
+            throws InterruptedException {
+        if (Thread.interrupted())
+            throw new InterruptedException();
+        return tryAcquireShared(arg) >= 0 ||
+            doAcquireSharedNanos(arg, nanosTimeout);
+    }
+
+    public final boolean tryAcquireNanos(int arg, long nanosTimeout)
+            throws InterruptedException {
+        if (Thread.interrupted())
+            throw new InterruptedException();
+        return tryAcquire(arg) || doAcquireNanos(arg, nanosTimeout);
+    }
+
     protected boolean tryReleaseShared(int arg) {
         throw new UnsupportedOperationException();
     }
@@ -974,6 +1105,44 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
             return true;
         }
         return false;
+    }
+
+    public final boolean releaseShared(int arg) {
+        if (tryReleaseShared(arg)) {
+            doReleaseShared();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 独占式获取资源。
+     */
+    public final void acquire(int arg) {
+        if (!tryAcquire(arg) &&
+            acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+            selfInterrupt();
+    }
+
+    public final void acquireInterruptibly(int arg)
+            throws InterruptedException {
+        if (Thread.interrupted())
+            throw new InterruptedException();
+        if (!tryAcquire(arg))
+            doAcquireInterruptibly(arg);
+    }
+
+    public final void acquireShared(int arg) {
+        if (tryAcquireShared(arg) < 0)
+            doAcquireShared(arg);
+    }
+
+    public final void acquireSharedInterruptibly(int arg)
+            throws InterruptedException {
+        if (Thread.interrupted())
+            throw new InterruptedException();
+        if (tryAcquireShared(arg) < 0)
+            doAcquireSharedInterruptibly(arg);
     }
 
     /*---------- 字段 ----------*/
