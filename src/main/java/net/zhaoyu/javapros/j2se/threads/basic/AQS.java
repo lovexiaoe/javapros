@@ -11,6 +11,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.LockSupport;
 
 /**
+ * AbstractQueueSynchronizer简称AQS,定义了一种等待队列的节点。AQS定义的等待队列是CLH 锁的一种变种。
+ *
  * AQS基于FIFO等待队列提供一个实现阻塞锁和相关同步器（栅栏，事件等）的框架，
  * 该类可以用来实现大多数依赖某个单一原子状态的同步器，将这个单一原子状态存放在队列的state中。
  * 子类必须定义protected方法改变这个原子状态，并且定义在这个对象被获取或者
@@ -63,12 +65,12 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         volatile int waitStatus;
 
         /**
-         * 前驱节点
+         * 同步队列中的前驱节点
          */
         volatile Node prev;
 
         /**
-         * 后继节点，next为null不一定就是tail节点，需要结合tail的prev确认，取消的节点next会设置为自己，而不是null。
+         * 同步队列中的后继节点，next为null不一定就是tail节点，需要结合tail的prev确认，取消的节点next会设置为自己，而不是null。
          */
         volatile Node next;
 
@@ -78,7 +80,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         volatile Thread thread;
 
         /**
-         * 在条件等待时表示下一个等待节点，连接到条件等待的下一个节点，或者SHARED。在同步队列中使用next和prev，在条件队列中使用nextWaiter。
+         * 在ConditionObject中表示下一个等待节点，在AQS同步队列中为SHARED,EXCLUSIVE，标记节点的类型。
          * 所以条件队列是单链表，同步队列是双链表。
          */
         Node nextWaiter;
@@ -347,7 +349,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
             long nanosTimeout = unit.toNanos(time);
             if (Thread.interrupted())
                 throw new InterruptedException();
-            Node node = addConditionWaiter(); //
+            Node node = addConditionWaiter();
             int savedState = fullyRelease(node);
             final long deadline = System.nanoTime() + nanosTimeout;
             boolean timedout = false;
@@ -511,12 +513,12 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
             if (h != null && h != tail) { //队列至少有除了tail之外的其他元素。
                 int ws = h.waitStatus;
                 if (ws == Node.SIGNAL) {  //如果head节点状态位SIGNAL，说明后继需要被唤醒。
-                    if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
-                        continue;            // 修改ws并唤醒后继
+                    if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0)) //唤醒后继，应该将状态标记为0
+                        continue;
                     unparkSuccessor(h);
                 }
                 else if (ws == 0 && !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
-                    continue;                // ws等于0，修改为PROPAGATE，失败继续循环。
+                    continue;                // ws=0，表示后继已经唤醒成功，将状态标记为PROPAGATE，失败继续循环。
             }
             if (h == head)                   // head有变化，那CAS修改状态可能失败，所以循环检查。
                 break;
@@ -968,7 +970,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
                 if (p == head) {
                     int r = tryAcquireShared(arg);
                     if (r >= 0) {
-                        setHeadAndPropagate(node, r);
+                        setHeadAndPropagate(node, r); //共享模式下，需要立即唤醒后继。对比独占模式，释放掉资源后才唤醒后继。
                         p.next = null; // help GC
                         if (interrupted)
                             selfInterrupt();
