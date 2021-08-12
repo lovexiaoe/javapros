@@ -14,16 +14,6 @@ import java.util.concurrent.locks.ReadWriteLock;
  */
 public class ReentrantReadWriteLock implements ReadWriteLock, java.io.Serializable {
 
-    @Override
-    public Lock readLock() {
-        return null;
-    }
-
-    @Override
-    public Lock writeLock() {
-        return null;
-    }
-
     abstract static class Sync extends AQS {
         /*
          * 读和写线程计数用到的常量
@@ -510,6 +500,7 @@ public class ReentrantReadWriteLock implements ReadWriteLock, java.io.Serializab
 
     private final ReentrantReadWriteLock.WriteLock writerLock;
 
+
     /*---------- 构造方法 ----------*/
 
     //默认创建非公平锁。
@@ -597,6 +588,15 @@ public class ReentrantReadWriteLock implements ReadWriteLock, java.io.Serializab
         return sync.getWaitingThreads((AQS.ConditionObject)condition);
     }
 
+    /**
+     * 返回线程id，我们不能直接使用Thread.getId()，因为Thread.getId()不是final，且被重写
+     */
+    static final long getThreadId(Thread thread) {
+        return UNSAFE.getLongVolatile(thread, TID_OFFSET);
+    }
+
+    /*---------- 重载方法 ----------*/
+
     public String toString() {
         int c = sync.getCount();
         int w = Sync.exclusiveCount(c);
@@ -606,12 +606,9 @@ public class ReentrantReadWriteLock implements ReadWriteLock, java.io.Serializab
             "[Write locks = " + w + ", Read locks = " + r + "]";
     }
 
-    /**
-     * 返回线程id，我们不能直接使用Thread.getId()，因为Thread.getId()不是final，且被重写
-     */
-    static final long getThreadId(Thread thread) {
-        return UNSAFE.getLongVolatile(thread, TID_OFFSET);
-    }
+    public ReentrantReadWriteLock.WriteLock writeLock() { return writerLock; }
+    public ReentrantReadWriteLock.ReadLock  readLock()  { return readerLock; }
+
 
     // Unsafe mechanics
     private static final sun.misc.Unsafe UNSAFE;
