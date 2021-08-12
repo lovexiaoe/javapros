@@ -611,7 +611,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     /**
      * 第一个线程是否为独占方式 只在 ReentrantReadWriteLock中使用.
      */
-    final boolean apparentlyFirstQueuedIsExclusive() {
+    public final boolean apparentlyFirstQueuedIsExclusive() {
         Node h, s;
         return (h = head) != null &&
             (s = h.next)  != null &&
