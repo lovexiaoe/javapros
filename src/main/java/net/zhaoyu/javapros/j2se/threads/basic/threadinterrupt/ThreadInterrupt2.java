@@ -12,98 +12,166 @@ import java.util.concurrent.locks.ReentrantLock;
  * 如果线程是被阻塞状态（调用sleep或wait或join或lock.tryLock或wait），调用interrupt方法时，会抛出InterruptedException异常，
  * 并会清除Interrupt状态。
  *
- * 某些线程是如此重要，已至于处理完InterruptedException后继续执行。
  *
- * isInterrupted
- * 返回中断状态。 在阻塞状态下返回false。
+ * isInterrupted(boolean ClearInterrupted);
+ * 返回中断状态。 在阻塞状态下返回false。ClearInterrupted 是否同时清除打断状态。
  *
- * interrupted
+ * isInterrupted()
+ * =isInterrupted(false)，不清除打断状态。实例方法
+ *
+ * interrupted()
+ * =currentThread().isInterrupted(true)，会清除interrupted状态。是静态方法，作用于当前线程。
  * 返回中断状态， 在阻塞状态下返回false。
- * 和isInterrupted方法类似，但是在返回的同时会清除interrupted状态，作用于Thread.currentThread()。
  */
 public class ThreadInterrupt2 {
 	public static void main(String[] args) throws InterruptedException {
 //		interrupted();
-		parkInterrupt();
-		//正常打断。
-//		nomalInterrupt();
-		//sleep被打断
-//		sleepInterrupt();
+//		interruptedWaitTest();
+//		interruptedBeforeWaitTest();
+		parkTest();
+//		interruptedParkTest();
 	}
 
+	/**
+	 * 对 wait中的线程调用interrupt方法，线程会抛出异常。
+	 * 输出如下
+	 * Thread-0 开始wait
+	 * Thread-0 等待状态中检测打断状态:false
+	 * Thread-0 打断后立即检测打断状态:true
+	 * Thread-0 打断中断了wait状态，抛出异常后，interruption状态会被清除。
+	 * Thread-0 wait结束，后续执行
+	 * Thread-0 end
+	 * Thread-0 打断2s后检测打断状态:false
+	 */
+	private static void interruptedWaitTest() throws InterruptedException {
+		Integer lock=1;
+		Thread t_son = new Thread(() -> {
+			String tName = Thread.currentThread().getName();
+			synchronized (lock) {
+				System.out.println(tName +" 开始wait");
+				try {
+					lock.wait();
+				} catch (InterruptedException e) { //wait如果被打断，那么会抛出异常，并清除interruption状态
+					System.out.println(tName +" 打断中断了wait状态，抛出异常后，interruption状态会被清除。");
+				}
+				System.out.println(tName+" 当前的打断状态为："+Thread.currentThread().isInterrupted());
+				while (!Thread.interrupted()) {
+				}
+				System.out.println(tName +" end");
+			}
+
+		});
+		t_son.start();
+		TimeUnit.SECONDS.sleep(2);
+		System.out.println(t_son.getName()+" 等待状态中检测打断状态:"+t_son.isInterrupted());
+		t_son.interrupt();
+		System.out.println(t_son.getName()+" 打断后立即检测打断状态:"+t_son.isInterrupted());
+		TimeUnit.SECONDS.sleep(2);
+		t_son.interrupt();//结束线程。
+		t_son.join();
+	}
+
+	/**
+	 * 先对线程进行打断，然后执行wait,也会抛出异常。
+	 * 输出如下
+	 * Thread-0 打断后立即检测打断状态:true
+	 * Thread-0 开始wait
+	 * Thread-0 打断中断了wait状态，抛出异常后，interruption状态会被清除。
+	 * Thread-0 end
+	 */
+	private static void interruptedBeforeWaitTest() throws InterruptedException {
+		Integer lock=1;
+		Thread t_son = new Thread(() -> {
+			String tName = Thread.currentThread().getName();
+			while (!Thread.currentThread().isInterrupted()) {
+			}
+			synchronized (lock) {
+				System.out.println(tName +" 开始wait");
+				try {
+					lock.wait();
+				} catch (InterruptedException e) { //wait如果被打断，那么会抛出异常，并清除interruption状态
+					System.out.println(tName +" 打断中断了wait状态，抛出异常后，interruption状态会被清除。");
+				}
+			}
+			System.out.println(tName +" end");
+
+		});
+		t_son.start();
+		t_son.interrupt();
+		System.out.println(t_son.getName()+" 打断后立即检测打断状态:"+t_son.isInterrupted());
+		TimeUnit.SECONDS.sleep(2);
+		synchronized (lock) {
+			lock.notify();//唤醒t_son线程，让他结束。
+		}
+		t_son.join();
+	}
+
+
+	/**
+	 * 正常调用interrupt方法，对线程设置一个打断状态，不会做其他动作。
+	 *
+	 * @throws InterruptedException
+	 */
 	private static void interrupted() throws InterruptedException {
-		System.out.println("A3: 初始化的interrupt status = "+Thread.currentThread().isInterrupted());
+		System.out.println("A3: 初始化的interrupt status = "+Thread.currentThread().isInterrupted());//false
 		Thread.currentThread().interrupt();
-		System.out.println("A3: interrupt打断后的interrupt status = "+Thread.currentThread().isInterrupted());
-		System.out.println("A3: 执行interrupted结果"+Thread.currentThread().interrupted());
-		System.out.println("A3: 执行interrupted后的线程状态"+Thread.currentThread().isInterrupted());
+		System.out.println("A3: interrupt打断后的interrupt status = "+Thread.currentThread().isInterrupted());//true
+		System.out.println("A3: 执行interrupted结果"+Thread.interrupted());//true
+		System.out.println("A3: 执行interrupted后的线程状态"+Thread.currentThread().isInterrupted());//false
 	}
 
-	private static void parkInterrupt() throws InterruptedException {
-		System.out.println("A4-1: "+Thread.currentThread().isInterrupted());
-		LockSupport.park();
-		System.out.println("A4-2: "+Thread.currentThread().isInterrupted());
-		LockSupport.unpark(Thread.currentThread());
-		System.out.println("A4-3: "+Thread.currentThread().isInterrupted());
-	}
-
-	private static void sleepInterrupt() throws InterruptedException {
-		/**
-		 * 如果线程是被阻塞状态（调用sleep或wait或join或lock.tryLock或wait），调用interrupt方法时，会抛出InterruptedException异常，
-		 * 并会清除Interrupt状态。
-		 */
-		Thread thread2 = new Thread() {
-			@Override
-			public void run() {
-				try {
-					long number=1L;
-					while (true){
-						number++;
-						System.out.println("A2: "+number);
-						if (isInterrupted()){
-							break;
-						}
-					}
-					System.out.println("A2，interrupt status="+isInterrupted()); //初始化为false
-					this.sleep(2000);
-					System.out.println("A2");
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					System.out.println("B2，interrupt status="+isInterrupted()); //false,
-				}
+	/**
+	 * interrupt会打断park状态，且park结束后不会清除interrupt状态。
+	 * 输出如下
+	 * Thread-1 打断后立即检测打断状态:true
+	 * Thread-1 开始park
+	 * Thread-1 interrupt导致park结束后打断状态为：true
+	 * Thread-1 结束park
+	 */
+	private static void interruptedParkTest() throws InterruptedException {
+		Integer lock=1;
+		Thread t_son = new Thread(() -> {
+			String tName = Thread.currentThread().getName();
+			while (!Thread.currentThread().isInterrupted()) {
 			}
+			System.out.println(tName +" 开始park");
+			LockSupport.park();
+			System.out.println(tName+" interrupt导致park结束后打断状态为："+Thread.currentThread().isInterrupted());
+			System.out.println(tName+" 结束park");
 
-		};
-
-		thread2.start();
-		TimeUnit.MILLISECONDS.sleep(1000);
-		thread2.interrupt();
+		});
+		t_son.start();
+		t_son.interrupt();
+		System.out.println(t_son.getName()+" 打断后立即检测打断状态:"+t_son.isInterrupted());
+		TimeUnit.SECONDS.sleep(2);
+		t_son.join();
 	}
 
-	private static void nomalInterrupt() throws InterruptedException {
-		//正常中断,interrupt的常规调用，当thread1被打断后，跳出循环，停止运行。输出 “A1: 线程在运行中被打断”
-		Thread thread1 = new Thread() {
-			@Override
-			public void run() {
-				try {
-					long number=1L;
-					System.out.println("A1，Init interrupt status="+isInterrupted()); //初始化为false
-					while (true){
-						number++;
-						System.out.println("A1: "+number);
-						if (isInterrupted()){
-							System.out.println("A1: 线程在运行中被打断");
-							break;
-						}
-					}
-
-				} catch (Exception e) {
-					System.out.println("B1");
-				}
+	/**
+	 * park禁用线程调度当前线程，等待一个许可可用。如果许可被释放，那么会立即恢复。
+	 * 释放许可有下面3中情况：
+	 * 1.其他线程调用了当前线程的unPark
+	 * 2.当前线程被interrupt打断
+	 * 3.莫名的返回。
+	 *
+	 * unpark释放一个许可，重复调用只会释放一个许可，和park没有先后顺序，再等待park消费。
+	 */
+	private static void parkTest() throws InterruptedException {
+		Integer lock=1;
+		Thread t_son = new Thread(() -> {
+			String tName = Thread.currentThread().getName();
+			try {
+				TimeUnit.SECONDS.sleep(2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		};
-		thread1.start();
-		TimeUnit.MILLISECONDS.sleep(2);
-		thread1.interrupt();
+			System.out.println(tName +" 开始park");
+			LockSupport.park();
+			System.out.println(tName+" 结束park");
+		});
+		t_son.start();
+		LockSupport.unpark(t_son); //unpark可以先于park调用。
+		System.out.println(t_son.getName()+" 调用了unPark");
+		t_son.join();
 	}
 }

@@ -1,5 +1,11 @@
 package net.zhaoyu.javapros.j2se.designpattern.creational.factory1;
 
+
+/**
+ * 工厂模式，使用工厂构建某个类的实例。好处：对象的创建统一到一处。
+ * 使用案例：
+ * mybatis中的DefaultSqlSessionFactory
+ */
 public class FactoryPatternDemo {
 	public static void main(String[] args) {
 		ShapeFactory shapeFactory = new ShapeFactory();

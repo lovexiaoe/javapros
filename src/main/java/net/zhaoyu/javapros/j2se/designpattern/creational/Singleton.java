@@ -1,5 +1,6 @@
 package net.zhaoyu.javapros.j2se.designpattern.creational;
 
+//内部静态雷方法是线程安全的
 public class Singleton {
     /**
      * 类级的内部类，也就是静态的成员式内部类，该内部类的实例与外部类的实例

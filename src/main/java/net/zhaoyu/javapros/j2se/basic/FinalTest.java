@@ -1,7 +1,12 @@
 package net.zhaoyu.javapros.j2se.basic;
 
 /**
- * final用于修饰以个常量，编译器在编译时，就会将变量替换为常量，也可以修饰参数。
+ * final修饰的变量只能被赋值一次。编译器在编译时，就会将变量替换为常量，也可以修饰参数。
+ *
+ * 三种变量默认被final修饰：
+ * 1.接口的字段。
+ * 2.try-with-resource语句声明的资源的本地变量。
+ * 3.多catch语句中声明的exception参数。
  */
 public class FinalTest {
     //用作变量

@@ -16,17 +16,13 @@ public class ArrayTest {
 		int[] a4 = Arrays.copyOf(a1, 5);
 		System.out.println(a4[4]);
 
-		// 数组也可以在运行期间确定大小
-		Random rd = new Random(100);
-		int actualSize = rd.nextInt();
-		int[] array2 = new int[actualSize];
-
 		// 数组的排序使用快速排序法对数组进行排序
 		int[] luckyNumbers = { 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008 };
 		Arrays.sort(luckyNumbers);
 		for (int i = 0; i < luckyNumbers.length; i++) {
 			System.out.println(i + ":" + luckyNumbers[i]);
 		}
-
+		Class arrClazz = luckyNumbers.getClass();
+		System.out.println(arrClazz);
 	}
 }

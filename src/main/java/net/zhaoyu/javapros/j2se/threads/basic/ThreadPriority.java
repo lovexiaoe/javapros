@@ -36,4 +36,10 @@ public class ThreadPriority {
 
 	}
 
+	static class ThreadRunTest extends Thread{
+		@Override
+		public void run() {
+			System.out.println("Thread:"+currentThread()+",is running");
+		}
+	}
 }
