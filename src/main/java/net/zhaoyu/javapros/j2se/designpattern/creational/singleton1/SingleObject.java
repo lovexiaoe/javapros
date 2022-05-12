@@ -1,9 +1,9 @@
 package net.zhaoyu.javapros.j2se.designpattern.creational.singleton1;
 
 
-// 懒汉模式，该模式是线程安全的，懒得思考，在类初始化的时候先创建再说，
-// （这个类没有用，造成资源的浪费）问题不予考虑。
-// （程序加载慢）问题也不予考虑。
+// 饿汉模式，该模式是线程安全的，在类初始化的时候先创建，
+// （这个类没有用，造成资源的浪费）。
+// （程序加载慢）。
 public class SingleObject {
 	// create an object of SingleObject
 	private static SingleObject instance = new SingleObject();

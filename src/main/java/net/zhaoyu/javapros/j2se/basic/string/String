@@ -1,3 +1,18 @@
+String 是使用final的经典案例，String的char数组使用了final修饰，构造方法中对其进行初始化，是一个不可变类。
+String的改变方法subString等，都会重新返回一个新的String对象。String本身没有数据竞争问题，但是在多线程使用String对象的时候，
+需要自己保证对象的数据竞争问题。
+
+假如一个线程执行如下：
+Global.s = "/tmp/usr".substring(4);
+另一个线程执行如下：
+String myS = Global.s;
+if (myS.equals("/tmp"))System.out.println(myS);
+
+如果Global.s不是final字段，那么myS可能得到一个空的字符串对象。
+
+很多java的安全特性都依赖String作为其不可变对象。
+
+
 String的其它方法还有
 	replace,
 	toUpperCase,

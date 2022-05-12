@@ -18,7 +18,7 @@ public final class SingletonSafe {
 	}
 
 	/**
-	 * JVM在创建对象时，大概分为如下三个步骤。
+	 * JVM在创建对象时，大概分为如下三个步骤，如：singleton = new SingletonSafe("我只有一个实例")。
 	 * 1.分配内存空间。
 	 * 2.实例化一个对象。
 	 * 3.将实例化对象分为给变量。
