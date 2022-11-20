@@ -1,1 +1,4 @@
 适配器模式 ，存在一个类（adaptee），而它的接口不符合你的要求(target)时。 类似于日常生活中的适配器。
+
+适配器模式，不改动现有的接口，通过新增让固有接口实现目标接口，mybatis的logging就实现了适配器模式，
+让不同厂家的logging都适配mybatis的logging接口，让mybatis统一调用logging功能。

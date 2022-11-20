@@ -1,6 +1,7 @@
 package net.zhaoyu.javapros.j2se.designpattern.creational.singleton2;
 
 //懒汉模式，延迟加载，用到才会被加载，解决了饿汉模式的缺点。
+// 使用案例Mybatis-LogFactory
 public final class SingletonSafe {
 	private static volatile SingletonSafe singleton;
 	String s;

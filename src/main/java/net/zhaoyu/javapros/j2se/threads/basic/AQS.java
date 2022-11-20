@@ -17,6 +17,17 @@ import java.util.concurrent.locks.LockSupport;
  * 该类可以用来实现大多数依赖某个单一原子状态的同步器，将这个单一原子状态存放在队列的state中。
  * 子类必须定义protected方法改变这个原子状态，并且定义在这个对象被获取或者
  * 释放时，该状态的意义。类中的其他方法执行入队出队和阻塞机制。
+ *
+ * AQS定义了共享锁和排他锁的设置，并定义了条件队列用于实现锁的Condition。
+ * AQS的公平锁和非公平锁是在子类中实现。两种都需要假如队列，只不过非公平锁是先尝试获取锁，获取失败则假如队列。公平锁直接假如队列。
+ *
+ * 共享模式，共享节点的后续节点都是{@link Node#SHARED},可以判断是否是共享节点。
+ * 共享锁实现的逻辑是在获取资源成功后，如果还有剩余的共享资源，则直接通过{@link #doReleaseShared}释放当前节点，唤醒后续的节点。
+ * 而排他模式是获取资源后，通过{@link #release}释放完成才会唤醒后去节点。
+ * 参考{@link AQS#doAcquireShared}
+ *
+ * condition的实现，是在{@link ConditionObject#await}的时候将节点从队列转移到条件队列，{@link ConditionObject#signal}的时候则
+ * 将条件队列中的节点添加到队列尾部。
  */
 public abstract class AQS extends AbstractOwnableSynchronizer implements java.io.Serializable {
 
@@ -112,7 +123,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * AQS的条件队列
+     * AQS的条件队列，实现Condition接口。定义了条件的wait和signal动作。
      */
     public class ConditionObject implements Condition, java.io.Serializable {
         /** 条件队列中的第一个节点 */
@@ -143,7 +154,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         }
 
         /**
-         * 将条件队列中的first删除，并转移到同步队列中
+         * 将条件队列中的first删除，并调用{@link AQS#transferForSignal}方法转移到同步队列中
          */
         private void doSignal(Node first) {
             do {
@@ -154,7 +165,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         }
 
         /**
-         * 删除和转移所有的条件队列中的节点
+         * 删除并调用{@link AQS#transferForSignal}方法转移所有的条件队列中的节点,
          */
         private void doSignalAll(Node first) {
             lastWaiter = firstWaiter = null;
@@ -242,7 +253,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
         }
 
         /**
-         * 可打断的条件等待
+         * 可打断的条件等待，定义了条件的等待动作，释放AQS中的节点，并在条件队列中新加节点。
          */
         public final void await() throws InterruptedException {
             if (Thread.interrupted())
@@ -433,7 +444,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     /*---------- 队列方法 ----------*/
 
     /**
-     * 自旋向队列中插入节点，返回节点的前驱
+     * 自旋向队列尾部插入节点，返回节点的前驱
      */
     private Node enq(final Node node) {
         for (;;) {
@@ -452,7 +463,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * 为当前线程创建节点并放入队列，并定义EXCLUSIVE和SHARED模式
+     * 为当前线程创建节点并放入队列尾部，并定义EXCLUSIVE和SHARED模式
      */
     private Node addWaiter(Node mode) {
         Node node = new Node(Thread.currentThread(), mode);
@@ -470,7 +481,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * 是否排他模式。子类实现。只被{@link ConditionObject}内部调用。
+     * 是否排他模式。在子类实现。
      * @return
      */
     protected boolean isHeldExclusively() {
@@ -485,7 +496,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * 唤醒节点的后继。
+     * 如果当前节点的状态为负，将节点的waitStatus状态改为0，并唤醒节点的后继。
      */
     private void unparkSuccessor(Node node) {
         int ws = node.waitStatus;
@@ -533,11 +544,12 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     private void setHeadAndPropagate(Node node, int propagate) {
         Node h = head; // 记录旧的head节点
         setHead(node);
-        //(propagate>0)表示剩余资源大于0，可以继续唤醒之后的线程。 (h == null || h.waitStatus < 0) 表示原head为null或者取消。
-        //((h = head) == null || h.waitStatus < 0) 表示新的head为null或者取消。
+        //(propagate>0)表示剩余资源大于0，可以继续唤醒之后的线程。
+        // (h == null || h.waitStatus < 0) 表示原head为null或者需要传递通知。
+        //((h = head) == null || h.waitStatus < 0) 表示新的head为null或者需要传递通知。
         if (propagate > 0 || h == null || h.waitStatus < 0 || (h = head) == null || h.waitStatus < 0) {
             Node s = node.next;
-            if (s == null || s.isShared()) //则唤醒后续节点。
+            if (s == null || s.isShared()) //后续节点为共享节点，则立即释放head节点。
                 doReleaseShared();
         }
     }
@@ -792,7 +804,7 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     /*---------- 各版本的acquire 方法 ----------*/
 
     /**
-     * 取消一个尝试acquire的动作。
+     * 取消一个尝试acquire的动作。设置节点状态为Node.CANCELLED
      */
     private void cancelAcquire(Node node) {
         // Ignore if node doesn't exist
@@ -872,9 +884,9 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * 为已在同步队列中的节点执行排他模式的acquire。
+     * 启动队列中存在的某个节点的自旋，尝试成为头节点，。
      * 被{@link #acquire(int)}方法和{@link ConditionObject#await()}系列方法调用。
-     * @return 如果在等待期间被打断过，则返回{@code true}
+     * @return 返回失败状态。注意这里不是成功状态。
      */
     final boolean acquireQueued(final Node node, int arg) {
         boolean failed = true;
@@ -884,12 +896,13 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
             for (;;) {
                 final Node p = node.predecessor(); //node的前驱。
                 if (p == head && tryAcquire(arg)) { // 如果前驱是头节点，且tryAcquire成功，说明成功获取锁。
-                    setHead(node);                  // 将head设置为当前节点。删除旧的head节点。
+                    // 将head设置为当前节点。删除旧的head节点。等待线程执行完后，调用release方法释放资源。和共享锁有区别
+                    setHead(node);
                     p.next = null; // help GC
                     failed = false;
                     return interrupted;
                 }
-                // 应该被park 则执行park，并清除打断状态，
+                // 获取失败，判断是否应该park，如果应该被park，则park并检查打断状态。
                 if (shouldParkAfterFailedAcquire(p, node) && parkAndCheckInterrupt())
                     interrupted = true; //自旋过程中，如果被打断过，哪怕只有一次，设置interrupted为true。
             }
@@ -970,7 +983,8 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
                 if (p == head) {
                     int r = tryAcquireShared(arg);
                     if (r >= 0) {
-                        setHeadAndPropagate(node, r); //共享模式下，需要立即唤醒后继。对比独占模式，释放掉资源后才唤醒后继。
+                        //共享模式下，如果后续节点为SHARED，则直接释放头结点。对比独占模式，释放掉资源后才唤醒后继。
+                        setHeadAndPropagate(node, r);
                         p.next = null; // help GC
                         if (interrupted)
                             selfInterrupt();
@@ -1118,12 +1132,12 @@ public abstract class AQS extends AbstractOwnableSynchronizer implements java.io
     }
 
     /**
-     * 独占式获取资源。
+     * lock直接调用的方法， 获取独占式资源。
      */
     public final void acquire(int arg) {
-        if (!tryAcquire(arg) &&
-            acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
-            selfInterrupt();
+        //先尝试获取锁，如果失败，则加入队列并自旋。
+        if (!tryAcquire(arg) && acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+            selfInterrupt(); //如果设置了打断状态，则调用selfInterrupt方法打断
     }
 
     public final void acquireInterruptibly(int arg)

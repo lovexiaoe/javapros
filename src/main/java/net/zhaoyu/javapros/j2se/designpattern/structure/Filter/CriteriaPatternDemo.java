@@ -3,6 +3,10 @@ package net.zhaoyu.javapros.j2se.designpattern.structure.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 过滤器是针对一个群体的对象使用条件筛选，过滤掉部分对象。 这些条件也可以组合，形成复杂条件。
+ * 如下面的singleOrFemale和singleMale条件。
+ */
 public class CriteriaPatternDemo {
 	public static void main(String[] args) {
 		List<Person> persons = new ArrayList<Person>();
